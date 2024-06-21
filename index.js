@@ -8,7 +8,7 @@ const client = new Client({
     presence: {
         activities: [
             {
-                name: "Biting Abba, Watching Vihi die in X and Listening to Frank's talk about feet",
+                name: "Biting Abba, Watching Vihi die in Celeste and Listening to Frank's talk about feet",
                 type: ActivityType.Custom,
             }
         ],
