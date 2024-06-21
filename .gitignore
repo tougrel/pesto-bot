@@ -1,0 +1,7 @@
+.vscode/
+.idea/
+.vs/
+.fleet/
+dist/
+node_modules/
+.env
