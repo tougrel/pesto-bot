@@ -1,17 +1,24 @@
 {
-  "name": "pesto-bot",
-  "version": "0.1.0",
-  "description": "A simple discord bot for the pesties",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node ."
-  },
-  "keywords": ["discord bot", "discord.js", "yuniiho"],
-  "author": "Tougrel",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5"
-  }
+	"name": "pesto-bot",
+	"version": "0.1.0",
+	"description": "A simple discord bot for the pesties",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "node .",
+		"deploy:dev": "node scripts/development.js",
+		"deploy:prod": "node scripts/production.js"
+	},
+	"keywords": [
+		"discord bot",
+		"discord.js",
+		"yuniiho"
+	],
+	"author": "Tougrel",
+	"license": "ISC",
+	"dependencies": {
+		"discord-api-types": "^0.37.91",
+		"discord.js": "^14.15.3",
+		"dotenv": "^16.4.5"
+	}
 }
