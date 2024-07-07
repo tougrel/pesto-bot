@@ -8,15 +8,16 @@ importers:
 
   .:
     dependencies:
-      discord-api-types:
-        specifier: ^0.37.91
-        version: 0.37.91
       discord.js:
         specifier: ^14.15.3
         version: 14.15.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+    devDependencies:
+      discord-api-types:
+        specifier: ^0.37.91
+        version: 0.37.91
 
 packages:
 

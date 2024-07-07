@@ -5,9 +5,10 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"start": "node .",
-		"deploy:dev": "node scripts/development.js",
-		"deploy:prod": "node scripts/production.js"
+		"start": "NODE_ENV=production_node .",
+		"dev": "NODE_ENV=development node .",
+		"deploy:dev": "NODE_ENV=development node scripts/deploy.js",
+		"deploy:prod": "NODE_ENV=production node scripts/deploy.js"
 	},
 	"keywords": [
 		"discord bot",
@@ -17,8 +18,10 @@
 	"author": "Tougrel",
 	"license": "ISC",
 	"dependencies": {
-		"discord-api-types": "^0.37.91",
 		"discord.js": "^14.15.3",
 		"dotenv": "^16.4.5"
+	},
+	"devDependencies": {
+		"discord-api-types": "^0.37.91"
 	}
 }
