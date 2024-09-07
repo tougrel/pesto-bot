@@ -18,10 +18,10 @@
 	"author": "Tougrel",
 	"license": "ISC",
 	"dependencies": {
-		"discord.js": "^14.15.3",
+		"discord.js": "^14.16.1",
 		"dotenv": "^16.4.5"
 	},
 	"devDependencies": {
-		"discord-api-types": "^0.37.91"
+		"discord-api-types": "^0.37.100"
 	}
 }
