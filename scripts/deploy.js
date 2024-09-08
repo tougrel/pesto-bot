@@ -67,7 +67,10 @@ const rest = new REST().setToken(process.env.NODE_ENV === "development" ? proces
 
 (async () => {
 	try {
-		await rest.put(Routes.applicationGuildCommands(process.env.NODE_ENV === "development" ? process.env.DEV_APP_ID : process.env.APP_ID, process.env.GUILD_ID), {body: commands});
+		const app_id = process.env.NODE_ENV === "development" ? process.env.DEV_APP_ID : process.env.APP_ID;
+		const guild_id = process.env.NODE_ENV === "development" ? process.env.DEV_GUILD_ID : process.env.GUILD_ID;
+		
+		await rest.put(Routes.applicationGuildCommands(app_id, guild_id), {body: commands});
 		console.log(`Successfully deployed ${commands.length} command(s) to ${process.env.GUILD_ID}.`);
 	} catch (err) {
 		console.error(err);
