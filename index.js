@@ -1,6 +1,6 @@
 import "dotenv/config";
 import {GatewayIntentBits, ActivityType, GuildMemberFlags} from "discord-api-types/v10";
-import {Client, Partials, Events, GuildMember} from "discord.js";
+import {Client, Partials, Events} from "discord.js";
 import {readFile, writeFile} from "node:fs/promises";
 
 const client = new Client({
@@ -64,10 +64,37 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 		
 		if (interaction.commandName === "bite") {
-			const member = interaction.options.getUser("pestie");
+			const user = interaction.options.getUser("pestie");
+			const member = await interaction.guild.members.fetch({user, cache: true});
+			
+			if (member.id === "1056992407251595294" || member.id === client.user.id) {
+				await interaction.reply({
+					content: `<:yuniiX:1283529446946504818> You dare bite me, ${interaction.member.nickname}? <:PestoFood:1075882159115612252>`,
+				});
+				
+				return;
+			}
+			
+			if (interaction.user.id === "236642620506374145") {
+				await interaction.reply({
+					content: "<:yuniiX:1283529446946504818> Trying to bite a pestie your cluelessness? Not in my watch! <:yuniiRaid:1283531598993821707>",
+					ephemeral: true,
+				});
+				
+				await interaction.channel.send({
+					content: `${interaction.member.nickname} tried to attack a pestie! Bite him!`,
+				});
+				
+				return;
+			}
 			
 			await interaction.reply({
-				content: `${client.user} attacks ${member.username}! <:PestoFood:1075882159115612252>`,
+				content: "Remember to waddle pestie! <a:yuniiWaddle:1283532105988571136> <a:yuniiWaddle:1283532105988571136> <a:yuniiWaddle:1283532105988571136>",
+				ephemeral: true,
+			});
+			
+			await interaction.channel.send({
+				content: `${client.user} attacks ${member.nickname}! <:PestoFood:1075882159115612252>`,
 			});
 		}
 		
