@@ -67,7 +67,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			const user = interaction.options.getUser("pestie");
 			const member = await interaction.guild.members.fetch({user, cache: true});
 			
-			if (member.id === "1056992407251595294" || member.id === client.user.id) {
+			if (member.id === "212975234427518979" || member.id === client.user.id) {
 				await interaction.reply({
 					content: `<:yuniiX:1283529446946504818> You dare bite me, ${interaction.member.nickname || interaction.user.globalName}? <:PestoFood:1075882159115612252>`,
 				});
@@ -85,7 +85,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 					content: `${interaction.member.nickname || interaction.user.globalName} tried to attack a pestie! Bite him!`,
 				});
 				
-				return;
+					return;
 			}
 			
 			await interaction.reply({
