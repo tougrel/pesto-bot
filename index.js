@@ -69,7 +69,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			
 			if (member.id === "1056992407251595294" || member.id === client.user.id) {
 				await interaction.reply({
-					content: `<:yuniiX:1283529446946504818> You dare bite me, ${interaction.member.nickname}? <:PestoFood:1075882159115612252>`,
+					content: `<:yuniiX:1283529446946504818> You dare bite me, ${interaction.member.nickname || interaction.user.globalName}? <:PestoFood:1075882159115612252>`,
 				});
 				
 				return;
@@ -82,7 +82,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 				});
 				
 				await interaction.channel.send({
-					content: `${interaction.member.nickname} tried to attack a pestie! Bite him!`,
+					content: `${interaction.member.nickname || interaction.user.globalName} tried to attack a pestie! Bite him!`,
 				});
 				
 				return;
@@ -94,7 +94,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			});
 			
 			await interaction.channel.send({
-				content: `${client.user} attacks ${member.nickname}! <:PestoFood:1075882159115612252>`,
+				content: `${client.user} attacks ${member.nickname || member.user.globalName}! <:PestoFood:1075882159115612252>`,
 			});
 		}
 		
