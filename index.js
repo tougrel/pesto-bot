@@ -67,7 +67,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			const user = interaction.options.getUser("pestie");
 			const member = await interaction.guild.members.fetch({user, cache: true});
 			
-			if (member.id === "212975234427518979" || member.id === client.user.id) {
+			if (member.id === "212975234427518979           " || member.id === client.user.id) {
 				await interaction.reply({
 					content: `<:yuniiX:1283529446946504818> You dare bite me, ${interaction.member.nickname || interaction.user.globalName}? <:PestoFood:1075882159115612252>`,
 				});
@@ -99,6 +99,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		}
 		
 		if (interaction.commandName === "ppcheck") {
+			const user = interaction.options.getUser("pestie", false);
 			const power = Math.floor(Math.random() * 101);
 			
 			let message;
@@ -109,11 +110,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			else if (power <= 80) message = "Beeg! Nice! <:yuniiUwaa:1281948029431316530>";
 			else message = "Enormous, Gigantic! Overflowing with pesto! <:yuniiCultured:1281948041032765490>"
 			
-			await interaction.reply({
-				content: `${interaction.user}'s Pesto Power is **${power}%**, ${message}`,
-			});
+			if (user) {
+				const member = interaction.guild.members.cache.get(user.id);
+				await interaction.reply({
+					content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message}`,
+				});
+			} else {
+				await interaction.reply({
+					content: `${interaction.user}'s Pesto Power is **${power}%**, ${message}`,
+				});
+			}
 		}
 	}
 });
 
-client.login(process.env.NODE_ENV === "development" ? process.env.DEV_BOT_TOKEN : process.env.BOT_TOKEN).catch(console.error);
+client.login(process.env.BOT_TOKEN).catch(console.error);

@@ -60,15 +60,21 @@ const commands = [
 		.setName("ppcheck")
 		.setDescription("How big is your pesto power today? Remember to waddle!")
 		.setDefaultMemberPermissions(PermissionFlagsBits.MessageSend)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to check")
+				.setRequired(false)
+		)
 ];
 
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
-const rest = new REST().setToken(process.env.NODE_ENV === "development" ? process.env.DEV_BOT_TOKEN : process.env.BOT_TOKEN);
+const rest = new REST().setToken(process.env.BOT_TOKEN);
 
 (async () => {
 	try {
-		const app_id = process.env.NODE_ENV === "development" ? process.env.DEV_APP_ID : process.env.APP_ID;
-		const guild_id = process.env.NODE_ENV === "development" ? process.env.DEV_GUILD_ID : process.env.GUILD_ID;
+		const app_id = process.env.APP_ID;
+		const guild_id = process.env.GUILD_ID;
 		
 		await rest.put(Routes.applicationGuildCommands(app_id, guild_id), {body: commands});
 		console.log(`Successfully deployed ${commands.length} command(s) to ${process.env.GUILD_ID}.`);
