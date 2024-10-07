@@ -65,6 +65,16 @@ const commands = [
 				.setName("pestie")
 				.setDescription("The pestie you want to check")
 				.setRequired(false)
+		),
+	new SlashCommandBuilder()
+		.setName("eval")
+		.setDescription("Shhh")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+		.addStringOption(
+			new SlashCommandStringOption()
+				.setName("code")
+				.setDescription("The code that will get executed")
+				.setRequired(true)
 		)
 ];
 

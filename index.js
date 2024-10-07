@@ -85,7 +85,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 					content: `${interaction.member.nickname || interaction.user.globalName} tried to attack a pestie! Bite him!`,
 				});
 				
-					return;
+				return;
 			}
 			
 			await interaction.reply({
@@ -118,6 +118,34 @@ client.on(Events.InteractionCreate, async (interaction) => {
 			} else {
 				await interaction.reply({
 					content: `${interaction.user}'s Pesto Power is **${power}%**, ${message}`,
+				});
+			}
+		}
+		
+		if (interaction.commandName === "eval") {
+			const command = interaction.options.getString("code");
+			
+			if (interaction.user.id !== process.env.DEVELOPER_DISCORD_ID) {
+				await interaction.reply({
+					content: "Only the bot developer can run this command",
+					ephemeral: true,
+				});
+				
+				return;
+			}
+			
+			try {
+				eval(command);
+				
+				await interaction.reply({
+					content: "✅ Success",
+					ephemeral: true
+				});
+			} catch (err) {
+				console.error(err);
+				await interaction.reply({
+					content: "❌ An error occurred",
+					ephemeral: true
 				});
 			}
 		}
