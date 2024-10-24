@@ -1,6 +1,6 @@
 {
 	"name": "pesto-bot",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "A simple discord bot for the pesties",
 	"main": "index.js",
 	"type": "module",
@@ -17,11 +17,12 @@
 	"author": "Tougrel",
 	"license": "ISC",
 	"dependencies": {
-		"discord.js": "^14.16.1",
+		"discord.js": "^14.16.3",
 		"dotenv": "^16.4.5"
 	},
 	"devDependencies": {
-		"discord-api-types": "^0.37.100"
+		"discord-api-types": "^0.37.103"
 	},
-	"package-manager-strict": false
+	"package-manager-strict": false,
+	"packageManager": "pnpm@9.12.1"
 }
