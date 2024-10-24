@@ -18,8 +18,8 @@ export async function run(client, interaction) {
 	let power = Math.floor(Math.random() * 101);
 	let date = new Date();
 	
-	date.setHours(0, 0, 0, 0);
-	date.setDate(date.getDate() + 1);
+	date.setUTCHours(0, 0, 0, 0);
+	date.setUTCDate(date.getDate() + 1);
 	
 	collection.set(interaction.user.id, date.getTime());
 	
