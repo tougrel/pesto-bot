@@ -1,3 +1,5 @@
+import {Collection} from "discord.js";
+
 const MESSAGES = {
 	"-100": ["Turned into dust! Disappeared from the face of the universe! <:ppcheck:1282311070924673050>"],
 	"-99": ["Turns out you are a potato since you keep growing downward <a:smoking:1298958916452876288>"],
@@ -14,39 +16,29 @@ const MESSAGES = {
 	"100": ["<:yuniiuh:1298954249908125747>"],
 }
 
+const collection = new Collection();
+
 export const name = "ppcheck";
 export async function run(client, interaction) {
 	const user = interaction.options.getUser("pestie", false);
 	let power = Math.floor(Math.random() * 101);
-	
-	let message;
-	if (power === 0) message = MESSAGES["0"][Math.floor(Math.random() * MESSAGES["0"].length)];
-	else if (power === 69) message = MESSAGES["69"][Math.floor(Math.random() * MESSAGES["69"].length)];
-	else if (power === 100) message = MESSAGES["100"][Math.floor(Math.random() * MESSAGES["100"].length)];
-	else if (power <= 20) message = MESSAGES["20"][Math.floor(Math.random() * MESSAGES["20"].length)];
-	else if (power <= 50) message = MESSAGES["50"][Math.floor(Math.random() * MESSAGES["50"].length)];
-	else if (power <= 80) message = MESSAGES["80"][Math.floor(Math.random() * MESSAGES["80"].length)];
-	else message = MESSAGES["99"][Math.floor(Math.random() * MESSAGES["99"].length)];
 	
 	const date = new Date();
 	const day = date.getUTCDay();
 	if (day === 0 || day === 6) {
 		power = Math.floor(Math.random() * 101) + 35;
 		
-		const random = Math.random().toFixed(2);
-		if (random <= 0.1) {
-			power = Math.floor(Math.random() * 101) - 100;
-			
-			if (power === 0) message = MESSAGES["0"][Math.floor(Math.random() * MESSAGES["0"].length)];
-			else if (power === -69) message = MESSAGES["-69"][Math.floor(Math.random() * MESSAGES["-69"].length)];
-			else if (power === -100) message = MESSAGES["-100"][Math.floor(Math.random() * MESSAGES["-100"].length)];
-			else if (-80 > power) message = MESSAGES["-99"][Math.floor(Math.random() * MESSAGES["-99"].length)];
-			else if (-50 > power) message = MESSAGES["-80"][Math.floor(Math.random() * MESSAGES["-80"].length)];
-			else if (-20 > power) message = MESSAGES["-50"][Math.floor(Math.random() * MESSAGES["-50"].length)];
-			else if (0 > power) message = MESSAGES["-20"][Math.floor(Math.random() * MESSAGES["-20"].length)];
+		let random = Math.random().toFixed(2);
+		// This is temporary to troll a user (124963012321738752)
+		if (!collection.has("124963012321738752") && (interaction.user.id === "256048990750113793" || user.id === "256048990750113793")) {
+			random = 0.1;
+			collection.set("124963012321738752", true);
 		}
+		
+		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
 	}
 	
+	const message = getMessage(power);
 	if (user) {
 		const member = interaction.guild.members.cache.get(user.id);
 		await interaction.reply({
@@ -57,4 +49,20 @@ export async function run(client, interaction) {
 			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message}`,
 		});
 	}
+}
+
+function getMessage(power) {
+	if (power === -100) return MESSAGES["-100"][Math.floor(Math.random() * MESSAGES["-100"].length)];
+	else if (power === -69) return MESSAGES["-20"][Math.floor(Math.random() * MESSAGES["-20"].length)];
+	else if (power < -80) return MESSAGES["-99"][Math.floor(Math.random() * MESSAGES["-99"].length)];
+	else if (power < -50) return MESSAGES["-80"][Math.floor(Math.random() * MESSAGES["-80"].length)];
+	else if (power < -20) return MESSAGES["-50"][Math.floor(Math.random() * MESSAGES["-50"].length)];
+	else if (power < 0) return MESSAGES["-20"][Math.floor(Math.random() * MESSAGES["-20"].length)];
+	else if (power === 0) return MESSAGES["0"][Math.floor(Math.random() * MESSAGES["0"].length)];
+	else if (power === 69) return MESSAGES["69"][Math.floor(Math.random() * MESSAGES["69"].length)];
+	else if (power === 100) return MESSAGES["100"][Math.floor(Math.random() * MESSAGES["100"].length)];
+	else if (power > 80) return MESSAGES["99"][Math.floor(Math.random() * MESSAGES["99"].length)];
+	else if (power > 50) return MESSAGES["80"][Math.floor(Math.random() * MESSAGES["80"].length)];
+	else if (power > 20) return MESSAGES["50"][Math.floor(Math.random() * MESSAGES["50"].length)];
+	else return MESSAGES["20"][Math.floor(Math.random() * MESSAGES["20"].length)];
 }
