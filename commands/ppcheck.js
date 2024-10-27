@@ -26,7 +26,7 @@ export async function run(client, interaction) {
 	const date = new Date();
 	const day = date.getUTCDay();
 	if (day === 0 || day === 6) {
-		power = Math.floor(Math.random() * 101) + 35;
+		power = Math.floor(Math.random() * (101 - 35)) + 35;
 		
 		let random = Math.random().toFixed(2);
 		// This is temporary to troll a user (124963012321738752)
