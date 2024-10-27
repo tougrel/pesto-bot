@@ -30,7 +30,7 @@ export async function run(client, interaction) {
 		
 		let random = Math.random().toFixed(2);
 		// This is temporary to troll a user (124963012321738752)
-		if (!collection.has("124963012321738752") && (interaction.user.id === "256048990750113793" || user.id === "256048990750113793")) {
+		if (!collection.has("124963012321738752") && (interaction.user.id === "124963012321738752" || user.id === "124963012321738752")) {
 			random = 0.1;
 			collection.set("124963012321738752", true);
 		}
