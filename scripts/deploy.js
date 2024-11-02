@@ -79,7 +79,39 @@ const commands = [
 				.setName("code")
 				.setDescription("The code that will get executed")
 				.setRequired(true)
+		),
+	new SlashCommandBuilder()
+		.setName("hug")
+		.setDescription("Give a big hug to a pestie!")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to hug")
+				.setRequired(true)
 		)
+		.addBooleanOption(
+			new SlashCommandBooleanOption()
+				.setName("tag")
+				.setDescription("Do you want to tag the pestie you are hugging?")
+				.setRequired(false)
+		),
+	new SlashCommandBuilder()
+		.setName("kiss")
+		.setDescription("Give a kiss to a pestie!")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to kiss")
+				.setRequired(true)
+		)
+		.addBooleanOption(
+			new SlashCommandBooleanOption()
+				.setName("tag")
+				.setDescription("Do you want to tag the pestie you are kissing?")
+				.setRequired(false)
+		),
 ];
 
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
