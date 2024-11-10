@@ -2,6 +2,15 @@ import "dotenv/config";
 import {GatewayIntentBits, ActivityType, GuildMemberFlags} from "discord-api-types/v10";
 import {Client, Partials, Events, Collection} from "discord.js";
 import {readFile, readdir} from "node:fs/promises";
+import {createPool} from "mysql2/promise";
+
+const pool = createPool({
+	host: process.env.DATABASE_HOST,
+	port: Number(process.env.DATABASE_PORT),
+	user: process.env.DATABASE_USER,
+	password: process.env.DATABASE_PASS,
+	database: process.env.DATABASE_DATA,
+});
 
 const client = new Client({
 	partials: [Partials.User, Partials.GuildMember],
@@ -16,6 +25,9 @@ const client = new Client({
 	},
 });
 const commands = new Collection();
+
+// We add the database to the client so we can use it later in the command if needed
+client.database = pool;
 
 client.once(Events.ClientReady, async () => {
 	console.log("Nya");
