@@ -18,7 +18,8 @@
 	"license": "ISC",
 	"dependencies": {
 		"discord.js": "^14.16.3",
-		"dotenv": "^16.4.5"
+		"dotenv": "^16.4.5",
+		"mysql2": "^3.11.4"
 	},
 	"devDependencies": {
 		"discord-api-types": "^0.37.103"
