@@ -67,6 +67,16 @@ const commands = [
 				.setRequired(false)
 		),
 	new SlashCommandBuilder()
+		.setName("hornicheck")
+		.setDescription("Check how horni you or a pestie is")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to check")
+				.setRequired(false)
+		),
+	new SlashCommandBuilder()
 		.setName("clueless")
 		.setDescription("How clueless are you today?")
 		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
