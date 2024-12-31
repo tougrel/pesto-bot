@@ -1,3 +1,5 @@
+import {Collection} from "discord.js";
+
 const MESSAGES = {
 	"-100": ["Turned into dust! Disappeared from the face of the universe! <:ppcheck:1282311070924673050>"],
 	"-99": ["Turns out you are a potato since you keep growing downward <a:smoking:1298958916452876288>"],
@@ -14,6 +16,8 @@ const MESSAGES = {
 	"100": ["<:yuniiuh:1298954249908125747>"],
 }
 
+const collection = new Collection();
+
 export const name = "ppcheck";
 export async function run(client, interaction) {
 	const user = interaction.options.getUser("pestie", false);
@@ -27,17 +31,28 @@ export async function run(client, interaction) {
 		let random = Math.random().toFixed(2);
 		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
 	}
-	
+
+	// Small bonus to start the new year!
+	if (isNewYears()) power = Math.floor(Math.random() * (101 - 50)) + 50;
+
 	const message = getMessage(power);
 	if (user) {
+		const data = collection.get(interaction.user.id);
 		const member = interaction.guild.members.cache.get(user.id);
 		await interaction.reply({
-			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message}`,
+			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message} ${data !== undefined ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
 	} else {
+		const data = collection.get(interaction.user.id);
+		if (data && Date.now() >= data.expires) collection.set(interaction.user.id, { power, expires: getExpireTimestamp() });
+
 		await interaction.reply({
-			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message}`,
+			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message} ${data !== undefined ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
+
+		// Temporary solution while I'm working on the database
+		// TODO: make this work with the database
+		if (!collection.has(interaction.user.id)) collection.set(interaction.user.id, { power, expires: getExpireTimestamp() });
 	}
 }
 
@@ -55,4 +70,20 @@ function getMessage(power) {
 	else if (power > 50) return MESSAGES["80"][Math.floor(Math.random() * MESSAGES["80"].length)];
 	else if (power > 20) return MESSAGES["50"][Math.floor(Math.random() * MESSAGES["50"].length)];
 	else return MESSAGES["20"][Math.floor(Math.random() * MESSAGES["20"].length)];
+}
+
+function isNewYears() {
+	const date = new Date();
+	const month = date.getUTCMonth();
+	const day = date.getUTCDate();
+
+	return month === 11 && day === 31;
+}
+
+function getExpireTimestamp() {
+	const date = new Date();
+	date.setUTCHours(0, 0, 0, 0);
+	date.setUTCDate(date.getDate() + 1);
+
+	return date.getTime();
 }
