@@ -57,6 +57,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		if (commands.has(interaction.commandName)) {
 			const command = commands.get(interaction.commandName);
 			
+			if (process.env.MAINTENANCE === "true" && interaction.user.id !== process.env.DEVELOPER_DISCORD_ID) {
+				return await interaction.reply({
+					content: "Under maintenance!",
+					ephemeral: true,
+				});
+			}
+
 			try {
 				command.run(client, interaction);
 			} catch (err) {
