@@ -43,7 +43,7 @@ export async function run(client, interaction) {
 		if (hasExpired) collection.delete(user.id);
 
 		await interaction.reply({
-			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message} ${data !== undefined ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
+			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
 	} else {
 		const data = collection.get(interaction.user.id);
@@ -81,7 +81,7 @@ function isNewYears() {
 	const month = date.getUTCMonth();
 	const day = date.getUTCDate();
 
-	return month === 11 && day === 31;
+	return month === 0 && day === 1;
 }
 
 function getExpireTimestamp() {
