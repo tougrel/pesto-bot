@@ -39,15 +39,19 @@ export async function run(client, interaction) {
 	if (user) {
 		const data = collection.get(interaction.user.id);
 		const member = interaction.guild.members.cache.get(user.id);
+		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
+		if (hasExpired) collection.delete(user.id);
+
 		await interaction.reply({
 			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message} ${data !== undefined ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
 	} else {
 		const data = collection.get(interaction.user.id);
-		if (data && Date.now() >= data.expires) collection.set(interaction.user.id, { power, expires: getExpireTimestamp() });
+		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
+		if (hasExpired) collection.delete(interaction.user.id);
 
 		await interaction.reply({
-			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message} ${data !== undefined ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
+			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
 
 		// Temporary solution while I'm working on the database
