@@ -29,15 +29,15 @@ export async function run(client, interaction) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
 		
 		let random = Math.random().toFixed(2);
-		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
+		if (random <= 0.25) power = Math.floor(Math.random() * 101) - 100;
 	}
 
 	// Small bonus to start the new year!
 	if (isNewYears()) power = Math.floor(Math.random() * (101 - 50)) + 50;
 
 	const message = getMessage(power);
-	if (user) {
-		const data = collection.get(interaction.user.id);
+	if (user && user.id !== interaction.user.id) {
+		const data = collection.get(user.id);
 		const member = interaction.guild.members.cache.get(user.id);
 		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
 		if (hasExpired) collection.delete(user.id);
