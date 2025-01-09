@@ -68,7 +68,7 @@ export async function run(client, interaction) {
 }
 
 function getMessage(power) {
-	if (power === -100) return MESSAGES["-100"][Math.floor(Math.random() * MESSAGES["-100"].length)];
+	if (power <= -100) return MESSAGES["-100"][Math.floor(Math.random() * MESSAGES["-100"].length)];
 	else if (power === -69) return MESSAGES["-20"][Math.floor(Math.random() * MESSAGES["-20"].length)];
 	else if (power < -80) return MESSAGES["-99"][Math.floor(Math.random() * MESSAGES["-99"].length)];
 	else if (power < -50) return MESSAGES["-80"][Math.floor(Math.random() * MESSAGES["-80"].length)];
@@ -76,7 +76,7 @@ function getMessage(power) {
 	else if (power < 0) return MESSAGES["-20"][Math.floor(Math.random() * MESSAGES["-20"].length)];
 	else if (power === 0) return MESSAGES["0"][Math.floor(Math.random() * MESSAGES["0"].length)];
 	else if (power === 69) return MESSAGES["69"][Math.floor(Math.random() * MESSAGES["69"].length)];
-	else if (power === 100) return MESSAGES["100"][Math.floor(Math.random() * MESSAGES["100"].length)];
+	else if (power >= 100) return MESSAGES["100"][Math.floor(Math.random() * MESSAGES["100"].length)];
 	else if (power > 80) return MESSAGES["99"][Math.floor(Math.random() * MESSAGES["99"].length)];
 	else if (power > 50) return MESSAGES["80"][Math.floor(Math.random() * MESSAGES["80"].length)];
 	else if (power > 20) return MESSAGES["50"][Math.floor(Math.random() * MESSAGES["50"].length)];
