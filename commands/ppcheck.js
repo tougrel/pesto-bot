@@ -17,6 +17,7 @@ const MESSAGES = {
 }
 
 const collection = new Collection();
+export const scamCollection = new Collection();
 
 export const name = "ppcheck";
 export async function run(client, interaction) {
@@ -34,6 +35,12 @@ export async function run(client, interaction) {
 
 	// Small bonus to start the new year!
 	if (isNewYears()) power = Math.floor(Math.random() * (101 - 50)) + 50;
+
+	if (scamCollection.has(interaction.user.id) || (user !== null && scamCollection.has(user.id))) {
+		const id = user !== null ? user.id : interaction.user.id
+		power = scamCollection.get(id);
+		scamCollection.delete(id);
+	}
 
 	const message = getMessage(power);
 	if (user && user.id !== interaction.user.id) {

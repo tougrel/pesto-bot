@@ -1,3 +1,5 @@
+import {scamCollection} from "./ppcheck.js";
+
 export const name = "eval";
 export async function run(client, interaction) {
 	const command = interaction.options.getString("code");
