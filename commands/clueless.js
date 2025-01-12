@@ -24,7 +24,7 @@ export async function run(client, interaction) {
 	collection.set(interaction.user.id, date.getTime());
 	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
-	if (interaction.user.id === "236642620506374145") power = Math.floor(Math.random() * 10000) + 100;
+	if (interaction.user.id === "236642620506374145") power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	
 	await interaction.reply({
 		content: `${interaction.user}'s cluelessness is **${power}%** today!`
