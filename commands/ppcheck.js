@@ -30,7 +30,7 @@ export async function run(client, interaction) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
 		
 		let random = Math.random().toFixed(2);
-		if (random <= 0.25) power = Math.floor(Math.random() * 101) - 100;
+		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
 	}
 
 	// Small bonus to start the new year!
