@@ -42,23 +42,26 @@ export async function run(client, interaction) {
 		scamCollection.delete(id);
 	}
 
-	const message = getMessage(power);
 	if (user && user.id !== interaction.user.id) {
-		const data = collection.get(user.id);
-		const member = interaction.guild.members.cache.get(user.id);
-		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
-		if (hasExpired) collection.delete(user.id);
-
-		await interaction.reply({
-			content: `**${member.nickname ?? user.username}'s** Pesto Power is **${power}%**, ${message} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
-		});
+		if (collection.has(user.id)) {
+			const power = collection.get(user.id).power;
+			await interaction.reply({
+				content: `**${user}'s** Pesto Power was **${power}%** today, ${getMessage(power)}`,
+				ephemeral: true
+			});
+		} else {
+			await interaction.reply({
+				content: "I couldn't find any data for this pestie <:yuniiLost:1329480382843850815> It looks like they didn't roll for a ppcheck today! <a:madPesto:1329480709328343132>",
+				ephemeral: true
+			});
+		}
 	} else {
 		const data = collection.get(interaction.user.id);
 		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
 		if (hasExpired) collection.delete(interaction.user.id);
 
 		await interaction.reply({
-			content: `${interaction.user}'s Pesto Power is **${power}%**, ${message} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
+			content: `${interaction.user}'s Pesto Power is **${power}%**, ${getMessage(power)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
 		});
 
 		// Temporary solution while I'm working on the database
