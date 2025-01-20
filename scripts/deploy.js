@@ -81,6 +81,10 @@ const commands = [
 		.setDescription("How clueless are you today?")
 		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 	new SlashCommandBuilder()
+		.setName("copium")
+		.setDescription("How high on copium are you today?")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+	new SlashCommandBuilder()
 		.setName("eval")
 		.setDescription("Shhh")
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
@@ -122,6 +126,31 @@ const commands = [
 				.setDescription("Do you want to tag the pestie you are kissing?")
 				.setRequired(false)
 		),
+	new SlashCommandBuilder()
+		.setName("cult")
+		.setDescription("Join a Cult and work together to destroy other cults.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+				.setName("info")
+				.setDescription("Information about the cult you are currently in")
+		)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+				.setName("join")
+				.setDescription("Join an existing cult")
+				.addStringOption(
+					new SlashCommandStringOption()
+						.setName("name")
+						.setDescription("The name of the cult")
+						.setRequired(true)
+				)
+		)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+				.setName("leave")
+				.setDescription("Leave your current cult")
+		)
 ];
 
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
