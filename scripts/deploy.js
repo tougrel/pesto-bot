@@ -150,7 +150,11 @@ const commands = [
 			new SlashCommandSubcommandBuilder()
 				.setName("leave")
 				.setDescription("Leave your current cult")
-		)
+		),
+	new SlashCommandBuilder()
+		.setName("wallet")
+		.setDescription("How many coins do you have in your wallet?")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 ];
 
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
