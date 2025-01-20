@@ -16,12 +16,31 @@ const MESSAGES = {
 	"100": ["<:yuniiuh:1298954249908125747>"],
 }
 
-const collection = new Collection();
-export const scamCollection = new Collection();
 
+export const scamCollection = new Collection();
 export const name = "ppcheck";
 export async function run(client, interaction) {
+	const db = client.database;
 	const user = interaction.options.getUser("pestie", false);
+	if (user && user.id !== interaction.user.id) {
+		const [rows] = await db.query(db.format("SELECT power FROM PPCheck WHERE user_id = ? AND expires >= ?", [user.id, Date.now()]));
+
+		if (rows.length > 0) {
+			const power = rows[0].power;
+			await interaction.reply({
+				content: `**${user}'s** Pesto Power was **${power}%** today, ${getMessage(power)}`,
+				ephemeral: true
+			});
+		} else {
+			await interaction.reply({
+				content: "I couldn't find any data for this pestie <:yuniiLost:1329480382843850815> It looks like they didn't roll for a ppcheck today! <a:madPesto:1329480709328343132>",
+				ephemeral: true
+			});
+		}
+
+		return;
+	}
+
 	let power = Math.floor(Math.random() * 101);
 	
 	const date = new Date();
@@ -42,32 +61,15 @@ export async function run(client, interaction) {
 		scamCollection.delete(id);
 	}
 
-	if (user && user.id !== interaction.user.id) {
-		if (collection.has(user.id)) {
-			const power = collection.get(user.id).power;
-			await interaction.reply({
-				content: `**${user}'s** Pesto Power was **${power}%** today, ${getMessage(power)}`,
-				ephemeral: true
-			});
-		} else {
-			await interaction.reply({
-				content: "I couldn't find any data for this pestie <:yuniiLost:1329480382843850815> It looks like they didn't roll for a ppcheck today! <a:madPesto:1329480709328343132>",
-				ephemeral: true
-			});
-		}
-	} else {
-		const data = collection.get(interaction.user.id);
-		const hasExpired = data?.expires ? Date.now() >= data.expires : false;
-		if (hasExpired) collection.delete(interaction.user.id);
+	const [rows] = await db.query(db.format("SELECT power, expires FROM PPCheck WHERE user_id = ? AND expires >= ?", [interaction.user.id, Date.now()]));
+	const data = rows.length > 0 ? rows[0] : undefined;
+	const hasExpired = data?.expires ? Date.now() >= data.expires : false;
 
-		await interaction.reply({
-			content: `${interaction.user}'s Pesto Power is **${power}%**, ${getMessage(power)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
-		});
+	await interaction.reply({
+		content: `${interaction.user}'s Pesto Power is **${power}%**, ${getMessage(power)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power})` : ""}`,
+	});
 
-		// Temporary solution while I'm working on the database
-		// TODO: make this work with the database
-		if (!collection.has(interaction.user.id)) collection.set(interaction.user.id, { power, expires: getExpireTimestamp() });
-	}
+	if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power, Date.now(), getExpireTimestamp()]));
 }
 
 function getMessage(power) {
