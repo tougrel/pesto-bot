@@ -67,6 +67,26 @@ const commands = [
 				.setRequired(false)
 		),
 	new SlashCommandBuilder()
+		.setName("clueless")
+		.setDescription("How clueless are you today?")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to check")
+				.setRequired(false)
+		),
+	new SlashCommandBuilder()
+		.setName("copium")
+		.setDescription("How high on copium are you today?")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+		.addUserOption(
+			new SlashCommandUserOption()
+				.setName("pestie")
+				.setDescription("The pestie you want to check")
+				.setRequired(false)
+		),
+	new SlashCommandBuilder()
 		.setName("hornicheck")
 		.setDescription("Check how horni you or a pestie is")
 		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
@@ -76,14 +96,6 @@ const commands = [
 				.setDescription("The pestie you want to check")
 				.setRequired(false)
 		),
-	new SlashCommandBuilder()
-		.setName("clueless")
-		.setDescription("How clueless are you today?")
-		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
-	new SlashCommandBuilder()
-		.setName("copium")
-		.setDescription("How high on copium are you today?")
-		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 	new SlashCommandBuilder()
 		.setName("eval")
 		.setDescription("Shhh")
