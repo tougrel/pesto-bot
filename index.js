@@ -14,7 +14,7 @@ const pool = createPool({
 
 const client = new Client({
 	partials: [Partials.User, Partials.GuildMember],
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 	presence: {
 		activities: [
 			{
@@ -50,6 +50,22 @@ client.on(Events.GuildMemberAdd, async (member) => {
 	if (config.mode === "kick") await member.kick("Yunya lockdown system");
 	// else just drop the ban hammer on him :D
 	else await member.ban({reason: "Yunya lockdown system"});
+});
+
+client.on(Events.MessageCreate, async (message) => {
+	if (message.author.bot) return;
+
+	if (message.author.id.toString() === "124963012321738752" && /not (.+)? copium king/gi.test(message.content)) {
+		await message.reply({
+			content: "<:copiumKing:1332416650900799619> <:pestobow:1332418781133410446>"
+		});
+	}
+
+	if (message.author.id.toString() === "236642620506374145" && /not (.+)? clueless king/gi.test(message.content)) {
+		await message.reply({
+			content: "<:cluelessKing:1332416626251010153> <:pestobow:1332418781133410446>"
+		});
+	}
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
