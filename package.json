@@ -25,5 +25,5 @@
 		"discord-api-types": "^0.37.103"
 	},
 	"package-manager-strict": false,
-	"packageManager": "pnpm@9.12.1"
+	"packageManager": "pnpm@10.4.1"
 }
