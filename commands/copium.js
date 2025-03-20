@@ -46,7 +46,7 @@ export async function run(client, interaction) {
 	if (interaction.user.id === "124963012321738752") power = Math.floor(Math.random() * (10000 - 100)) + 100;
 
 	await interaction.reply({
-		content: `${interaction.user}'s copium level is **${power}%** today! ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp}:R> (<t:${expire_timestamp_in_seconds}>)`
+		content: `${interaction.user}'s copium level is **${power}%** today! ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
 	});
 
 	await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, power, expire_timestamp]));

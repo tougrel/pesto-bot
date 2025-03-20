@@ -46,7 +46,7 @@ export async function run(client, interaction) {
 	if (interaction.user.id === "236642620506374145") power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	
 	await interaction.reply({
-		content: `${interaction.user}'s cluelessness is **${power}%** today! ${emoji ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp}:R> (<t:${expire_timestamp_in_seconds}>)`
+		content: `${interaction.user}'s cluelessness is **${power}%** today! ${emoji ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
 	});
 
 	await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, power, expire_timestamp]));
