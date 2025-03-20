@@ -3,6 +3,7 @@ import {GatewayIntentBits, ActivityType, GuildMemberFlags} from "discord-api-typ
 import {Client, Partials, Events, Collection} from "discord.js";
 import {readFile, readdir} from "node:fs/promises";
 import {createPool} from "mysql2/promise";
+import {checkCluelessKing, checkCopiumKing} from "./utils/checks.js";
 
 const pool = createPool({
 	host: process.env.DATABASE_HOST,
@@ -14,7 +15,7 @@ const pool = createPool({
 
 const client = new Client({
 	partials: [Partials.User, Partials.GuildMember],
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.MessageContent],
 	presence: {
 		activities: [
 			{
@@ -55,16 +56,30 @@ client.on(Events.GuildMemberAdd, async (member) => {
 client.on(Events.MessageCreate, async (message) => {
 	if (message.author.bot) return;
 
-	if (message.author.id.toString() === "124963012321738752" && /not (.+)? copium king/gi.test(message.content)) {
-		await message.reply({
-			content: "<:copiumKing:1332416650900799619> <:pestobow:1332418781133410446>"
-		});
+	if (checkCluelessKing(message.author.id.toString())) {
+		if (/not (.+)? clueless (king)?/gi.test(message.content)) {
+			await message.reply({
+				content: "<:cluelessKing:1332416626251010153> <:pestobow:1332418781133410446>"
+			});
+		}
+		else if (/(.+)?I|1(.+)?/gi.test(message.content)) {
+//			TODO: make this less frequent and less annoying! (maybe add a chance like the weekend ppcheck?)
+//			await message.react("1332416626251010153");
+//			await message.react("1332418781133410446");
+		}
 	}
 
-	if (message.author.id.toString() === "236642620506374145" && /not (.+)? clueless king/gi.test(message.content)) {
-		await message.reply({
-			content: "<:cluelessKing:1332416626251010153> <:pestobow:1332418781133410446>"
-		});
+	if (checkCopiumKing(message.author.id.toString())) {
+		if (/not (.+)? copium (king)?/gi.test(message.content)) {
+			await message.reply({
+				content: "<:copiumKing:1332416650900799619> <:pestobow:1332418781133410446>"
+			});
+		}
+		else if (/(.+)?I(.+)?/gi.test(message.content)) {
+//			TODO: make this less frequent and less annoying! (maybe add a chance like the weekend ppcheck?)
+//			await message.react("1332416650900799619");
+//			await message.react("1332418781133410446");
+		}
 	}
 });
 
