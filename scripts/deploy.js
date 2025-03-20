@@ -57,6 +57,10 @@ const commands = [
 				.setRequired(true)
 		),
 	new SlashCommandBuilder()
+		.setName("allchecks")
+		.setDescription("Check how big your pesto power is, how clueless and how high on copium you are today!")
+		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+	new SlashCommandBuilder()
 		.setName("ppcheck")
 		.setDescription("How big is your pesto power today? Remember to waddle!")
 		.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
