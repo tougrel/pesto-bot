@@ -45,6 +45,11 @@ const commands = [
 						])
 						.setRequired(true)
 				)
+		)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+				.setName("roles")
+				.setDescription("Gives a role to all the users! DO NOT USE WITHOUT APPROVAL!")
 		),
 	new SlashCommandBuilder()
 		.setName("bite")
