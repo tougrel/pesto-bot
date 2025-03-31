@@ -1,5 +1,5 @@
 import {getPPCheckMessage} from "../utils/messages.js";
-import {getUTCExpireTimestamp} from "../utils/date.js";
+import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
 
 export const name = "allchecks";
 
@@ -18,15 +18,28 @@ export async function run(client, interaction) {
 			let copium_power = data.copium_power || 0;
 
 			const [pp_expired, clueless_expired, copium_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires);
-			if (pp_expired) pp_power = generatePPCheckPower();
-			if (clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
-			if (copium_expired) copium_power = generateCopiumPower(interaction.user.id);
+			if (!pp_expired) pp_power = generatePPCheckPower();
+			if (!clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
+			if (!copium_expired) copium_power = generateCopiumPower(interaction.user.id);
 
+			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
 			const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
+
+			const pp_power_to_show = is_april_fools ? 0 : pp_power;
+			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
+			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			await interaction.editReply({
-				content: `${interaction.user}'s checks today:\n- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+				content: `${interaction.user}'s checks today:\n- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 			});
+
+			if (is_april_fools) {
+				setTimeout(async () => {
+					await interaction.editReply({
+						content: `${interaction.user}'s checks today:\n- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+					});
+				}, 60 * 1000);
+			}
 
 			if (pp_expired) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power, Date.now(), expire_timestamp]));
 			if (clueless_expired) await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
@@ -36,10 +49,11 @@ export async function run(client, interaction) {
 			let clueless_power = generateCluelessPower(interaction.user.id);
 			let copium_power = generateCopiumPower(interaction.user.id);
 
+			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
 			const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 			await interaction.editReply({
-				content: `${interaction.user}'s checks today:\n- Pesto Power is **${pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness is **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+				content: `${interaction.user}'s checks today:\n- Pesto Power is **${is_april_fools ? 1 : pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness is **${is_april_fools ? 1 : clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level is **${is_april_fools ? 1 : copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 			});
 
 			await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power, Date.now(), getUTCExpireTimestamp()]));

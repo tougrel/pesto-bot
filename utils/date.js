@@ -5,3 +5,11 @@ export function getUTCExpireTimestamp() {
 
 	return date.getTime();
 }
+
+export function isAprilFools() {
+	const date = new Date();
+	const day = date.getUTCDate();
+	const month = date.getUTCMonth();
+
+	return day === 1 && month === 3;
+}
