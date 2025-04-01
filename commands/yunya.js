@@ -26,8 +26,8 @@ export async function run(client, interaction) {
 	} else if (subcommand === "roles") {
 		await interaction.deferReply({ ephemeral: true });
 
-		if (interaction.user.id !== "256048990750113793" || interaction.user.id !== "682284810030415903") {
-			return await interaction.reply({
+		if (interaction.user.id.toString() !== "256048990750113793" && interaction.user.id.toString() !== "682284810030415903") {
+			return await interaction.editReply({
 				content: "Only Tougrelino or Syrionino can run this command!",
 				ephemeral: true,
 			});
@@ -36,7 +36,7 @@ export async function run(client, interaction) {
 		const members = await interaction.guild.members.fetch();
 		for await (const [_id, member] of members) {
 //			if (member.roles.cache.has("649540898874720265")) console.debug(member.user.username);
-			await member.roles.add("1356366891442110546");
+			if (!member.roles.cache.has("1356366891442110546")) await member.roles.add("1356366891442110546");
 		}
 
 		await interaction.editReply({
