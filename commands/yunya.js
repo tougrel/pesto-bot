@@ -24,6 +24,7 @@ export async function run(client, interaction) {
 			content: `✅ Successfully changed the lockdown mode to ${mode}!`
 		});
 	} else if (subcommand === "roles") {
+		const option = interaction.options.getString("option");
 		await interaction.deferReply({ ephemeral: true });
 
 		if (interaction.user.id.toString() !== "256048990750113793" && interaction.user.id.toString() !== "682284810030415903") {
@@ -33,14 +34,22 @@ export async function run(client, interaction) {
 			});
 		}
 
+		await interaction.editReply({
+			content: `${option === "add" ? "Adding" : "Removing"} role from all guild members... This may take a while!`,
+		});
+
 		const members = await interaction.guild.members.fetch();
 		for await (const [_id, member] of members) {
 //			if (member.roles.cache.has("649540898874720265")) console.debug(member.user.username);
-			if (!member.roles.cache.has("1356366891442110546")) await member.roles.add("1356366891442110546");
+			if (!member.roles.cache.has("1356366891442110546")) {
+				if (option === "add") await member.roles.add("1356366891442110546");
+				else await member.roles.remove("1356366891442110546");
+			}
 		}
 
-		await interaction.editReply({
+		await interaction.followUp({
 			content: "Success!",
+			ephemeral: true,
 		});
 	}
 }
