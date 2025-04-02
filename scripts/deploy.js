@@ -50,6 +50,22 @@ const commands = [
 			new SlashCommandSubcommandBuilder()
 				.setName("roles")
 				.setDescription("Gives a role to all the users! DO NOT USE WITHOUT APPROVAL!")
+				.addStringOption(
+					new SlashCommandStringOption()
+						.setName("option")
+						.setDescription("Do you want to add or remove the april fools role?")
+						.setChoices([
+							{
+								name: "Add",
+								value: "add",
+							},
+							{
+								name: "Remove",
+								value: "remove",
+							}
+						])
+						.setRequired(true)
+				)
 		),
 	new SlashCommandBuilder()
 		.setName("bite")
