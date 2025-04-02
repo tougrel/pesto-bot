@@ -41,9 +41,12 @@ export async function run(client, interaction) {
 		const members = await interaction.guild.members.fetch();
 		for await (const [_id, member] of members) {
 //			if (member.roles.cache.has("649540898874720265")) console.debug(member.user.username);
-			if (!member.roles.cache.has("1356366891442110546")) {
-				if (option === "add") await member.roles.add("1356366891442110546");
-				else await member.roles.remove("1356366891442110546");
+			if (option === "add" && !member.roles.cache.has("1356366891442110546")) {
+				console.debug("Adding role to " + member.id);
+				await member.roles.add("1356366891442110546");
+			} else {
+				console.debug("Removing role from " + member.id);
+				await member.roles.remove("1356366891442110546");
 			}
 		}
 
