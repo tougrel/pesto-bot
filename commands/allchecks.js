@@ -18,9 +18,9 @@ export async function run(client, interaction) {
 			let copium_power = data.copium_power || 0;
 
 			const [pp_expired, clueless_expired, copium_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires);
-			if (!pp_expired) pp_power = generatePPCheckPower();
-			if (!clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
-			if (!copium_expired) copium_power = generateCopiumPower(interaction.user.id);
+			if (pp_expired) pp_power = generatePPCheckPower();
+			if (clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
+			if (copium_expired) copium_power = generateCopiumPower(interaction.user.id);
 
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
