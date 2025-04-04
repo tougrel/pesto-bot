@@ -13,7 +13,7 @@ export async function run(client, interaction) {
 		if (rows.length > 0) {
 			const power = rows[0].power;
 			await interaction.reply({
-				content: `**${user}'s** Pesto Power was **${power}%** today, ${getMessage(power)}`,
+				content: `**${user}'s** Pesto Power was **${power}%** today, ${getPPCheckMessage(power)}`,
 				ephemeral: true
 			});
 		} else {
