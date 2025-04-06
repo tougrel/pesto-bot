@@ -26,7 +26,7 @@ export async function run(client, interaction) {
 	let emoji = false;
 	if (interaction.user.id === "236642620506374145") emoji = true;
 
-	const is_april_fools = !isAprilFools();
+	const is_april_fools = isAprilFools();
 	const [rows] = await db.query(db.format("SELECT power, expires FROM Clueless WHERE user_id = ? AND expires >= ?", [interaction.user.id, Date.now()]));
 	if (rows.length > 0) {
 		const data = rows[0];
