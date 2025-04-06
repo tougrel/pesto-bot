@@ -29,3 +29,11 @@ export function getPPCheckMessage(power) {
 	else if (power > 20) return PPCHECK_MESSAGES["50"][Math.floor(Math.random() * PPCHECK_MESSAGES["50"].length)];
 	else return PPCHECK_MESSAGES["20"][Math.floor(Math.random() * PPCHECK_MESSAGES["20"].length)];
 }
+
+export function getHorniMessage(power) {
+    return power === 50
+        ? "Choose your Allegiance! <:LETDOGCOOK:1323241567561187368>"
+        : power > 50
+            ? "Welcome to the Horni Revolution! <:yuniiHorni:1323241964820238377>"
+            : "Welcome to the Seiso Cops! <:pestoPolice:1323241434966654976>";
+}
