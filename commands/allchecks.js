@@ -52,7 +52,7 @@ export async function run(client, interaction) {
 			let pp_power = generatePPCheckPower();
 			let clueless_power = generateCluelessPower(interaction.user.id);
 			let copium_power = generateCopiumPower(interaction.user.id);
-			let horni_power = ggenerateHorniPower();
+			let horni_power = generateHorniPower();
 
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
