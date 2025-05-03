@@ -17,12 +17,12 @@
 	"author": "Tougrel",
 	"license": "ISC",
 	"dependencies": {
-		"discord.js": "^14.16.3",
+		"discord.js": "^14.19.3",
 		"dotenv": "^16.4.5",
 		"mysql2": "^3.11.4"
 	},
 	"devDependencies": {
-		"discord-api-types": "^0.37.103"
+		"discord-api-types": "^0.38.2"
 	},
 	"package-manager-strict": false,
 	"packageManager": "pnpm@10.4.1"
