@@ -1,5 +1,7 @@
 import {getPPCheckMessage, getHorniMessage} from "../utils/messages.js";
 import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
+import {MessageFlags} from "discord.js";
+import {ComponentType, SeparatorSpacingSize} from "discord-api-types/v10";
 
 export const name = "allchecks";
 
@@ -33,13 +35,77 @@ export async function run(client, interaction) {
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
 			await interaction.editReply({
-				content: `${interaction.user}'s checks today:\n- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+				flags: MessageFlags.IsComponentsV2,
+				components: [
+					{
+						type: ComponentType.Container,
+						components: [
+							{
+								type: ComponentType.TextDisplay,
+								content: `## ${interaction.user}'s checks today`,
+							},
+							{
+								type: ComponentType.Separator,
+								spacing: SeparatorSpacingSize.Small,
+								divider: true,
+							},
+							{
+								type: ComponentType.TextDisplay,
+								content: `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}`
+									+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
+									+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
+									+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`,
+							},
+							{
+								type: ComponentType.Separator,
+								spacing: SeparatorSpacingSize.Small,
+								divider: true,
+							},
+							{
+								type: ComponentType.TextDisplay,
+								content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+							},
+						],
+					},
+				],
 			});
 
 			if (is_april_fools) {
 				setTimeout(async () => {
 					await interaction.editReply({
-						content: `${interaction.user}'s checks today:\n- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+						flags: MessageFlags.IsComponentsV2,
+						components: [
+							{
+								type: ComponentType.Container,
+								components: [
+									{
+										type: ComponentType.TextDisplay,
+										content: `## ${interaction.user}'s checks today`,
+									},
+									{
+										type: ComponentType.Separator,
+										spacing: SeparatorSpacingSize.Small,
+										divider: true,
+									},
+									{
+										type: ComponentType.TextDisplay,
+										content: `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${getPPCheckMessage(pp_power)}`
+											+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
+											+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
+											+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}`,
+									},
+									{
+										type: ComponentType.Separator,
+										spacing: SeparatorSpacingSize.Small,
+										divider: true,
+									},
+									{
+										type: ComponentType.TextDisplay,
+										content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+									},
+								],
+							},
+						],
 					});
 				}, 60 * 1000);
 			}
@@ -57,19 +123,83 @@ export async function run(client, interaction) {
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
 			const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-			
+
 			const pp_power_to_show = is_april_fools ? 0 : pp_power;
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
 			await interaction.editReply({
-				content: `${interaction.user}'s checks today:\n- Pesto Power is **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness is **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+				flags: MessageFlags.IsComponentsV2,
+				components: [
+					{
+						type: ComponentType.Container,
+						components: [
+							{
+								type: ComponentType.TextDisplay,
+								content: `## ${interaction.user}'s checks today`,
+							},
+							{
+								type: ComponentType.Separator,
+								spacing: SeparatorSpacingSize.Small,
+								divider: true,
+							},
+							{
+								type: ComponentType.TextDisplay,
+								content: `- Pesto Power is **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}`
+									+ `\n- Cluelessness is **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
+									+ `\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
+									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`,
+							},
+							{
+								type: ComponentType.Separator,
+								spacing: SeparatorSpacingSize.Small,
+								divider: true,
+							},
+							{
+								type: ComponentType.TextDisplay,
+								content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+							},
+						],
+					},
+				],
 			});
 
 			if (is_april_fools) {
 				setTimeout(async () => {
 					await interaction.editReply({
-						content: `${interaction.user}'s checks today:\n- Pesto Power is **${pp_power}%**, ${getPPCheckMessage(pp_power)}\n- Cluelessness is **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+						flags: MessageFlags.IsComponentsV2,
+						components: [
+							{
+								type: ComponentType.Container,
+								components: [
+									{
+										type: ComponentType.TextDisplay,
+										content: `## ${interaction.user}'s checks today`,
+									},
+									{
+										type: ComponentType.Separator,
+										spacing: SeparatorSpacingSize.Small,
+										divider: true,
+									},
+									{
+										type: ComponentType.TextDisplay,
+										content: `- Pesto Power is **${pp_power}%**, ${getPPCheckMessage(pp_power_to_show)}`
+											+ `\n- Cluelessness is **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
+											+ `\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
+											+ `\n- Horni level is **${horni_power}%**, ${getHorniMessage(horni_power_to_show)}`,
+									},
+									{
+										type: ComponentType.Separator,
+										spacing: SeparatorSpacingSize.Small,
+										divider: true,
+									},
+									{
+										type: ComponentType.TextDisplay,
+										content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+									},
+								],
+							},
+						],
 					});
 				}, 60 * 1000);
 			}
