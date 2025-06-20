@@ -1,7 +1,8 @@
 import {getPPCheckMessage, getHorniMessage} from "../utils/messages.js";
-import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
+import {getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend} from "../utils/date.js";
 import {MessageFlags} from "discord.js";
 import {ComponentType, SeparatorSpacingSize} from "discord-api-types/v10";
+import {checkCluelessKing, checkCopiumKing} from "../utils/checks.js";
 
 export const name = "allchecks";
 
@@ -19,6 +20,9 @@ export async function run(client, interaction) {
 			let clueless_power = data.clueless_power || 0;
 			let copium_power = data.copium_power || 0;
 			let horni_power = data.horni_power || 0;
+			
+			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
+			let feet_power = generateHorniPower();
 
 			const [pp_expired, clueless_expired, copium_expired, horni_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires, data.horni_expires);
 			if (pp_expired) pp_power = generatePPCheckPower();
@@ -34,6 +38,7 @@ export async function run(client, interaction) {
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
+			const feet_power_to_show = is_april_fools ? -100 : feet_power;
 			await interaction.editReply({
 				flags: MessageFlags.IsComponentsV2,
 				components: [
@@ -42,19 +47,11 @@ export async function run(client, interaction) {
 						components: [
 							{
 								type: ComponentType.TextDisplay,
-								content: `## ${interaction.user}'s checks today`,
-							},
-							{
-								type: ComponentType.Separator,
-								spacing: SeparatorSpacingSize.Small,
-								divider: true,
-							},
-							{
-								type: ComponentType.TextDisplay,
 								content: `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}`
 									+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
 									+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
-									+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`,
+									+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
+									+ `\n- Feet power is **${feet_power_to_show}%**`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -80,19 +77,11 @@ export async function run(client, interaction) {
 								components: [
 									{
 										type: ComponentType.TextDisplay,
-										content: `## ${interaction.user}'s checks today`,
-									},
-									{
-										type: ComponentType.Separator,
-										spacing: SeparatorSpacingSize.Small,
-										divider: true,
-									},
-									{
-										type: ComponentType.TextDisplay,
 										content: `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${getPPCheckMessage(pp_power)}`
 											+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
 											+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
-											+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}`,
+											+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}`
+											+ `\n- Feet power is **${feet_power_to_show}%**`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -128,6 +117,10 @@ export async function run(client, interaction) {
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
+			
+			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
+			let feet_power = generateHorniPower();
+			
 			await interaction.editReply({
 				flags: MessageFlags.IsComponentsV2,
 				components: [
@@ -136,19 +129,11 @@ export async function run(client, interaction) {
 						components: [
 							{
 								type: ComponentType.TextDisplay,
-								content: `## ${interaction.user}'s checks today`,
-							},
-							{
-								type: ComponentType.Separator,
-								spacing: SeparatorSpacingSize.Small,
-								divider: true,
-							},
-							{
-								type: ComponentType.TextDisplay,
 								content: `- Pesto Power is **${pp_power_to_show}%**, ${getPPCheckMessage(pp_power_to_show)}`
 									+ `\n- Cluelessness is **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
 									+ `\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
-									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`,
+									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
+									+ `\n- Feet power is **${feet_power}%**`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -174,19 +159,11 @@ export async function run(client, interaction) {
 								components: [
 									{
 										type: ComponentType.TextDisplay,
-										content: `## ${interaction.user}'s checks today`,
-									},
-									{
-										type: ComponentType.Separator,
-										spacing: SeparatorSpacingSize.Small,
-										divider: true,
-									},
-									{
-										type: ComponentType.TextDisplay,
 										content: `- Pesto Power is **${pp_power}%**, ${getPPCheckMessage(pp_power_to_show)}`
 											+ `\n- Cluelessness is **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
 											+ `\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
-											+ `\n- Horni level is **${horni_power}%**, ${getHorniMessage(horni_power_to_show)}`,
+											+ `\n- Horni level is **${horni_power}%**, ${getHorniMessage(horni_power_to_show)}`
+											+ `\n- Feet power is **${feet_power}%**`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -228,15 +205,26 @@ async function checkForExpired(...values) {
 	return array;
 }
 
-function generatePPCheckPower() {
+export function generatePPCheckPower() {
 	let power = Math.floor(Math.random() * 101)
 
-	const day = new Date().getUTCDay();
-	if (day === 0 || day === 6) {
+	if (isWeekend()) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
 
 		let random = Math.random().toFixed(2);
-		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
+		if (random <= 0.1) {
+			power = Math.floor(Math.random() * 101) - 100;
+		}
+		
+		if (Math.random() < 0.3) {
+			const decimal = Math.random() + 0.99;
+			power = Number(power + decimal).toFixed(2);
+		}
+	}
+	
+	// Small bonus to start the new year!
+	if (isNewYears()) {
+		power = Math.floor(Math.random() * (101 - 50)) + 50;
 	}
 
 	return power;
@@ -246,7 +234,7 @@ function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
-	if (user_id === "236642620506374145") {
+	if (checkCluelessKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	}
 
@@ -257,7 +245,7 @@ function generateCopiumPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
-	if (user_id === "124963012321738752") {
+	if (checkCopiumKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	}
 
@@ -269,9 +257,9 @@ function generateHorniPower() {
 }
 
 function cluelessKingCheck(user_id) {
-	return user_id === "236642620506374145" ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : "";
+	return checkCluelessKing(user_id) ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : "";
 }
 
 function copiumKingCheck(user_id) {
-	return user_id === "124963012321738752" ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : "";
+	return checkCopiumKing(user_id) ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : "";
 }

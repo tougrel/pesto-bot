@@ -1,6 +1,7 @@
 import {Collection} from "discord.js";
 import {getPPCheckMessage} from "../utils/messages.js";
 import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
+import {generatePPCheckPower} from "./allchecks.js";
 
 export const scamCollection = new Collection();
 export const name = "ppcheck";
@@ -26,17 +27,7 @@ export async function run(client, interaction) {
 		return;
 	}
 
-	let power = Math.floor(Math.random() * 101);
-	if (isWeekend()) {
-		power = Math.floor(Math.random() * (101 - 35)) + 35;
-		
-		let random = Math.random().toFixed(2);
-		if (random <= 0.1) power = Math.floor(Math.random() * 101) - 100;
-	}
-
-	// Small bonus to start the new year!
-	if (isNewYears()) power = Math.floor(Math.random() * (101 - 50)) + 50;
-
+	let power = generatePPCheckPower();
 	if (scamCollection.has(interaction.user.id) || (user !== null && scamCollection.has(user.id))) {
 		const id = user !== null ? user.id : interaction.user.id
 		power = scamCollection.get(id);
@@ -65,19 +56,4 @@ export async function run(client, interaction) {
 	}
 
 	if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power, Date.now(), expire_timestamp]));
-}
-
-function isWeekend() {
-	const date = new Date();
-	const day = date.getUTCDay();
-
-	return day === 0 || day === 6;
-}
-
-function isNewYears() {
-	const date = new Date();
-	const month = date.getUTCMonth();
-	const day = date.getUTCDate();
-
-	return month === 0 && day === 1;
 }

@@ -13,3 +13,18 @@ export function isAprilFools() {
 
 	return day === 1 && month === 3;
 }
+
+export function isWeekend() {
+	const date = new Date();
+	const day = date.getUTCDay();
+	
+	return day === 0 || day === 6;
+}
+
+export function isNewYears() {
+	const date = new Date();
+	const month = date.getUTCMonth();
+	const day = date.getUTCDate();
+	
+	return month === 0 && day === 1;
+}
