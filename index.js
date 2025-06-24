@@ -14,8 +14,8 @@ const pool = createPool({
 });
 
 const client = new Client({
-	partials: [Partials.User, Partials.GuildMember],
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.MessageContent],
+	partials: [Partials.User, Partials.GuildMember, Partials.Channel, Partials.Message],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.MessageContent],
 	presence: {
 		activities: [
 			{
@@ -88,7 +88,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		if (commands.has(interaction.commandName)) {
 			const command = commands.get(interaction.commandName);
 			
-			if (process.env.MAINTENANCE === "true" && interaction.user.id !== process.env.DEVELOPER_DISCORD_ID) {
+			if (process.env.MAINTENANCE === "true" && (interaction.user.id !== process.env.DEVELOPER_DISCORD_ID && interaction.user.id !== "682284810030415903" && interaction.user.id !== "212975234427518979")) {
 				return await interaction.reply({
 					content: "Under maintenance!",
 					ephemeral: true,

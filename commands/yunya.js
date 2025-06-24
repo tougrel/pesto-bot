@@ -1,7 +1,21 @@
 import {readFile, writeFile} from "node:fs/promises";
+import { MessageFlags } from "discord.js";
 
 export const name = "yunya";
+
+/**
+ * @param client
+ * @param interaction { import("discord.js").CommandInteraction }
+ * @returns {Promise<*>}
+ */
 export async function run(client, interaction) {
+	if (process.env.MAINTENANCE === "true" && (interaction.user.id !== process.env.DEVELOPER_DISCORD_ID && interaction.user.id !== "682284810030415903" && interaction.user.id !== "212975234427518979")) {
+		return await interaction.reply({
+			content: "Permission Denied hehe :D",
+			ephemeral: true,
+		});
+	}
+	
 	const subcommand = interaction.options.getSubcommand(true);
 	if (subcommand === "toggle") {
 		const toggle = interaction.options.getBoolean("value", true);

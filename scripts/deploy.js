@@ -1,12 +1,13 @@
 import "dotenv/config";
-import {Routes, PermissionFlagsBits} from "discord-api-types/v10";
+import {Routes, PermissionFlagsBits, ChannelType} from "discord-api-types/v10";
 import {
 	REST,
 	SlashCommandBuilder,
 	SlashCommandBooleanOption,
 	SlashCommandSubcommandBuilder,
 	SlashCommandStringOption,
-	SlashCommandUserOption
+	SlashCommandUserOption,
+	SlashCommandChannelOption,
 } from "discord.js";
 
 const commands = [
@@ -66,6 +67,20 @@ const commands = [
 						])
 						.setRequired(true)
 				)
+		),
+	new SlashCommandBuilder()
+		.setName("stream")
+		.setDescription("Toggles the #aaaa voice channel")
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+			.setName("on")
+			.setDescription("Enable the voice channel")
+		)
+		.addSubcommand(
+			new SlashCommandSubcommandBuilder()
+			.setName("off")
+			.setDescription("Kick everyone from the channel and disable it")
 		),
 	new SlashCommandBuilder()
 		.setName("bite")
