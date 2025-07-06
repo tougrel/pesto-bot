@@ -215,11 +215,6 @@ export function generatePPCheckPower() {
 		if (random <= 0.1) {
 			power = Math.floor(Math.random() * 101) - 100;
 		}
-		
-		if (Math.random() < 0.3) {
-			const decimal = Math.random() + 0.99;
-			power = Number(power + decimal).toFixed(2);
-		}
 	}
 	
 	// Small bonus to start the new year!
