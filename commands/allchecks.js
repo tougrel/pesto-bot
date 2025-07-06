@@ -1,21 +1,21 @@
-import {getPPCheckMessage, getHorniMessage} from "../utils/messages.js";
-import {getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend} from "../utils/date.js";
-import {MessageFlags} from "discord.js";
-import {ComponentType, SeparatorSpacingSize} from "discord-api-types/v10";
-import {checkCluelessKing, checkCopiumKing} from "../utils/checks.js";
+import { getPPCheckMessage, getHorniMessage } from "../utils/messages.js";
+import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend } from "../utils/date.js";
+import { MessageFlags } from "discord.js";
+import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
+import { checkCluelessKing, checkCopiumKing } from "../utils/checks.js";
 
 export const name = "allchecks";
 
 export async function run(client, interaction) {
 	const db = client.database;
-
+	
 	await interaction.deferReply();
 	try {
 		const [rows] = await db.query(db.format("SELECT pp_power, pp_expires, clueless_power, clueless_expires, copium_power, copium_expires, horni_power, horni_expires FROM AllChecks WHERE user_id = ?", [interaction.user.id]));
-
+		
 		if (rows.length > 0) {
 			const data = rows[0];
-
+			
 			let pp_power = data.pp_power || 0;
 			let clueless_power = data.clueless_power || 0;
 			let copium_power = data.copium_power || 0;
@@ -23,17 +23,17 @@ export async function run(client, interaction) {
 			
 			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
 			let feet_power = generateHorniPower();
-
+			
 			const [pp_expired, clueless_expired, copium_expired, horni_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires, data.horni_expires);
 			if (pp_expired) pp_power = generatePPCheckPower();
 			if (clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
 			if (copium_expired) copium_power = generateCopiumPower(interaction.user.id);
 			if (horni_expired) horni_power = generateHorniPower();
-
+			
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
 			const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-
+			
 			const pp_power_to_show = is_april_fools ? 0 : pp_power;
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
@@ -66,7 +66,7 @@ export async function run(client, interaction) {
 					},
 				],
 			});
-
+			
 			if (is_april_fools) {
 				setTimeout(async () => {
 					await interaction.editReply({
@@ -98,21 +98,21 @@ export async function run(client, interaction) {
 					});
 				}, 60 * 1000);
 			}
-
+			
 			if (pp_expired) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power, Date.now(), expire_timestamp]));
 			if (clueless_expired) await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
-			if (copium_expired)	await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
+			if (copium_expired) await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
 			if (horni_expired) await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
 		} else {
 			let pp_power = generatePPCheckPower();
 			let clueless_power = generateCluelessPower(interaction.user.id);
 			let copium_power = generateCopiumPower(interaction.user.id);
 			let horni_power = generateHorniPower();
-
+			
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
 			const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-
+			
 			const pp_power_to_show = is_april_fools ? 0 : pp_power;
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
@@ -148,7 +148,7 @@ export async function run(client, interaction) {
 					},
 				],
 			});
-
+			
 			if (is_april_fools) {
 				setTimeout(async () => {
 					await interaction.editReply({
@@ -180,11 +180,11 @@ export async function run(client, interaction) {
 					});
 				}, 60 * 1000);
 			}
-
+			
 			await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power, Date.now(), expire_timestamp]));
 			await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
 			await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
-			await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]))
+			await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
 		}
 	} catch (err) {
 		console.error(err);
@@ -197,20 +197,20 @@ export async function run(client, interaction) {
 async function checkForExpired(...values) {
 	const array = [];
 	const date = Date.now();
-
+	
 	for await (let value of values) {
 		array.push(date >= value);
 	}
-
+	
 	return array;
 }
 
 export function generatePPCheckPower() {
-	let power = Math.floor(Math.random() * 101)
-
+	let power = Math.floor(Math.random() * 101);
+	
 	if (isWeekend()) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
-
+		
 		let random = Math.random().toFixed(2);
 		if (random <= 0.1) {
 			power = Math.floor(Math.random() * 101) - 100;
@@ -226,29 +226,29 @@ export function generatePPCheckPower() {
 	if (isNewYears()) {
 		power = Math.floor(Math.random() * (101 - 50)) + 50;
 	}
-
+	
 	return power;
 }
 
 function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
-
+	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
 	if (checkCluelessKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	}
-
+	
 	return power;
 }
 
 function generateCopiumPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
-
+	
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
 	if (checkCopiumKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	}
-
+	
 	return power;
 }
 

@@ -5,7 +5,7 @@ export const PPCHECK_MESSAGES = {
 	],
 	"-99": [
 		"Turns out you are a potato since you keep growing downward <a:smoking:1298958916452876288>",
-		"Congrats! Your Pesto Power has officially reached the Earth's core!"
+		"Congrats! Your Pesto Power has officially reached the Earth's core!",
 	],
 	"-80": [
 		"You are not even worthy being food <:yuniiJail:1298954463373168660>",
@@ -21,7 +21,7 @@ export const PPCHECK_MESSAGES = {
 	],
 	"-69": [
 		"reverse nice?... <:yuniiGasm:1281945197655363655>",
-		"Task failed successfully! <:yuniiGasm:1281945197655363655>"
+		"Task failed successfully! <:yuniiGasm:1281945197655363655>",
 	],
 	"0": [
 		"non existent! Can't even find it with a magnifying glass <:pestoDetective:1298959707888812042>",
@@ -51,7 +51,7 @@ export const PPCHECK_MESSAGES = {
 		"<:yuniiuh:1298954249908125747>",
 		"MAXIMUM OVERDRIVE ACHIEVED!",
 	],
-}
+};
 
 export function getPPCheckMessage(power) {
 	if (power <= -100) return PPCHECK_MESSAGES["-100"][Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)];
@@ -70,9 +70,9 @@ export function getPPCheckMessage(power) {
 }
 
 export function getHorniMessage(power) {
-    return power === 50
-        ? "Choose your Allegiance! <:LETDOGCOOK:1323241567561187368>"
-        : power > 50
-            ? "Welcome to the Horni Revolution! <:yuniiHorni:1323241964820238377>"
-            : "Welcome to the Seiso Cops! <:pestoPolice:1323241434966654976>";
+	return power === 50
+		? "Choose your Allegiance! <:LETDOGCOOK:1323241567561187368>"
+		: power > 50
+			? "Welcome to the Horni Revolution! <:yuniiHorni:1323241964820238377>"
+			: "Welcome to the Seiso Cops! <:pestoPolice:1323241434966654976>";
 }

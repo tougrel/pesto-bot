@@ -1,5 +1,4 @@
 import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
-import {MessageFlags} from "discord.js";
 import {getHorniMessage} from "../utils/messages.js";
 
 export const name = "hornicheck";

@@ -12,7 +12,7 @@ export async function run(client, interaction) {
 	if (process.env.MAINTENANCE === "true" && (interaction.user.id !== process.env.DEVELOPER_DISCORD_ID && interaction.user.id !== "682284810030415903" && interaction.user.id !== "212975234427518979")) {
 		return await interaction.reply({
 			content: "Permission Denied hehe :D",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 	
@@ -24,8 +24,8 @@ export async function run(client, interaction) {
 		config.enabled = toggle;
 		await writeFile("configs/config.json", JSON.stringify(config, null, 4), "utf-8");
 		await interaction.reply({
-			ephemeral: true,
 			content: `✅ Successfully ${config.enabled ? "enabled" : "disabled"} the system!`,
+			flags: MessageFlags.Ephemeral,
 		});
 	} else if (subcommand === "mode") {
 		const mode = interaction.options.getString("value", true);
@@ -34,20 +34,12 @@ export async function run(client, interaction) {
 		config.mode = mode;
 		await writeFile("configs/config.json", JSON.stringify(config, null, 4), "utf-8");
 		await interaction.reply({
-			ephemeral: true,
-			content: `✅ Successfully changed the lockdown mode to ${mode}!`
+			content: `✅ Successfully changed the lockdown mode to ${mode}!`,
+			flags: MessageFlags.Ephemeral,
 		});
 	} else if (subcommand === "roles") {
 		const option = interaction.options.getString("option");
-		await interaction.deferReply({ ephemeral: true });
-
-		if (interaction.user.id.toString() !== "256048990750113793" && interaction.user.id.toString() !== "682284810030415903") {
-			return await interaction.editReply({
-				content: "Only Tougrelino or Syrionino can run this command!",
-				ephemeral: true,
-			});
-		}
-
+		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 		await interaction.editReply({
 			content: `${option === "add" ? "Adding" : "Removing"} role from all guild members... This may take a while!`,
 		});
@@ -66,7 +58,7 @@ export async function run(client, interaction) {
 
 		await interaction.followUp({
 			content: "Success!",
-			ephemeral: true,
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

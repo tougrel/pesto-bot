@@ -1,6 +1,7 @@
-import {scamCollection} from "./ppcheck.js";
+import { scamCollection } from "./ppcheck.js";
 
 export const name = "eval";
+
 export async function run(client, interaction) {
 	const command = interaction.options.getString("code");
 	
@@ -18,13 +19,13 @@ export async function run(client, interaction) {
 		
 		await interaction.reply({
 			content: "✅ Success",
-			ephemeral: true
+			ephemeral: true,
 		});
 	} catch (err) {
 		console.error(err);
 		await interaction.reply({
 			content: "❌ An error occurred",
-			ephemeral: true
+			ephemeral: true,
 		});
 	}
 }
