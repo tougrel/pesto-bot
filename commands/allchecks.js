@@ -2,7 +2,7 @@ import { getPPCheckMessage, getHorniMessage } from "../utils/messages.js";
 import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
-import { checkCluelessKing, checkCopiumKing } from "../utils/checks.js";
+import { checkCluelessKing, checkCopiumKing, checkFeetKing } from "../utils/checks.js";
 
 export const name = "allchecks";
 
@@ -22,7 +22,7 @@ export async function run(client, interaction) {
 			let horni_power = data.horni_power || 0;
 			
 			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
-			let feet_power = generateHorniPower();
+			let feet_power = generateFeetPower(interaction.user.id);
 			
 			const [pp_expired, clueless_expired, copium_expired, horni_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires, data.horni_expires);
 			if (pp_expired) pp_power = generatePPCheckPower();
@@ -108,6 +108,8 @@ export async function run(client, interaction) {
 			let clueless_power = generateCluelessPower(interaction.user.id);
 			let copium_power = generateCopiumPower(interaction.user.id);
 			let horni_power = generateHorniPower();
+			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
+			let feet_power = generateFeetPower(interaction.user.id);
 			
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
@@ -117,9 +119,7 @@ export async function run(client, interaction) {
 			const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
-			
-			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
-			let feet_power = generateHorniPower();
+			const feet_power_to_show = is_april_fools ? -100 : feet_power;
 			
 			await interaction.editReply({
 				flags: MessageFlags.IsComponentsV2,
@@ -133,7 +133,7 @@ export async function run(client, interaction) {
 									+ `\n- Cluelessness is **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
 									+ `\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
 									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
-									+ `\n- Feet power is **${feet_power}%**`,
+									+ `\n- Feet power is **${feet_power_to_show}%**`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -254,6 +254,20 @@ function generateCopiumPower(user_id) {
 
 function generateHorniPower() {
 	return Math.floor(Math.random() * 101);
+}
+
+function generateFeetPower(user_id) {
+	let power = Math.floor(Math.random() * 101);
+	
+	if (checkFeetKing(user_id)) {
+		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+	}
+	
+	if (user_id === "285529265502683138") {
+		power = 100;
+	}
+	
+	return power;
 }
 
 function cluelessKingCheck(user_id) {
