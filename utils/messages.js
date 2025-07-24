@@ -51,10 +51,12 @@ export const PPCHECK_MESSAGES = {
 		"<:yuniiuh:1298954249908125747>",
 		"MAXIMUM OVERDRIVE ACHIEVED!",
 	],
+	"Infinity": ["Infinity? More like... divinity. You're transcending dimensions.", "This broke the PPCheck scale. Please reboot the yuniiverse."]
 };
 
 export function getPPCheckMessage(power) {
-	if (power <= -100) return PPCHECK_MESSAGES["-100"][Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)];
+	if (power === Infinity) return PPCHECK_MESSAGES["Infinity"][Math.floor(Math.random() * PPCHECK_MESSAGES["Infinity"].length)];
+	else if (power <= -100) return PPCHECK_MESSAGES["-100"][Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)];
 	else if (power === -69) return PPCHECK_MESSAGES["-69"][Math.floor(Math.random() * PPCHECK_MESSAGES["-69"].length)];
 	else if (power < -80) return PPCHECK_MESSAGES["-99"][Math.floor(Math.random() * PPCHECK_MESSAGES["-99"].length)];
 	else if (power < -50) return PPCHECK_MESSAGES["-80"][Math.floor(Math.random() * PPCHECK_MESSAGES["-80"].length)];

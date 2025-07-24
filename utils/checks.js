@@ -18,3 +18,10 @@ export function checkCopiumKing(id) {
 export function checkFeetKing(id) {
 	return id === "853014553079971870";
 }
+
+/**
+ * @param id { String } the Discord ID of a user
+ */
+export function checkPinkGoddess(id) {
+	return id === "212975234427518979";
+}

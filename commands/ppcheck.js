@@ -56,5 +56,5 @@ export async function run(client, interaction) {
 		}, 60 * 1000);
 	}
 	
-	if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power, Date.now(), expire_timestamp]));
+	if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power === Infinity ? 1000 : power, Date.now(), expire_timestamp]));
 }

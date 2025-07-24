@@ -1,8 +1,8 @@
 import { getPPCheckMessage, getHorniMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend } from "../utils/date.js";
+import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
-import { checkCluelessKing, checkCopiumKing, checkFeetKing } from "../utils/checks.js";
+import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "../utils/checks.js";
 
 export const name = "allchecks";
 
@@ -104,10 +104,10 @@ export async function run(client, interaction) {
 			if (copium_expired) await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
 			if (horni_expired) await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
 		} else {
-			let pp_power = generatePPCheckPower();
+			let pp_power = generatePPCheckPower(interaction.user.id);
 			let clueless_power = generateCluelessPower(interaction.user.id);
 			let copium_power = generateCopiumPower(interaction.user.id);
-			let horni_power = generateHorniPower();
+			let horni_power = generateHorniPower(interaction.user.id);
 			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
 			let feet_power = generateFeetPower(interaction.user.id);
 			
@@ -181,7 +181,7 @@ export async function run(client, interaction) {
 				}, 60 * 1000);
 			}
 			
-			await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power, Date.now(), expire_timestamp]));
+			await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, pp_power === Infinity ? 1000 : pp_power, Date.now(), expire_timestamp]));
 			await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
 			await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
 			await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
@@ -205,7 +205,7 @@ async function checkForExpired(...values) {
 	return array;
 }
 
-export function generatePPCheckPower() {
+export function generatePPCheckPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	if (isWeekend()) {
@@ -222,6 +222,14 @@ export function generatePPCheckPower() {
 		power = Math.floor(Math.random() * (101 - 50)) + 50;
 	}
 	
+	if (isYuniisBirthday()) {
+		power = Math.floor(Math.random() * (201 - 100)) + 100;
+	}
+	
+	if (checkPinkGoddess(user_id)) {
+		power = Infinity;
+	}
+	
 	return power;
 }
 
@@ -231,6 +239,10 @@ function generateCluelessPower(user_id) {
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
 	if (checkCluelessKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+	}
+	
+	if (checkPinkGoddess(user_id)) {
+		power = 0;
 	}
 	
 	return power;
@@ -244,11 +256,21 @@ function generateCopiumPower(user_id) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 	}
 	
+	if (checkPinkGoddess(user_id)) {
+		power = 0;
+	}
+	
 	return power;
 }
 
-function generateHorniPower() {
-	return Math.floor(Math.random() * 101);
+function generateHorniPower(user_id) {
+	let power = Math.floor(Math.random() * 101);
+	
+	if (checkPinkGoddess(user_id)) {
+		power = 50;
+	}
+	
+	return power;
 }
 
 function generateFeetPower(user_id) {
@@ -256,6 +278,10 @@ function generateFeetPower(user_id) {
 	
 	if (checkFeetKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+	}
+	
+	if (checkPinkGoddess(user_id)) {
+		power = 0;
 	}
 	
 	if (user_id === "285529265502683138") {

@@ -28,3 +28,11 @@ export function isNewYears() {
 	
 	return month === 0 && day === 1;
 }
+
+export function isYuniisBirthday() {
+	const date = new Date();
+	const month = date.getUTCMonth();
+	const day = date.getUTCDate();
+	
+	return month === 6 && day === 24;
+}
