@@ -1,4 +1,4 @@
-import { getPPCheckMessage, getHorniMessage } from "../utils/messages.js";
+import { getHorniMessage, getPestoCoinsMessage, getPPCheckMessage } from "../utils/messages.js";
 import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
@@ -103,6 +103,46 @@ export async function run(client, interaction) {
 			if (clueless_expired) await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
 			if (copium_expired) await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
 			if (horni_expired) await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
+			
+			// This is temporary as I'm going to rewrite the whole bot in typescript soon
+			// Forgive the mess hehe :pestoShy:
+			try {
+				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ?", [interaction.user.id, "allchecks"]));
+				if (rows.length === 0) {
+					const { coins, negative } = generatePestoCoins(pp_power);
+					await db.query(db.format("INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)", [interaction.user.id, coins, coins]));
+					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at) VALUES(?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now()]));
+					
+					const coin_emote = await client.application.emojis.fetch("1398010839667179531");
+					await interaction.followUp({
+						flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
+						components: [
+							{
+								type: ComponentType.Container,
+								components: [
+									{
+										type: ComponentType.Section,
+										components: [
+											{
+												type: ComponentType.TextDisplay,
+												content: getPestoCoinsMessage(negative).replace(/\{coins}/, coins.toString()),
+											},
+										],
+										accessory: {
+											type: ComponentType.Thumbnail,
+											media: {
+												url: coin_emote.imageURL(),
+											},
+										},
+									},
+								],
+							},
+						],
+					});
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		} else {
 			let pp_power = generatePPCheckPower(interaction.user.id);
 			let clueless_power = generateCluelessPower(interaction.user.id);
@@ -185,6 +225,44 @@ export async function run(client, interaction) {
 			await db.query(db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, clueless_power, expire_timestamp]));
 			await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, copium_power, expire_timestamp]));
 			await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
+			
+			try {
+				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ?", [interaction.user.id, "allchecks"]));
+				if (rows.length === 0) {
+					const { coins, negative } = generatePestoCoins(pp_power);
+					await db.query(db.format("INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)", [interaction.user.id, coins, coins]));
+					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at) VALUES(?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now()]));
+					
+					const coin_emote = await client.application.emojis.fetch("1398010839667179531");
+					await interaction.followUp({
+						flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
+						components: [
+							{
+								type: ComponentType.Container,
+								components: [
+									{
+										type: ComponentType.Section,
+										components: [
+											{
+												type: ComponentType.TextDisplay,
+												content: getPestoCoinsMessage(negative).replace(/\{coins}/, coins.toString()),
+											},
+										],
+										accessory: {
+											type: ComponentType.Thumbnail,
+											media: {
+												url: coin_emote.imageURL(),
+											},
+										},
+									},
+								],
+							},
+						],
+					});
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	} catch (err) {
 		console.error(err);
@@ -233,7 +311,7 @@ export function generatePPCheckPower(user_id) {
 	return power;
 }
 
-function generateCluelessPower(user_id) {
+export function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
@@ -248,7 +326,7 @@ function generateCluelessPower(user_id) {
 	return power;
 }
 
-function generateCopiumPower(user_id) {
+export function generateCopiumPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
@@ -263,7 +341,7 @@ function generateCopiumPower(user_id) {
 	return power;
 }
 
-function generateHorniPower(user_id) {
+export function generateHorniPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	if (checkPinkGoddess(user_id)) {
@@ -289,6 +367,29 @@ function generateFeetPower(user_id) {
 	}
 	
 	return power;
+}
+
+export function generatePestoCoins(power) {
+	let effect = Math.max(1, Math.min(power, 100));
+	let negative = false;
+	
+	if (isWeekend()) {
+		let random = Math.random().toFixed(2);
+		if (random <= 0.1) {
+			const multiplier = 0.5 + Math.random() * 0.5;
+			effect = -Math.floor(power * multiplier);
+			effect = Math.max(effect, -power);
+			negative = true;
+		} else {
+			effect = Math.floor(power * 1.5);
+		}
+	}
+	
+	if (negative) {
+		return { coins: Math.max(Math.floor(effect * 10), -500), negative };
+	} else {
+		return { coins: Math.floor(250 + (effect * 10)), negative };
+	}
 }
 
 function cluelessKingCheck(user_id) {

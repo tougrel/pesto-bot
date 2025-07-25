@@ -78,3 +78,11 @@ export function getHorniMessage(power) {
 			? "Welcome to the Horni Revolution! <:yuniiHorni:1323241964820238377>"
 			: "Welcome to the Seiso Cops! <:pestoPolice:1323241434966654976>";
 }
+
+export function getPestoCoinsMessage(negative) {
+	if (negative) {
+		return "# Council Penalty\nThe __Pesto Council__ withdraws **-{coins}** pesto coins as part of a yuniverse realignment!";
+	} else {
+		return "# Council Reward\nThe __Pesto Council__ rewards you with **+{coins}** pesto coins for doing your daily checks!";
+	}
+}
