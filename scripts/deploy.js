@@ -206,6 +206,10 @@ const commands = [
 	.setName("wallet")
 	.setDescription("How many coins do you have in your wallet?")
 	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+	new SlashCommandBuilder()
+	.setName("council")
+	.setDescription("Shows the top 10 average power users across all checks from last month.")
+	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
 ];
 
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
