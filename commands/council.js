@@ -25,6 +25,10 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
+								content: "Special seats:\n1. <@236642620506374145> the clueless king <:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>\n2. <@124963012321738752> the copium king <:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>",
+							},
+							{
+								type: ComponentType.TextDisplay,
 								content: rows.map((row, index) => `${index}. <@${row.user_id}> with an average **${row.avg_power}** power and **${row.total_rolls}** rolls`).join("\n"),
 							},
 						],
