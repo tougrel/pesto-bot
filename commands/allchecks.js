@@ -107,11 +107,11 @@ export async function run(client, interaction) {
 			// This is temporary as I'm going to rewrite the whole bot in typescript soon
 			// Forgive the mess hehe :pestoShy:
 			try {
-				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ?", [interaction.user.id, "allchecks"]));
+				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ? AND expires_at >= UNIX_TIMESTAMP() * 1000", [interaction.user.id, "allchecks"]));
 				if (rows.length === 0) {
 					const { coins, negative } = generatePestoCoins(pp_power);
 					await db.query(db.format("INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)", [interaction.user.id, coins, coins]));
-					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at) VALUES(?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now()]));
+					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now(), expire_timestamp]));
 					
 					const coin_emote = await client.application.emojis.fetch("1398010839667179531");
 					await interaction.followUp({
@@ -227,11 +227,11 @@ export async function run(client, interaction) {
 			await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, horni_power, expire_timestamp]));
 			
 			try {
-				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ?", [interaction.user.id, "allchecks"]));
+				const [rows] = await db.query(db.format("SELECT created_at FROM WalletHistory WHERE id = ? AND type = ? AND expires_at >= UNIX_TIMESTAMP() * 1000", [interaction.user.id, "allchecks"]));
 				if (rows.length === 0) {
 					const { coins, negative } = generatePestoCoins(pp_power);
 					await db.query(db.format("INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)", [interaction.user.id, coins, coins]));
-					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at) VALUES(?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now()]));
+					await db.query(db.format("INSERT INTO WalletHistory(id, type, coins, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [interaction.user.id, "allchecks", coins, Date.now(), expire_timestamp]));
 					
 					const coin_emote = await client.application.emojis.fetch("1398010839667179531");
 					await interaction.followUp({
