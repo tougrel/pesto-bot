@@ -35,7 +35,7 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
-								content: `${user.length > 0 ? `### Your Rank is **${userIndex + 1}** with an average power of **${user[0].avg_power}**\n` : ""}-# The Council elected members reset every month!`
+								content: `${user.length > 0 ? `### Your Rank is **${userIndex + 1}** with an average power of **${user[0].avg_power}** and **${user[0].total_rolls}** rolls\n` : ""}-# The Council elected members reset every month!`
 							}
 						],
 						accessory: {
