@@ -22,11 +22,29 @@ export async function run(client, interaction) {
 			console.error(err);
 		}
 		
+		try {
+			interaction.guild.members.fetch("682284810030415903").then(async (syri) => {
+				await syri.send({
+					content: "WAKE UP SYRI YUNII IS STARTING A STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
+				});
+			});
+		} catch (err) {
+			console.error("Couldn't DM Syri!");
+		}
+		
 		await interaction.reply({
 			content: "Channel has been enabled! Have fun streaming Yuyu!",
 			flags: MessageFlags.Ephemeral,
 		});
 	} else {
+		try {
+			await channel.permissionOverwrites.edit("1233481038215250193", {
+				Connect: false,
+			});
+		} catch (err) {
+			console.error(err);
+		}
+		
 		if (channel.members.size > 0) {
 			for (let member of channel.members.values()) {
 				if (member.voice) {
