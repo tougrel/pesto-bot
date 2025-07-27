@@ -1,0 +1,29 @@
+name: Deploy and Restart Pesto Bot
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout Code
+                uses: actions/checkout@v4
+
+            -   name: Setup SSH
+                run: |
+                    mkdir -p ~/.ssh
+                    echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+                    chmod 600 ~/.ssh/id_rsa
+                    ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+            -   name: Pull latest changes and restart the bot
+                run: |
+                    ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+                      cd ${{ secrets.BOT_PATH }}
+                      git pull origin main
+                      sudo systemctl restart pesto-bot
+                    EOF

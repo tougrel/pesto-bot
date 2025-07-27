@@ -370,26 +370,21 @@ function generateFeetPower(user_id) {
 }
 
 export function generatePestoCoins(power) {
-	let effect = Math.max(1, Math.min(power, 100));
-	let negative = false;
+	const effect = Math.max(-100, Math.min(power, 100));
+	const negative = power < 0;
+	
+	let coins;
+	if (negative) {
+		coins = Math.max(Math.floor(effect * 10), -500)
+	} else {
+		coins = Math.floor(250 + (effect * 10));
+	}
 	
 	if (isWeekend()) {
-		let random = Math.random().toFixed(2);
-		if (random <= 0.1) {
-			const multiplier = 0.5 + Math.random() * 0.5;
-			effect = -Math.floor(power * multiplier);
-			effect = Math.max(effect, -power);
-			negative = true;
-		} else {
-			effect = Math.floor(power * 1.5);
-		}
+		coins = Math.floor(coins * 1.5);
 	}
 	
-	if (negative) {
-		return { coins: Math.max(Math.floor(effect * 10), -500), negative };
-	} else {
-		return { coins: Math.floor(250 + (effect * 10)), negative };
-	}
+	return { coins: Math.max(coins, -500), negative }
 }
 
 function cluelessKingCheck(user_id) {
