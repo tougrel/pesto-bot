@@ -25,3 +25,10 @@ export function checkFeetKing(id) {
 export function checkPinkGoddess(id) {
 	return id === "212975234427518979";
 }
+
+/**
+ * @param id { String } the Discord ID of a user
+ */
+export function checkBanker(id) {
+	return id === "599384106056286208";
+}

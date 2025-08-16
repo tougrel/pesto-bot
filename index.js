@@ -3,7 +3,7 @@ import {GatewayIntentBits, ActivityType, GuildMemberFlags} from "discord-api-typ
 import {Client, Partials, Events, Collection} from "discord.js";
 import {readFile, readdir} from "node:fs/promises";
 import {createPool} from "mysql2/promise";
-import {checkCluelessKing, checkCopiumKing} from "./utils/checks.js";
+import { checkBanker, checkCluelessKing, checkCopiumKing } from "./utils/checks.js";
 
 const pool = createPool({
 	host: process.env.DATABASE_HOST,
@@ -56,6 +56,26 @@ client.on(Events.GuildMemberAdd, async (member) => {
 client.on(Events.MessageCreate, async (message) => {
 	if (message.author.bot) return;
 
+	if (message.content.startsWith("!blamemerry")) {
+		await message.channel.send({
+			content: "<:blameMerry1:1404817851919110264><:blameMerry2:1404817860773150762>",
+		});
+	}
+	
+	if (checkBanker(message.author.id.toString()) || message.author.id === process.env.DEVELOPER_DISCORD_ID) {
+		if (message.content.startsWith(`<@${client.user.id}> set bank fee to`)) {
+			const args = message.content.split(" ");
+			if (isNaN(parseInt(args[5].replace("%", "")))) {
+				return;
+			}
+			
+			const number = parseInt(args[5].replace(/%/, ""));
+			await message.reply({
+				content: `Setting bank fee to **${number}**%`,
+			});
+		}
+	}
+	
 	if (checkCluelessKing(message.author.id.toString())) {
 		if (/not (.+)? clueless (king)?/gi.test(message.content)) {
 			await message.reply({

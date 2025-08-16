@@ -15,6 +15,7 @@ export async function run(client, interaction) {
 	if (subcommand === "on") {
 		try {
 			await channel.permissionOverwrites.edit("1233481038215250193", {
+				SendMessages: true,
 				ViewChannel: true,
 				Connect: true,
 			});
@@ -28,6 +29,12 @@ export async function run(client, interaction) {
 					content: "WAKE UP SYRI YUNII IS STARTING A STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
 				});
 			});
+			
+			interaction.guild.members.fetch(process.env.DEVELOPER_DISCORD_ID).then(async (syri) => {
+				await syri.send({
+					content: "YUNII SECRET STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
+				});
+			});
 		} catch (err) {
 			console.error("Couldn't DM Syri!");
 		}
@@ -35,29 +42,30 @@ export async function run(client, interaction) {
 		await interaction.reply({
 			content: "Channel has been enabled! Have fun streaming Yuyu!",
 			flags: MessageFlags.Ephemeral,
-		});
+		}).catch(console.error);
 	} else {
-		try {
-			await channel.permissionOverwrites.edit("1233481038215250193", {
-				Connect: false,
+		if (channel.isTextBased()) {
+			await channel.send({
+				content: `The channel will be obliterated from existence <t:${Math.round((Date.now() + 10000) / 1000)}:R>!`,
 			});
-		} catch (err) {
-			console.error(err);
 		}
 		
-		if (channel.members.size > 0) {
-			for (let member of channel.members.values()) {
-				if (member.voice) {
-					await member.voice.disconnect("Syri is cool!");
+		try {
+			setTimeout(async () => {
+				await channel.permissionOverwrites.edit("1233481038215250193", {
+					SendMessages: false,
+					ViewChannel: false,
+					Connect: false,
+				});
+				
+				if (channel.members.size > 0) {
+					for (let member of channel.members.values()) {
+						if (member.voice) {
+							await member.voice.disconnect("Syri is cool!");
+						}
+					}
 				}
-			}
-		}
-		
-		try {
-			await channel.permissionOverwrites.edit("1233481038215250193", {
-				ViewChannel: false,
-				Connect: false,
-			});
+			}, 10000);
 		} catch (err) {
 			console.error(err);
 		}
@@ -65,6 +73,6 @@ export async function run(client, interaction) {
 		await interaction.reply({
 			content: "Successfully kicked all users and disabled the channel!",
 			flags: MessageFlags.Ephemeral,
-		});
+		}).catch(console.error);
 	}
 }
