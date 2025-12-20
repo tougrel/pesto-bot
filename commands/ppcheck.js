@@ -28,7 +28,7 @@ export async function run(client, interaction) {
 		return;
 	}
 	
-	let power = generatePPCheckPower();
+	let power = generatePPCheckPower(interaction.user.id);
 	if (scamCollection.has(interaction.user.id) || (user !== null && scamCollection.has(user.id))) {
 		const id = user !== null ? user.id : interaction.user.id;
 		power = scamCollection.get(id);

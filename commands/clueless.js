@@ -1,5 +1,6 @@
 import { getUTCExpireTimestamp, isAprilFools } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
+import { generateCluelessPower } from "./allchecks.js";
 
 export const name = "clueless";
 
@@ -53,7 +54,7 @@ export async function run(client, interaction) {
 	
 	const expire_timestamp = getUTCExpireTimestamp();
 	const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-	let power = Math.floor(Math.random() * 101);
+	let power = generateCluelessPower(interaction.user.id);
 	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
 	if (interaction.user.id === "236642620506374145") power = Math.floor(Math.random() * (10000 - 100)) + 100;

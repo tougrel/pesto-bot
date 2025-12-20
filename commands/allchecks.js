@@ -1,5 +1,5 @@
 import { getHorniMessage, getPestoCoinsMessage, getPPCheckMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
+import { getUTCExpireTimestamp, isAprilFools, isChristmasSeason, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
 import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "../utils/checks.js";
@@ -21,14 +21,15 @@ export async function run(client, interaction) {
 			let copium_power = data.copium_power || 0;
 			let horni_power = data.horni_power || 0;
 			
-			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
+			// Maybe change this in the future to be included in the database. For now, it changes every time you run the command
 			let feet_power = generateFeetPower(interaction.user.id);
+			let mango_power = generateMangoPower(interaction.user.id);
 			
 			const [pp_expired, clueless_expired, copium_expired, horni_expired] = await checkForExpired(data.pp_expires, data.clueless_expires, data.copium_expires, data.horni_expires);
-			if (pp_expired) pp_power = generatePPCheckPower();
+			if (pp_expired) pp_power = generatePPCheckPower(interaction.user.id);
 			if (clueless_expired) clueless_power = generateCluelessPower(interaction.user.id);
 			if (copium_expired) copium_power = generateCopiumPower(interaction.user.id);
-			if (horni_expired) horni_power = generateHorniPower();
+			if (horni_expired) horni_power = generateHorniPower(interaction.user.id);
 			
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
@@ -39,6 +40,7 @@ export async function run(client, interaction) {
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
 			const feet_power_to_show = is_april_fools ? -100 : feet_power;
+			const mango_power_to_show = is_april_fools ? 0 : mango_power;
 			await interaction.editReply({
 				flags: MessageFlags.IsComponentsV2,
 				components: [
@@ -51,7 +53,8 @@ export async function run(client, interaction) {
 									+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
 									+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
 									+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
-									+ `\n- Feet power is **${feet_power_to_show}%**`,
+									+ `\n- Feet power is **${feet_power_to_show}%**`
+									+ `\n- Mango power is **${mango_power_to_show}%**`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -81,7 +84,8 @@ export async function run(client, interaction) {
 											+ `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
 											+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
 											+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}`
-											+ `\n- Feet power is **${feet_power_to_show}%**`,
+											+ `\n- Feet power is **${feet_power_to_show}%**`
+											+ `\n- Mango power is **${mango_power_to_show}%**`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -150,6 +154,7 @@ export async function run(client, interaction) {
 			let horni_power = generateHorniPower(interaction.user.id);
 			// Maybe change this in the future to be included in the database. For now, it's exclusive to one user
 			let feet_power = generateFeetPower(interaction.user.id);
+			const mango_power = generateMangoPower(interaction.user.id);
 			
 			const is_april_fools = isAprilFools();
 			const expire_timestamp = getUTCExpireTimestamp();
@@ -160,6 +165,7 @@ export async function run(client, interaction) {
 			const copium_power_to_show = is_april_fools ? 0 : copium_power;
 			const horni_power_to_show = is_april_fools ? 0 : horni_power;
 			const feet_power_to_show = is_april_fools ? -100 : feet_power;
+			const mango_power_to_show = is_april_fools ? 0 : mango_power;
 			
 			await interaction.editReply({
 				flags: MessageFlags.IsComponentsV2,
@@ -173,7 +179,8 @@ export async function run(client, interaction) {
 									+ `\n- Cluelessness is **${clueless_power_to_show}%** today! ${cluelessKingCheck(interaction.user.id)}`
 									+ `\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
 									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
-									+ `\n- Feet power is **${feet_power_to_show}%**`,
+									+ `\n- Feet power is **${feet_power_to_show}%**`
+									+ `\n- Mango power is **${mango_power_to_show}%**`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -203,7 +210,8 @@ export async function run(client, interaction) {
 											+ `\n- Cluelessness is **${clueless_power}%** today! ${cluelessKingCheck(interaction.user.id)}`
 											+ `\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
 											+ `\n- Horni level is **${horni_power}%**, ${getHorniMessage(horni_power_to_show)}`
-											+ `\n- Feet power is **${feet_power}%**`,
+											+ `\n- Feet power is **${feet_power}%**`
+											+ `\n- Mango power is **${mango_power_to_show}%**`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -290,14 +298,18 @@ export function generatePPCheckPower(user_id) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
 		
 		let random = Math.random().toFixed(2);
-		if (random <= 0.1) {
+		if (random <= 0.1 && !isChristmasSeason()) {
 			power = Math.floor(Math.random() * 101) - 100;
 		}
 	}
 	
+	if (isChristmasSeason()) {
+		power = Math.floor(Math.random() * (101) - 50) + 50;
+	}
+
 	// Small bonus to start the new year!
 	if (isNewYears()) {
-		power = Math.floor(Math.random() * (101 - 50)) + 50;
+		power = Math.floor(Math.random() * (101 - 75)) + 75;
 	}
 	
 	if (isYuniisBirthday()) {
@@ -315,8 +327,20 @@ export function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
-	if (checkCluelessKing(user_id)) {
+	if (checkCluelessKing(user_id) && !isNewYears()) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+
+		if (isChristmasSeason()) {
+			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
+		}
+	}
+	
+	if (isChristmasSeason()) {
+		power = Math.floor(Math.random() * 51);
+	}
+
+	if (isNewYears()) {
+		power = 0;
 	}
 	
 	if (checkPinkGoddess(user_id)) {
@@ -330,8 +354,20 @@ export function generateCopiumPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
-	if (checkCopiumKing(user_id)) {
+	if (checkCopiumKing(user_id) && !isNewYears()) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+
+		if (isChristmasSeason()) {
+			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
+		}
+	}
+	
+	if (isChristmasSeason()) {
+		power = Math.floor(Math.random() * 51);
+	}
+
+	if (isNewYears()) {
+		power = 0;
 	}
 	
 	if (checkPinkGoddess(user_id)) {
@@ -343,6 +379,10 @@ export function generateCopiumPower(user_id) {
 
 export function generateHorniPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
+
+	if (isNewYears()) {
+		power = 50;
+	}
 	
 	if (checkPinkGoddess(user_id)) {
 		power = 50;
@@ -356,6 +396,18 @@ function generateFeetPower(user_id) {
 	
 	if (checkFeetKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+		
+		if (isChristmasSeason() || isNewYears()) {
+			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
+		}
+	}
+	
+	if (isChristmasSeason()) {
+		power = Math.floor(Math.random() * 51);
+	}
+
+	if (isNewYears()) {
+		power = 0;
 	}
 	
 	if (checkPinkGoddess(user_id)) {
@@ -369,18 +421,43 @@ function generateFeetPower(user_id) {
 	return power;
 }
 
+export function generateMangoPower(userId) {
+    let power = Math.floor(Math.random() * 101);
+
+    if (isChristmasSeason()) {
+        power = Math.floor(Math.random() * (101 - 50)) + 50;
+    }
+    
+    // For our mango and mad king Zoiyyanino!
+    if (userId === '198908340862976000') {
+        power = Math.floor(Math.random() * (10000 - 100)) + 100;
+    }
+
+    return power;
+}
+
 export function generatePestoCoins(power) {
 	const effect = Math.max(-100, Math.min(power, 100));
-	const negative = power < 0;
+	const negative = isChristmasSeason() ? false : power < 0;
 	
 	let coins;
 	if (negative) {
 		coins = Math.max(Math.floor(effect * 10), -500)
 	} else {
-		coins = Math.floor(250 + (effect * 10));
+		if (isChristmasSeason()) {
+			coins = Math.floor(1000 + (effect * 10));
+		} else {
+			coins = Math.floor(250 + (effect * 10));
+		}
 	}
 	
-	if (isWeekend()) {
+	if (isChristmasSeason()) {
+		if (isWeekend()) {
+			coins = Math.floor(coins * 2.5);
+		} else {
+			coins = Math.floor(coins * 1.5);
+		}
+	} else if (isWeekend()) {
 		coins = Math.floor(coins * 1.5);
 	}
 	

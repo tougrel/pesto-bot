@@ -1,12 +1,13 @@
 import {getUTCExpireTimestamp, isAprilFools} from "../utils/date.js";
 import {getHorniMessage} from "../utils/messages.js";
+import {generateHorniPower} from "./allchecks.js";
 
 export const name = "hornicheck";
 
 export async function run(client, interaction) {
     const db = client.database;
     const user = interaction.options.getUser("pestie", false);
-    const power = Math.floor(Math.random() * 101);
+    const power = generateHorniPower(user ? user.id : interaction.user.id);
 
     const [rows] = await db.query(db.format("SELECT power, expires FROM HorniCheck WHERE user_id = ? AND expires >= ?", [user ? user.id : interaction.user.id, Date.now()]));
     const data = rows.length > 0 ? rows[0] : undefined;
