@@ -24,7 +24,7 @@ export function isWeekend() {
 export function isChristmasSeason() {
 	const date = new Date();
 	const month = date.getUTCMonth();
-	const day = date.getUTCDay();
+	const day = date.getUTCDate();
 
 	return (month === 11 && day >= 1) || (month === 0 && day <= 8);
 }
