@@ -295,11 +295,11 @@ async function checkForExpired(...values) {
 export function generatePPCheckPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
-	if (isWeekend()) {
+	if (isWeekend() && !isChristmasSeason()) {
 		power = Math.floor(Math.random() * (101 - 35)) + 35;
 		
 		let random = Math.random().toFixed(2);
-		if (random <= 0.1 && !isChristmasSeason()) {
+		if (random <= 0.1) {
 			power = Math.floor(Math.random() * 101) - 100;
 		}
 	}
@@ -327,6 +327,18 @@ export function generatePPCheckPower(user_id) {
 export function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
+	if (isChristmasSeason()) {
+		power = Math.floor(Math.random() * 51);
+	}
+
+	if (isNewYears()) {
+		power = 0;
+	}
+	
+	if (checkPinkGoddess(user_id)) {
+		power = 0;
+	}
+	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
 	if (checkCluelessKing(user_id) && !isNewYears()) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
@@ -336,6 +348,12 @@ export function generateCluelessPower(user_id) {
 		}
 	}
 	
+	return power;
+}
+
+export function generateCopiumPower(user_id) {
+	let power = Math.floor(Math.random() * 101);
+	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * 51);
 	}
@@ -347,12 +365,6 @@ export function generateCluelessPower(user_id) {
 	if (checkPinkGoddess(user_id)) {
 		power = 0;
 	}
-	
-	return power;
-}
-
-export function generateCopiumPower(user_id) {
-	let power = Math.floor(Math.random() * 101);
 	
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
 	if (checkCopiumKing(user_id) && !isNewYears()) {
@@ -361,18 +373,6 @@ export function generateCopiumPower(user_id) {
 		if (isChristmasSeason()) {
 			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
 		}
-	}
-	
-	if (isChristmasSeason()) {
-		power = Math.floor(Math.random() * 51);
-	}
-
-	if (isNewYears()) {
-		power = 0;
-	}
-	
-	if (checkPinkGoddess(user_id)) {
-		power = 0;
 	}
 	
 	return power;
@@ -395,14 +395,6 @@ export function generateHorniPower(user_id) {
 function generateFeetPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
-	if (checkFeetKing(user_id)) {
-		power = Math.floor(Math.random() * (10000 - 100)) + 100;
-		
-		if (isChristmasSeason() || isNewYears()) {
-			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
-		}
-	}
-	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * 51);
 	}
@@ -413,6 +405,14 @@ function generateFeetPower(user_id) {
 	
 	if (checkPinkGoddess(user_id)) {
 		power = 0;
+	}
+	
+	if (checkFeetKing(user_id)) {
+		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+		
+		if (isChristmasSeason() || isNewYears()) {
+			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
+		}
 	}
 	
 	if (user_id === "285529265502683138") {
