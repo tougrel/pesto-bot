@@ -13,7 +13,7 @@ export async function run(client, interaction) {
         content: `${user ? (member.nickname ?? user.username) : interaction.user} is **${powerToShow}%** mango!`,
     });
 
-    if (is_april_fools) {
+    if (isAprilFools()) {
         setTimeout(async () => {
             await interaction.editReply({
                 content: `${user ? (member.nickname ?? user.username) : interaction.user} is **${power}%** mango!`,
