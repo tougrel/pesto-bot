@@ -46,6 +46,7 @@ export async function run(client, interaction) {
 				components: [
 					{
 						type: ComponentType.Container,
+						accent_color: 0xFF0000,
 						components: [
 							{
 								type: ComponentType.TextDisplay,
@@ -54,7 +55,7 @@ export async function run(client, interaction) {
 									+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
 									+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
 									+ `\n- Feet power is **${feet_power_to_show}%**`
-									+ `\n- Mango power is **${mango_power_to_show}%**`,
+									+ `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -63,7 +64,7 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
-								content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+								content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 							},
 						],
 					},
@@ -85,7 +86,7 @@ export async function run(client, interaction) {
 											+ `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
 											+ `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${getHorniMessage(horni_power)}`
 											+ `\n- Feet power is **${feet_power_to_show}%**`
-											+ `\n- Mango power is **${mango_power_to_show}%**`,
+											+ `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -94,7 +95,7 @@ export async function run(client, interaction) {
 									},
 									{
 										type: ComponentType.TextDisplay,
-										content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+										content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 									},
 								],
 							},
@@ -180,7 +181,7 @@ export async function run(client, interaction) {
 									+ `\n- Copium level is **${copium_power_to_show}%** today! ${copiumKingCheck(interaction.user.id)}`
 									+ `\n- Horni level is **${horni_power_to_show}%**, ${getHorniMessage(horni_power_to_show)}`
 									+ `\n- Feet power is **${feet_power_to_show}%**`
-									+ `\n- Mango power is **${mango_power_to_show}%**`,
+									+ `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
 							},
 							{
 								type: ComponentType.Separator,
@@ -189,7 +190,7 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
-								content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+								content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 							},
 						],
 					},
@@ -211,7 +212,7 @@ export async function run(client, interaction) {
 											+ `\n- Copium level is **${copium_power}%** today! ${copiumKingCheck(interaction.user.id)}`
 											+ `\n- Horni level is **${horni_power}%**, ${getHorniMessage(horni_power_to_show)}`
 											+ `\n- Feet power is **${feet_power}%**`
-											+ `\n- Mango power is **${mango_power_to_show}%**`,
+											+ `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
 									},
 									{
 										type: ComponentType.Separator,
@@ -220,7 +221,7 @@ export async function run(client, interaction) {
 									},
 									{
 										type: ComponentType.TextDisplay,
-										content: `-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+										content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 									},
 								],
 							},
