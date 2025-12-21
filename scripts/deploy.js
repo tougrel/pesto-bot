@@ -126,6 +126,16 @@ const commands = [
 		.setRequired(false),
 	),
 	new SlashCommandBuilder()
+	.setName("mangocheck")
+	.setDescription("Check your mango power levels!")
+	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+	.addUserOption(
+		new SlashCommandUserOption()
+		.setName("pestie")
+		.setDescription("The pestie you want to check")
+		.setRequired(false),
+	),
+	new SlashCommandBuilder()
 	.setName("hornicheck")
 	.setDescription("Check how horni you or a pestie is")
 	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
