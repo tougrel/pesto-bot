@@ -305,7 +305,7 @@ export function generatePPCheckPower(user_id) {
 	}
 	
 	if (isChristmasSeason()) {
-		power = Math.floor(Math.random() * (101) - 50) + 50;
+		power = Math.floor(Math.random() * (101 - 50)) + 50;
 	}
 
 	// Small bonus to start the new year!
