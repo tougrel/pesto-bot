@@ -392,7 +392,7 @@ export function generateHorniPower(user_id) {
 	return power;
 }
 
-function generateFeetPower(user_id) {
+export function generateFeetPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
 	if (isChristmasSeason()) {
