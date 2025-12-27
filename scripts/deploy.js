@@ -229,6 +229,11 @@ const commands = [
 	new SlashCommandBuilder()
 	.setName("council")
 	.setDescription("Shows the top 10 average power users across all checks from last month.")
+	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+	//frank command
+	new SlashCommandBuilder()
+	.setName("frank")
+	.setDescription("Ouch, Rest In Pesto, Frank")
 	.setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
 ];
 
