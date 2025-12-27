@@ -81,7 +81,7 @@ export function getHorniMessage(power) {
 
 export function getPestoCoinsMessage(negative) {
 	if (negative) {
-		return "# Council Penalty\nThe __Pesto Council__ withdraws **-{coins}** pesto coins as part of a yuniverse realignment!";
+		return "# Council Penalty\nThe __Pesto Council__ withdraws **{coins}** pesto coins as part of a Yuniverse realignment!";
 	} else {
 		return "# Council Reward\nThe __Pesto Council__ rewards you with **+{coins}** pesto coins for doing your daily checks!";
 	}
