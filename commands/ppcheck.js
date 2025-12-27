@@ -60,8 +60,9 @@ export async function run(client, interaction) {
 		if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power === Infinity ? 1000 : power, Date.now(), expire_timestamp]));
 	} catch (err) {
 		console.error(err);
-		await interaction.editReply({
+		await interaction.reply({
 			content: "Something went wrong!",
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }

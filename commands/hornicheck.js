@@ -34,8 +34,9 @@ export async function run(client, interaction) {
         if(!user) await db.query(db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, power, expire_timestamp]));
     } catch (err) {
 		console.error(err);
-		await interaction.editReply({
-			content: "Something went wrong!",
-		});
+        await interaction.reply({
+            content: "Something went wrong!",
+            flags: MessageFlags.Ephemeral,
+        });
 	}
 }

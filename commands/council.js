@@ -4,9 +4,9 @@ import { ComponentType } from "discord-api-types/v10";
 export const name = "council";
 
 export async function run(client, interaction) {
+	await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
 	try {
-		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-	
 		const db = client.database;
 		const [rows] = await db.query(db.format("SELECT user_id, avg_power, total_rolls from TheCouncil"));
 		const [full] = await db.query(db.format("SELECT user_id, avg_power, total_rolls from TheCouncilFull"));

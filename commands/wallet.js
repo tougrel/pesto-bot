@@ -4,9 +4,9 @@ import { ComponentType } from "discord-api-types/v10";
 export const name = "wallet";
 
 export async function run(client, interaction) {
+	await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
 	try {
-		await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-		
 		const db = client.database;
 		const [rows] = await db.query(db.format("SELECT coins from Wallet WHERE id = ?", [interaction.user.id]));
 		if (rows.length === 0) {

@@ -76,8 +76,9 @@ export async function run(client, interaction) {
 		await db.query(db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [interaction.user.id, power, expire_timestamp]));
 	} catch (err) {
 		console.error(err);
-		await interaction.editReply({
+		await interaction.reply({
 			content: "Something went wrong!",
+			flags: MessageFlags.Ephemeral,
 		});
 	}
 }
