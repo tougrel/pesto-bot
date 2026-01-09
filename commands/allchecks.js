@@ -46,7 +46,7 @@ export async function run(client, interaction) {
 				components: [
 					{
 						type: ComponentType.Container,
-						accent_color: 0xFF0000,
+						accent_color: isChristmasSeason() ? 0xFF0000 : undefined,
 						components: [
 							{
 								type: ComponentType.TextDisplay,
@@ -64,7 +64,7 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
-								content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+								content: isChristmasSeason() ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)` : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 							},
 						],
 					},
@@ -78,6 +78,7 @@ export async function run(client, interaction) {
 						components: [
 							{
 								type: ComponentType.Container,
+								accent_color: isChristmasSeason() ? 0xFF0000 : undefined,
 								components: [
 									{
 										type: ComponentType.TextDisplay,
@@ -95,7 +96,7 @@ export async function run(client, interaction) {
 									},
 									{
 										type: ComponentType.TextDisplay,
-										content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+										content: isChristmasSeason() ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)` : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 									},
 								],
 							},
@@ -173,6 +174,7 @@ export async function run(client, interaction) {
 				components: [
 					{
 						type: ComponentType.Container,
+						accent_color: isChristmasSeason() ? 0xFF0000 : undefined,
 						components: [
 							{
 								type: ComponentType.TextDisplay,
@@ -190,7 +192,7 @@ export async function run(client, interaction) {
 							},
 							{
 								type: ComponentType.TextDisplay,
-								content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+								content: isChristmasSeason() ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)` : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 							},
 						],
 					},
@@ -204,6 +206,7 @@ export async function run(client, interaction) {
 						components: [
 							{
 								type: ComponentType.Container,
+								accent_color: isChristmasSeason() ? 0xFF0000 : undefined,
 								components: [
 									{
 										type: ComponentType.TextDisplay,
@@ -221,7 +224,7 @@ export async function run(client, interaction) {
 									},
 									{
 										type: ComponentType.TextDisplay,
-										content: `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+										content: isChristmasSeason() ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)` : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
 									},
 								],
 							},
