@@ -7,22 +7,23 @@ export const scamCollection = new Collection();
 export const name = "ppcheck";
 
 export async function run(client, interaction) {
+	const user = interaction.options.getUser("pestie", false);
+	
 	try {
+		await interaction.deferReply({ flags: user && user.id !== interaction.user.id ? MessageFlags.Ephemeral : undefined });
+
 		const db = client.database;
-		const user = interaction.options.getUser("pestie", false);
 		if (user && user.id !== interaction.user.id) {
 			const [rows] = await db.query(db.format("SELECT power FROM PPCheck WHERE user_id = ? AND expires >= ?", [user.id, Date.now()]));
 			
 			if (rows.length > 0) {
 				const power = rows[0].power;
-				await interaction.reply({
+				await interaction.editReply({
 					content: `**${ user }'s** Pesto Power was **${ power }%** today, ${ getPPCheckMessage(power) }`,
-					flags: MessageFlags.Ephemeral,
 				});
 			} else {
-				await interaction.reply({
+				await interaction.editReply({
 					content: "I couldn't find any data for this pestie <:yuniiLost:1329480382843850815> It looks like they didn't roll for a ppcheck today! <a:madPesto:1329480709328343132>",
-					flags: MessageFlags.Ephemeral,
 				});
 			}
 			
@@ -45,7 +46,7 @@ export async function run(client, interaction) {
 		
 		const is_april_fools = isAprilFools();
 		const power_to_show = is_april_fools ? 0 : power;
-		await interaction.reply({
+		await interaction.editReply({
 			content: `${ interaction.user }'s Pesto Power is **${ power_to_show }%**, ${ getPPCheckMessage(power_to_show) } ${ data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${ is_april_fools ? 0 : data.power }%)` : "" }\n-# Checks reset <t:${ expire_timestamp_in_seconds }:R> (<t:${ expire_timestamp_in_seconds }>)`,
 		});
 		
@@ -60,9 +61,8 @@ export async function run(client, interaction) {
 		if (rows.length === 0) await db.query(db.format("INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)", [interaction.user.id, power === Infinity ? 1000 : power, Date.now(), expire_timestamp]));
 	} catch (err) {
 		console.error(err);
-		await interaction.reply({
+		await interaction.editReply({
 			content: "Something went wrong!",
-			flags: MessageFlags.Ephemeral,
 		});
 	}
 }
