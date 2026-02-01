@@ -62,6 +62,7 @@ export const PPCHECK_MESSAGES = {
 export function getPPCheckMessage(power) {
 	if (power === Infinity) return PPCHECK_MESSAGES["Infinity"][Math.floor(Math.random() * PPCHECK_MESSAGES["Infinity"].length)];
 	else if (power <= -100) return PPCHECK_MESSAGES["-100"][Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)];
+	else if (power === -67) return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
 	else if (power === -69) return PPCHECK_MESSAGES["-69"][Math.floor(Math.random() * PPCHECK_MESSAGES["-69"].length)];
 	else if (power < -80) return PPCHECK_MESSAGES["-99"][Math.floor(Math.random() * PPCHECK_MESSAGES["-99"].length)];
 	else if (power < -50) return PPCHECK_MESSAGES["-80"][Math.floor(Math.random() * PPCHECK_MESSAGES["-80"].length)];
