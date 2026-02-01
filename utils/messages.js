@@ -31,6 +31,11 @@ export const PPCHECK_MESSAGES = {
 		"nice... <:yuniiGasm:1281945197655363655>",
 		"The legendary number has chosen you! Nice.. <:yuniiGasm:1281945197655363655>",
 	],
+	"67": [
+		"6 7.. why must it be this way <:CEASE:1467663506387112051>",
+		"The 6 7 has chosen you. Is this a blessing, or a curse?",
+		"The third most legendary number has chosen you! what a time to be alive! <:yuniiGasm:1281945197655363655>",
+	],
 	"20": [
 		"So smol, can't even see it! <:yuniiWut:1281948023819337812>",
 		"It's trying its best, okay? <:pestoSlime:1298958398577971220>",
@@ -57,12 +62,14 @@ export const PPCHECK_MESSAGES = {
 export function getPPCheckMessage(power) {
 	if (power === Infinity) return PPCHECK_MESSAGES["Infinity"][Math.floor(Math.random() * PPCHECK_MESSAGES["Infinity"].length)];
 	else if (power <= -100) return PPCHECK_MESSAGES["-100"][Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)];
+	else if (power === -67) return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
 	else if (power === -69) return PPCHECK_MESSAGES["-69"][Math.floor(Math.random() * PPCHECK_MESSAGES["-69"].length)];
 	else if (power < -80) return PPCHECK_MESSAGES["-99"][Math.floor(Math.random() * PPCHECK_MESSAGES["-99"].length)];
 	else if (power < -50) return PPCHECK_MESSAGES["-80"][Math.floor(Math.random() * PPCHECK_MESSAGES["-80"].length)];
 	else if (power < -20) return PPCHECK_MESSAGES["-50"][Math.floor(Math.random() * PPCHECK_MESSAGES["-50"].length)];
 	else if (power < 0) return PPCHECK_MESSAGES["-20"][Math.floor(Math.random() * PPCHECK_MESSAGES["-20"].length)];
 	else if (power === 0) return PPCHECK_MESSAGES["0"][Math.floor(Math.random() * PPCHECK_MESSAGES["0"].length)];
+	else if (power === 67) return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
 	else if (power === 69) return PPCHECK_MESSAGES["69"][Math.floor(Math.random() * PPCHECK_MESSAGES["69"].length)];
 	else if (power >= 100) return PPCHECK_MESSAGES["100"][Math.floor(Math.random() * PPCHECK_MESSAGES["100"].length)];
 	else if (power > 80) return PPCHECK_MESSAGES["99"][Math.floor(Math.random() * PPCHECK_MESSAGES["99"].length)];
