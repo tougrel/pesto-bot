@@ -1,5 +1,5 @@
 import { getHorniMessage, getPestoCoinsMessage, getPPCheckMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, isChristmasSeason, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
+import { getUTCExpireTimestamp, isAprilFools, isChristmasSeason, isJuly7th, isJuly9th, isNewYears, isWeekend, isYuniisBirthday } from "../utils/date.js";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
 import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "../utils/checks.js";
@@ -305,7 +305,15 @@ export function generatePPCheckPower(user_id) {
 		if (random <= 0.1) {
 			power = Math.floor(Math.random() * 101) - 100;
 		}
-	}
+  }
+
+  if (isJuly7th()) {
+    power = 67;
+  }
+
+  if (isJuly9th()) {
+    power = 69;
+  }
 	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * (101 - 50)) + 50;
@@ -330,6 +338,14 @@ export function generatePPCheckPower(user_id) {
 export function generateCluelessPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
 	
+  if (isJuly7th()) {
+    power = 67;
+  }
+
+  if (isJuly9th()) {
+    power = 69;
+  }
+	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * 51);
 	}
@@ -344,7 +360,15 @@ export function generateCluelessPower(user_id) {
 	
 	// Here we generate the power for our clueless king Aleg with a minimum of 100!
 	if (checkCluelessKing(user_id) && !isNewYears()) {
-		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+    power = Math.floor(Math.random() * (10000 - 100)) + 100;
+		
+		if (isJuly7th()) {
+      power = 6767;
+    }
+
+    if (isJuly9th()) {
+      power = 6969;
+    }
 
 		if (isChristmasSeason()) {
 			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
@@ -356,6 +380,14 @@ export function generateCluelessPower(user_id) {
 
 export function generateCopiumPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
+	
+  if (isJuly7th()) {
+    power = 67;
+  }
+
+  if (isJuly9th()) {
+    power = 69;
+  }
 	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * 51);
@@ -371,7 +403,15 @@ export function generateCopiumPower(user_id) {
 	
 	// Here we generate the power for our copium king Warlord with a minimum of 100!
 	if (checkCopiumKing(user_id) && !isNewYears()) {
-		power = Math.floor(Math.random() * (10000 - 100)) + 100;
+    power = Math.floor(Math.random() * (10000 - 100)) + 100;
+		
+		if (isJuly7th()) {
+      power = 6767;
+    }
+
+    if (isJuly9th()) {
+      power = 6969;
+    }
 
 		if (isChristmasSeason()) {
 			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
@@ -383,6 +423,14 @@ export function generateCopiumPower(user_id) {
 
 export function generateHorniPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
+	
+  if (isJuly7th()) {
+    power = 67;
+  }
+
+  if (isJuly9th()) {
+    power = 69;
+  }
 
 	if (isNewYears()) {
 		power = 50;
@@ -397,6 +445,14 @@ export function generateHorniPower(user_id) {
 
 export function generateFeetPower(user_id) {
 	let power = Math.floor(Math.random() * 101);
+	
+  if (isJuly7th()) {
+    power = 67;
+  }
+
+  if (isJuly9th()) {
+    power = 69;
+  }
 	
 	if (isChristmasSeason()) {
 		power = Math.floor(Math.random() * 51);
@@ -413,6 +469,14 @@ export function generateFeetPower(user_id) {
 	if (checkFeetKing(user_id)) {
 		power = Math.floor(Math.random() * (10000 - 100)) + 100;
 		
+    if (isJuly7th()) {
+      power = 6767;
+    }
+
+    if (isJuly9th()) {
+      power = 6969;
+    }
+		
 		if (isChristmasSeason() || isNewYears()) {
 			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
 		}
@@ -427,6 +491,14 @@ export function generateFeetPower(user_id) {
 
 export function generateMangoPower(userId) {
     let power = Math.floor(Math.random() * 101);
+    
+    if (isJuly7th()) {
+      power = 67;
+    }
+  
+    if (isJuly9th()) {
+      power = 69;
+    }
 
     if (isChristmasSeason()) {
         power = Math.floor(Math.random() * (101 - 50)) + 50;
@@ -435,6 +507,18 @@ export function generateMangoPower(userId) {
     // For our mango and mad king Zoiyyanino!
     if (userId === '198908340862976000') {
         power = Math.floor(Math.random() * (10000 - 100)) + 100;
+
+        if (isJuly7th()) {
+          power = 6767;
+        }
+
+        if (isJuly9th()) {
+          power = 6969;
+        }
+        
+    		if (isChristmasSeason() || isNewYears()) {
+     			power = Math.floor(Math.random() * (50000 - 10000)) + 10000;
+    		}
     }
 
     return power;
