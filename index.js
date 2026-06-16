@@ -111,7 +111,7 @@ client.on(Events.MessageCreate, async (message) => {
 					await message.react("1332418781133410446");
 				}
 			}
-		} else if (message.content.includes('rigged')) {
+		} else if (/(rigged|scam)/gi.test(message.content)) {
 		  const random = Math.random();
 			console.debug('[copiumKing] rigged', random);
 			if (random < 0.25) {
