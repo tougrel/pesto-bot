@@ -3,7 +3,6 @@ import { Events } from "discord.js";
 
 export default defineEvent({
     name: Events.MessageCreate,
-    once: true,
     run: async (client, message) => {
         // Why are bots here madge
         if (message.author.bot) {

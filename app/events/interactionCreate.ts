@@ -3,7 +3,6 @@ import { Events, MessageFlags } from "discord.js";
 
 export default defineEvent({
     name: Events.InteractionCreate,
-    once: true,
     run: async (client, interaction) => {
         if (interaction.isChatInputCommand()) {
             if (client.commands.has(interaction.commandName)) {
