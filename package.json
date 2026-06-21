@@ -1,6 +1,6 @@
 {
     "name": "pesto-bot",
-    "version": "0.2.12",
+    "version": "0.3.0",
     "description": "A simple discord bot for the pesties",
     "main": "app/index.ts",
     "type": "module",
