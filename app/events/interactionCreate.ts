@@ -10,8 +10,7 @@ export default defineEvent({
                 const command = client.commands.get(interaction.commandName);
 
                 const isInMaintenance = process.env.MAINTENANCE === "true";
-                const isDeveloper =
-                    interaction.user.id === process.env.DEVELOPER_DISCORD_ID;
+                const isDeveloper = interaction.user.id === process.env.DEVELOPER_DISCORD_ID;
                 const isSyri = interaction.user.id === "682284810030415903";
                 const isDog = interaction.user.id === "212975234427518979";
                 if (isInMaintenance && !isDeveloper && !isSyri && !isDog) {

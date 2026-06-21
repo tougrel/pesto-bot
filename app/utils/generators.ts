@@ -1,9 +1,4 @@
-import {
-    checkCluelessKing,
-    checkCopiumKing,
-    checkFeetKing,
-    checkPinkGoddess,
-} from "./checks.js";
+import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "./checks.js";
 import {
     isChristmasSeason,
     isJuly7th,

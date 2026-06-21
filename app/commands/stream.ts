@@ -17,9 +17,7 @@ export default defineCommand({
             return;
         }
 
-        const channel = interaction.guild.channels.cache.get(
-            "1380728375470981221",
-        );
+        const channel = interaction.guild.channels.cache.get("1380728375470981221");
         if (!channel.isVoiceBased()) {
             console.warn("[Stream] Channel is not a voice channel");
             return;
@@ -38,21 +36,18 @@ export default defineCommand({
             }
 
             try {
-                interaction.guild.members
-                    .fetch("682284810030415903")
-                    .then(async (syri) => {
-                        await syri.send({
-                            content:
-                                "WAKE UP SYRI YUNII IS STARTING A STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
-                        });
+                interaction.guild.members.fetch("682284810030415903").then(async (syri) => {
+                    await syri.send({
+                        content:
+                            "WAKE UP SYRI YUNII IS STARTING A STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
                     });
+                });
 
                 interaction.guild.members
                     .fetch(process.env.DEVELOPER_DISCORD_ID)
                     .then(async (syri) => {
                         await syri.send({
-                            content:
-                                "YUNII SECRET STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
+                            content: "YUNII SECRET STREAM!!! <a:pestoDinkDonk:1398743521271480381>",
                         });
                     });
             } catch (err) {
@@ -61,8 +56,7 @@ export default defineCommand({
 
             await interaction
                 .reply({
-                    content:
-                        "Channel has been enabled! Have fun streaming Yuyu!",
+                    content: "Channel has been enabled! Have fun streaming Yuyu!",
                     flags: MessageFlags.Ephemeral,
                 })
                 .catch(console.error);
@@ -75,14 +69,11 @@ export default defineCommand({
 
             try {
                 setTimeout(async () => {
-                    await channel.permissionOverwrites.edit(
-                        "1233481038215250193",
-                        {
-                            SendMessages: false,
-                            ViewChannel: false,
-                            Connect: false,
-                        },
-                    );
+                    await channel.permissionOverwrites.edit("1233481038215250193", {
+                        SendMessages: false,
+                        ViewChannel: false,
+                        Connect: false,
+                    });
 
                     if (channel.members.size > 0) {
                         for (let member of channel.members.values()) {
@@ -98,8 +89,7 @@ export default defineCommand({
 
             await interaction
                 .reply({
-                    content:
-                        "Successfully kicked all users and disabled the channel!",
+                    content: "Successfully kicked all users and disabled the channel!",
                     flags: MessageFlags.Ephemeral,
                 })
                 .catch(console.error);

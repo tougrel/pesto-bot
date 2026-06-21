@@ -7,8 +7,7 @@ export default defineCommand({
             // content: "https://cdn.pestoverse.world/yunya/save-streak.png",
             files: [
                 {
-                    attachment:
-                        "https://cdn.pestoverse.world/yunya/save-streak.png",
+                    attachment: "https://cdn.pestoverse.world/yunya/save-streak.png",
                     name: "save-streak.png",
                 },
             ],

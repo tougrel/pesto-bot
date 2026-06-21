@@ -30,40 +30,25 @@ export default defineCommand({
                 let feet_power = Utils.generateFeetPower(interaction.user.id);
                 let mango_power = Utils.generateMangoPower(interaction.user.id);
 
-                const [
-                    pp_expired,
-                    clueless_expired,
-                    copium_expired,
-                    horni_expired,
-                ] = await checkForExpired(
-                    data.pp_expires,
-                    data.clueless_expires,
-                    data.copium_expires,
-                    data.horni_expires,
-                );
-                if (pp_expired)
-                    pp_power = Utils.generatePPCheckPower(interaction.user.id);
+                const [pp_expired, clueless_expired, copium_expired, horni_expired] =
+                    await checkForExpired(
+                        data.pp_expires,
+                        data.clueless_expires,
+                        data.copium_expires,
+                        data.horni_expires,
+                    );
+                if (pp_expired) pp_power = Utils.generatePPCheckPower(interaction.user.id);
                 if (clueless_expired)
-                    clueless_power = Utils.generateCluelessPower(
-                        interaction.user.id,
-                    );
-                if (copium_expired)
-                    copium_power = Utils.generateCopiumPower(
-                        interaction.user.id,
-                    );
-                if (horni_expired)
-                    horni_power = Utils.generateHorniPower(interaction.user.id);
+                    clueless_power = Utils.generateCluelessPower(interaction.user.id);
+                if (copium_expired) copium_power = Utils.generateCopiumPower(interaction.user.id);
+                if (horni_expired) horni_power = Utils.generateHorniPower(interaction.user.id);
 
                 const is_april_fools = Utils.isAprilFools();
                 const expire_timestamp = Utils.getUTCExpireTimestamp();
-                const expire_timestamp_in_seconds = Math.round(
-                    expire_timestamp / 1000,
-                );
+                const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
                 const pp_power_to_show = is_april_fools ? 0 : pp_power;
-                const clueless_power_to_show = is_april_fools
-                    ? 0
-                    : clueless_power;
+                const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
                 const copium_power_to_show = is_april_fools ? 0 : copium_power;
                 const horni_power_to_show = is_april_fools ? 0 : horni_power;
                 const feet_power_to_show = is_april_fools ? -100 : feet_power;
@@ -73,9 +58,7 @@ export default defineCommand({
                     components: [
                         {
                             type: ComponentType.Container,
-                            accent_color: Utils.isChristmasSeason()
-                                ? 0xff0000
-                                : undefined,
+                            accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
@@ -110,9 +93,7 @@ export default defineCommand({
                             components: [
                                 {
                                     type: ComponentType.Container,
-                                    accent_color: Utils.isChristmasSeason()
-                                        ? 0xff0000
-                                        : undefined,
+                                    accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
                                     components: [
                                         {
                                             type: ComponentType.TextDisplay,
@@ -146,39 +127,28 @@ export default defineCommand({
                     await db.query(
                         db.format(
                             "INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)",
-                            [
-                                interaction.user.id,
-                                pp_power,
-                                Date.now(),
-                                expire_timestamp,
-                            ],
+                            [interaction.user.id, pp_power, Date.now(), expire_timestamp],
                         ),
                     );
                 }
 
                 if (clueless_expired) {
                     await db.query(
-                        db.format(
-                            "INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)",
-                            [
-                                interaction.user.id,
-                                clueless_power,
-                                expire_timestamp,
-                            ],
-                        ),
+                        db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
+                            interaction.user.id,
+                            clueless_power,
+                            expire_timestamp,
+                        ]),
                     );
                 }
 
                 if (copium_expired) {
                     await db.query(
-                        db.format(
-                            "INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)",
-                            [
-                                interaction.user.id,
-                                copium_power,
-                                expire_timestamp,
-                            ],
-                        ),
+                        db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
+                            interaction.user.id,
+                            copium_power,
+                            expire_timestamp,
+                        ]),
                     );
                 }
 
@@ -186,11 +156,7 @@ export default defineCommand({
                     await db.query(
                         db.format(
                             "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
-                            [
-                                interaction.user.id,
-                                horni_power,
-                                expire_timestamp,
-                            ],
+                            [interaction.user.id, horni_power, expire_timestamp],
                         ),
                     );
                 }
@@ -205,8 +171,7 @@ export default defineCommand({
                         ),
                     );
                     if (rows.length === 0) {
-                        const { coins, negative } =
-                            Utils.generatePestoCoins(pp_power);
+                        const { coins, negative } = Utils.generatePestoCoins(pp_power);
                         await db.query(
                             db.format(
                                 "INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)",
@@ -227,13 +192,9 @@ export default defineCommand({
                         );
 
                         const coin_emote =
-                            await client.application.emojis.fetch(
-                                "1398010839667179531",
-                            );
+                            await client.application.emojis.fetch("1398010839667179531");
                         await interaction.followUp({
-                            flags:
-                                MessageFlags.Ephemeral |
-                                MessageFlags.IsComponentsV2,
+                            flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
                             components: [
                                 {
                                     type: ComponentType.Container,
@@ -243,13 +204,9 @@ export default defineCommand({
                                             components: [
                                                 {
                                                     type: ComponentType.TextDisplay,
-                                                    content:
-                                                        Utils.getPestoCoinsMessage(
-                                                            negative,
-                                                        ).replace(
-                                                            /\{coins}/,
-                                                            coins.toString(),
-                                                        ),
+                                                    content: Utils.getPestoCoinsMessage(
+                                                        negative,
+                                                    ).replace(/\{coins}/, coins.toString()),
                                                 },
                                             ],
                                             accessory: {
@@ -269,29 +226,19 @@ export default defineCommand({
                 }
             } else {
                 let pp_power = Utils.generatePPCheckPower(interaction.user.id);
-                let clueless_power = Utils.generateCluelessPower(
-                    interaction.user.id,
-                );
-                let copium_power = Utils.generateCopiumPower(
-                    interaction.user.id,
-                );
+                let clueless_power = Utils.generateCluelessPower(interaction.user.id);
+                let copium_power = Utils.generateCopiumPower(interaction.user.id);
                 let horni_power = Utils.generateHorniPower(interaction.user.id);
                 // Maybe change this in the future to be included in the database. For now, it's exclusive to one user
                 let feet_power = Utils.generateFeetPower(interaction.user.id);
-                const mango_power = Utils.generateMangoPower(
-                    interaction.user.id,
-                );
+                const mango_power = Utils.generateMangoPower(interaction.user.id);
 
                 const is_april_fools = Utils.isAprilFools();
                 const expire_timestamp = Utils.getUTCExpireTimestamp();
-                const expire_timestamp_in_seconds = Math.round(
-                    expire_timestamp / 1000,
-                );
+                const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
                 const pp_power_to_show = is_april_fools ? 0 : pp_power;
-                const clueless_power_to_show = is_april_fools
-                    ? 0
-                    : clueless_power;
+                const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
                 const copium_power_to_show = is_april_fools ? 0 : copium_power;
                 const horni_power_to_show = is_april_fools ? 0 : horni_power;
                 const feet_power_to_show = is_april_fools ? -100 : feet_power;
@@ -302,9 +249,7 @@ export default defineCommand({
                     components: [
                         {
                             type: ComponentType.Container,
-                            accent_color: Utils.isChristmasSeason()
-                                ? 0xff0000
-                                : undefined,
+                            accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
@@ -339,9 +284,7 @@ export default defineCommand({
                             components: [
                                 {
                                     type: ComponentType.Container,
-                                    accent_color: Utils.isChristmasSeason()
-                                        ? 0xff0000
-                                        : undefined,
+                                    accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
                                     components: [
                                         {
                                             type: ComponentType.TextDisplay,
@@ -383,22 +326,25 @@ export default defineCommand({
                     ),
                 );
                 await db.query(
-                    db.format(
-                        "INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)",
-                        [interaction.user.id, clueless_power, expire_timestamp],
-                    ),
+                    db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
+                        interaction.user.id,
+                        clueless_power,
+                        expire_timestamp,
+                    ]),
                 );
                 await db.query(
-                    db.format(
-                        "INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)",
-                        [interaction.user.id, copium_power, expire_timestamp],
-                    ),
+                    db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
+                        interaction.user.id,
+                        copium_power,
+                        expire_timestamp,
+                    ]),
                 );
                 await db.query(
-                    db.format(
-                        "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
-                        [interaction.user.id, horni_power, expire_timestamp],
-                    ),
+                    db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [
+                        interaction.user.id,
+                        horni_power,
+                        expire_timestamp,
+                    ]),
                 );
 
                 try {
@@ -409,8 +355,7 @@ export default defineCommand({
                         ),
                     );
                     if (rows.length === 0) {
-                        const { coins, negative } =
-                            Utils.generatePestoCoins(pp_power);
+                        const { coins, negative } = Utils.generatePestoCoins(pp_power);
                         await db.query(
                             db.format(
                                 "INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)",
@@ -431,13 +376,9 @@ export default defineCommand({
                         );
 
                         const coin_emote =
-                            await client.application.emojis.fetch(
-                                "1398010839667179531",
-                            );
+                            await client.application.emojis.fetch("1398010839667179531");
                         await interaction.followUp({
-                            flags:
-                                MessageFlags.Ephemeral |
-                                MessageFlags.IsComponentsV2,
+                            flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
                             components: [
                                 {
                                     type: ComponentType.Container,
@@ -447,13 +388,9 @@ export default defineCommand({
                                             components: [
                                                 {
                                                     type: ComponentType.TextDisplay,
-                                                    content:
-                                                        Utils.getPestoCoinsMessage(
-                                                            negative,
-                                                        ).replace(
-                                                            /\{coins}/,
-                                                            coins.toString(),
-                                                        ),
+                                                    content: Utils.getPestoCoinsMessage(
+                                                        negative,
+                                                    ).replace(/\{coins}/, coins.toString()),
                                                 },
                                             ],
                                             accessory: {

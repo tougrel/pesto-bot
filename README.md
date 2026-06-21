@@ -1,9 +1,11 @@
 # Yunya Discord Bot
+
 A Discord bot with fun features and moderation tools built for Yuniiho's community server!
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v16 or higher recommended)
 - A Discord Bot Token ([Get one here](https://discord.com/developers/applications))
 - Discord.js library
@@ -11,18 +13,21 @@ A Discord bot with fun features and moderation tools built for Yuniiho's communi
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/tougrel/pesto-bot.git
 cd pesto-bot
 ```
 
 2. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 3. Configure your bot:
    - Create a `.env` file in the root directory with the following:
+
    ```env
    BOT_TOKEN=your_bot_token
    APP_ID=your_client_id
@@ -37,6 +42,7 @@ pnpm install
    ```
 
 4. To start the bot in development mode:
+
 ```bash
 pnpm dev
 ```
@@ -44,6 +50,7 @@ pnpm dev
 ## 📝 Configuration
 
 Edit the configuration files to customize bot behavior for your server:
+
 - Update command settings
 - Configure moderation parameters
 - Set up role permissions

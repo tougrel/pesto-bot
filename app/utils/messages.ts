@@ -46,10 +46,7 @@ export const PPCHECK_MESSAGES = {
         "hmm... decent size! <:yuniiPog:1281948035181711400>",
         "Definitely nothing to be ashamed of!",
     ],
-    "80": [
-        "Beeg! Nice! <:yuniiUwaa:1281948029431316530>",
-        "Impressive... most impressive",
-    ],
+    "80": ["Beeg! Nice! <:yuniiUwaa:1281948029431316530>", "Impressive... most impressive"],
     "99": [
         "Enormous, Gigantic! Overflowing with pesto! <:yuniiCultured:1281948041032765490>",
         "NASA wants to study this cosmic anomaly <:pestoDetective:1298959707888812042>",
@@ -71,61 +68,32 @@ export function getPPCheckMessage(power: number): string {
             Math.floor(Math.random() * PPCHECK_MESSAGES["-100"].length)
         ];
     else if (power === -67)
-        return PPCHECK_MESSAGES["67"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)
-        ];
+        return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
     else if (power === -69)
-        return PPCHECK_MESSAGES["-69"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["-69"].length)
-        ];
+        return PPCHECK_MESSAGES["-69"][Math.floor(Math.random() * PPCHECK_MESSAGES["-69"].length)];
     else if (power < -80)
-        return PPCHECK_MESSAGES["-99"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["-99"].length)
-        ];
+        return PPCHECK_MESSAGES["-99"][Math.floor(Math.random() * PPCHECK_MESSAGES["-99"].length)];
     else if (power < -50)
-        return PPCHECK_MESSAGES["-80"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["-80"].length)
-        ];
+        return PPCHECK_MESSAGES["-80"][Math.floor(Math.random() * PPCHECK_MESSAGES["-80"].length)];
     else if (power < -20)
-        return PPCHECK_MESSAGES["-50"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["-50"].length)
-        ];
+        return PPCHECK_MESSAGES["-50"][Math.floor(Math.random() * PPCHECK_MESSAGES["-50"].length)];
     else if (power < 0)
-        return PPCHECK_MESSAGES["-20"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["-20"].length)
-        ];
+        return PPCHECK_MESSAGES["-20"][Math.floor(Math.random() * PPCHECK_MESSAGES["-20"].length)];
     else if (power === 0)
-        return PPCHECK_MESSAGES["0"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["0"].length)
-        ];
+        return PPCHECK_MESSAGES["0"][Math.floor(Math.random() * PPCHECK_MESSAGES["0"].length)];
     else if (power === 67)
-        return PPCHECK_MESSAGES["67"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)
-        ];
+        return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
     else if (power === 69)
-        return PPCHECK_MESSAGES["69"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["69"].length)
-        ];
+        return PPCHECK_MESSAGES["69"][Math.floor(Math.random() * PPCHECK_MESSAGES["69"].length)];
     else if (power >= 100)
-        return PPCHECK_MESSAGES["100"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["100"].length)
-        ];
+        return PPCHECK_MESSAGES["100"][Math.floor(Math.random() * PPCHECK_MESSAGES["100"].length)];
     else if (power > 80)
-        return PPCHECK_MESSAGES["99"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["99"].length)
-        ];
+        return PPCHECK_MESSAGES["99"][Math.floor(Math.random() * PPCHECK_MESSAGES["99"].length)];
     else if (power > 50)
-        return PPCHECK_MESSAGES["80"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["80"].length)
-        ];
+        return PPCHECK_MESSAGES["80"][Math.floor(Math.random() * PPCHECK_MESSAGES["80"].length)];
     else if (power > 20)
-        return PPCHECK_MESSAGES["50"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["50"].length)
-        ];
-    else
-        return PPCHECK_MESSAGES["20"][
-            Math.floor(Math.random() * PPCHECK_MESSAGES["20"].length)
-        ];
+        return PPCHECK_MESSAGES["50"][Math.floor(Math.random() * PPCHECK_MESSAGES["50"].length)];
+    else return PPCHECK_MESSAGES["20"][Math.floor(Math.random() * PPCHECK_MESSAGES["20"].length)];
 }
 
 export function getHorniMessage(power: number): string {

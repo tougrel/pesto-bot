@@ -22,12 +22,7 @@ const pool = createPool({
 });
 
 const client = new Client({
-    partials: [
-        Partials.User,
-        Partials.GuildMember,
-        Partials.Channel,
-        Partials.Message,
-    ],
+    partials: [Partials.User, Partials.GuildMember, Partials.Channel, Partials.Message],
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
@@ -51,9 +46,7 @@ client.database = pool;
 client.commands = new Collection();
 
 const eventsPath = join(import.meta.dirname, "events");
-const eventFiles = readdirSync(eventsPath).filter((file) =>
-    file.endsWith(".ts"),
-);
+const eventFiles = readdirSync(eventsPath).filter((file) => file.endsWith(".ts"));
 
 for (const file of eventFiles) {
     const filePath = join(eventsPath, file);

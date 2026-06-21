@@ -11,32 +11,18 @@ export default defineCommand({
         try {
             const db = client.database;
             const [rows] = await db.query<RowDataPacket[]>(
-                db.format(
-                    "SELECT user_id, avg_power, total_rolls from TheCouncil",
-                ),
+                db.format("SELECT user_id, avg_power, total_rolls from TheCouncil"),
             );
             const [full] = await db.query<RowDataPacket[]>(
-                db.format(
-                    "SELECT user_id, avg_power, total_rolls from TheCouncilFull",
-                ),
+                db.format("SELECT user_id, avg_power, total_rolls from TheCouncilFull"),
             );
 
-            const aleg = full.filter(
-                (row) => row.user_id === "236642620506374145",
-            );
-            const warlord = full.filter(
-                (row) => row.user_id === "124963012321738752",
-            );
-            const user = full.filter(
-                (row) => row.user_id === interaction.user.id,
-            );
-            const userIndex = full.findIndex(
-                (row) => row.user_id === interaction.user.id,
-            );
+            const aleg = full.filter((row) => row.user_id === "236642620506374145");
+            const warlord = full.filter((row) => row.user_id === "124963012321738752");
+            const user = full.filter((row) => row.user_id === interaction.user.id);
+            const userIndex = full.findIndex((row) => row.user_id === interaction.user.id);
 
-            const council_emote = await client.application.emojis.fetch(
-                "1398244533950480534",
-            );
+            const council_emote = await client.application.emojis.fetch("1398244533950480534");
             await interaction.editReply({
                 flags: MessageFlags.IsComponentsV2,
                 components: [

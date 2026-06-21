@@ -6,15 +6,11 @@ export default defineEvent({
     name: Events.GuildMemberAdd,
     run: async (client, member) => {
         // Get the config
-        const config = JSON.parse(
-            (await readFile("configs/config.json")).toString(),
-        );
+        const config = JSON.parse((await readFile("configs/config.json")).toString());
 
         const isBot = member.user.bot;
         const isKickable = member.kickable;
-        const hasBypass = member.flags.has(
-            GuildMemberFlags.BypassesVerification,
-        );
+        const hasBypass = member.flags.has(GuildMemberFlags.BypassesVerification);
 
         // If the system is not enabled, the member has the bypass verification flag and the member is not kickable then stop here
         if (!config.enabled || isBot || hasBypass || !isKickable) {

@@ -1,11 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
-import {
-    getUTCExpireTimestamp,
-    isAprilFools,
-    getHorniMessage,
-    generateHorniPower,
-} from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, getHorniMessage, generateHorniPower } from "@utils";
 import { MessageFlags } from "discord.js";
 
 export default defineCommand({
@@ -15,16 +10,11 @@ export default defineCommand({
 
         try {
             await interaction.deferReply({
-                flags:
-                    user && user.id !== interaction.user.id
-                        ? MessageFlags.Ephemeral
-                        : undefined,
+                flags: user && user.id !== interaction.user.id ? MessageFlags.Ephemeral : undefined,
             });
 
             const db = client.database;
-            const power = generateHorniPower(
-                user ? user.id : interaction.user.id,
-            );
+            const power = generateHorniPower(user ? user.id : interaction.user.id);
 
             const [rows] = await db.query<RowDataPacket[]>(
                 db.format(
@@ -34,13 +24,9 @@ export default defineCommand({
             );
             const data = rows.length > 0 ? rows[0] : undefined;
             const is_april_fools = isAprilFools();
-            const has_expired = data?.expires
-                ? Date.now() >= data.expires
-                : false;
+            const has_expired = data?.expires ? Date.now() >= data.expires : false;
             const expire_timestamp = getUTCExpireTimestamp();
-            const expire_timestamp_in_seconds = Math.round(
-                expire_timestamp / 1000,
-            );
+            const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
             const power_to_show = is_april_fools ? 50 : power;
 
             const member = interaction.guild.members.cache.get(
@@ -60,10 +46,11 @@ export default defineCommand({
 
             if (!user) {
                 await db.query(
-                    db.format(
-                        "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
-                        [interaction.user.id, power, expire_timestamp],
-                    ),
+                    db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [
+                        interaction.user.id,
+                        power,
+                        expire_timestamp,
+                    ]),
                 );
             }
         } catch (err) {

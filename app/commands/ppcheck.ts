@@ -2,11 +2,7 @@ import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
 import { Collection, MessageFlags } from "discord.js";
 import { getPPCheckMessage } from "../utils/messages.js";
-import {
-    getUTCExpireTimestamp,
-    isAprilFools,
-    generatePPCheckPower,
-} from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower } from "@utils";
 
 export const scamCollection = new Collection<string, number>();
 
@@ -17,19 +13,16 @@ export default defineCommand({
 
         try {
             await interaction.deferReply({
-                flags:
-                    user && user.id !== interaction.user.id
-                        ? MessageFlags.Ephemeral
-                        : undefined,
+                flags: user && user.id !== interaction.user.id ? MessageFlags.Ephemeral : undefined,
             });
 
             const db = client.database;
             if (user && user.id !== interaction.user.id) {
                 const [rows] = await db.query<RowDataPacket[]>(
-                    db.format(
-                        "SELECT power FROM PPCheck WHERE user_id = ? AND expires >= ?",
-                        [user.id, Date.now()],
-                    ),
+                    db.format("SELECT power FROM PPCheck WHERE user_id = ? AND expires >= ?", [
+                        user.id,
+                        Date.now(),
+                    ]),
                 );
 
                 if (rows.length > 0) {
@@ -58,20 +51,16 @@ export default defineCommand({
             }
 
             const [rows] = await db.query<RowDataPacket[]>(
-                db.format(
-                    "SELECT power, expires FROM PPCheck WHERE user_id = ? AND expires >= ?",
-                    [interaction.user.id, Date.now()],
-                ),
+                db.format("SELECT power, expires FROM PPCheck WHERE user_id = ? AND expires >= ?", [
+                    interaction.user.id,
+                    Date.now(),
+                ]),
             );
             const data = rows.length > 0 ? rows[0] : undefined;
-            const hasExpired = data?.expires
-                ? Date.now() >= data.expires
-                : false;
+            const hasExpired = data?.expires ? Date.now() >= data.expires : false;
 
             const expire_timestamp = getUTCExpireTimestamp();
-            const expire_timestamp_in_seconds = Math.round(
-                expire_timestamp / 1000,
-            );
+            const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
             const is_april_fools = isAprilFools();
             const power_to_show = is_april_fools ? 0 : power;

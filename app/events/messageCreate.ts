@@ -12,13 +12,11 @@ export default defineEvent({
 
         if (message.content.startsWith("!blamemerry")) {
             await message.channel.send({
-                content:
-                    "<:blameMerry1:1404817851919110264><:blameMerry2:1404817860773150762>",
+                content: "<:blameMerry1:1404817851919110264><:blameMerry2:1404817860773150762>",
             });
         }
 
-        const isDaDeveloper =
-            message.author.id === process.env.DEVELOPER_DISCORD_ID;
+        const isDaDeveloper = message.author.id === process.env.DEVELOPER_DISCORD_ID;
         // if (checkBanker(message.author.id.toString()) || isDaDeveloper) {
         //     if (
         //         message.content.startsWith(

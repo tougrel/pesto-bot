@@ -3,5 +3,5 @@ import type { Pool } from "mysql2/promise";
 
 export interface PestoClient extends Client {
     database: Pool;
-	commands: Collection<string, PestoCommand>;
+    commands: Collection<string, PestoCommand>;
 }

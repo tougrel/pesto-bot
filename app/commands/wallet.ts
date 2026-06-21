@@ -11,16 +11,12 @@ export default defineCommand({
         try {
             const db = client.database;
             const [rows] = await db.query<RowDataPacket[]>(
-                db.format("SELECT coins from Wallet WHERE id = ?", [
-                    interaction.user.id,
-                ]),
+                db.format("SELECT coins from Wallet WHERE id = ?", [interaction.user.id]),
             );
 
             if (rows.length === 0) {
                 await db.query(
-                    db.format("INSERT INTO Wallet(id) VALUES(?)", [
-                        interaction.user.id,
-                    ]),
+                    db.format("INSERT INTO Wallet(id) VALUES(?)", [interaction.user.id]),
                 );
                 await this.run(client, interaction);
 
@@ -29,15 +25,9 @@ export default defineCommand({
 
             const user = rows[0];
             const coins = user?.coins || 0;
-            const coin_emote = await client.application.emojis.fetch(
-                "1398010839667179531",
-            );
-            const waddle_emote = await client.application.emojis.fetch(
-                "1283532105988571136",
-            );
-            const corpa_emote = await client.application.emojis.fetch(
-                "1398222323399524423",
-            );
+            const coin_emote = await client.application.emojis.fetch("1398010839667179531");
+            const waddle_emote = await client.application.emojis.fetch("1283532105988571136");
+            const corpa_emote = await client.application.emojis.fetch("1398222323399524423");
             await interaction.editReply({
                 flags: MessageFlags.IsComponentsV2,
                 components: [

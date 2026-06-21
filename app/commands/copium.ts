@@ -1,10 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
-import {
-    getUTCExpireTimestamp,
-    isAprilFools,
-    generateCopiumPower,
-} from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generateCopiumPower } from "@utils";
 import { MessageFlags } from "discord.js";
 
 export default defineCommand({
@@ -14,19 +10,16 @@ export default defineCommand({
 
         try {
             await interaction.deferReply({
-                flags:
-                    user && user.id !== interaction.user.id
-                        ? MessageFlags.Ephemeral
-                        : undefined,
+                flags: user && user.id !== interaction.user.id ? MessageFlags.Ephemeral : undefined,
             });
 
             const db = client.database;
             if (user && user.id !== interaction.user.id) {
                 const [rows] = await db.query<RowDataPacket[]>(
-                    db.format(
-                        "SELECT power FROM Copium WHERE user_id = ? AND expires >= ?",
-                        [user.id, Date.now()],
-                    ),
+                    db.format("SELECT power FROM Copium WHERE user_id = ? AND expires >= ?", [
+                        user.id,
+                        Date.now(),
+                    ]),
                 );
 
                 if (rows.length > 0) {
@@ -49,10 +42,10 @@ export default defineCommand({
 
             const is_april_fools = isAprilFools();
             const [rows] = await db.query<RowDataPacket[]>(
-                db.format(
-                    "SELECT power, expires FROM Copium WHERE user_id = ? AND expires >= ?",
-                    [interaction.user.id, Date.now()],
-                ),
+                db.format("SELECT power, expires FROM Copium WHERE user_id = ? AND expires >= ?", [
+                    interaction.user.id,
+                    Date.now(),
+                ]),
             );
             if (rows.length > 0) {
                 const data = rows[0];
@@ -74,9 +67,7 @@ export default defineCommand({
             }
 
             const expire_timestamp = getUTCExpireTimestamp();
-            const expire_timestamp_in_seconds = Math.round(
-                expire_timestamp / 1000,
-            );
+            const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
             let power = generateCopiumPower(interaction.user.id);
 
             // Here we generate the power for our copiun king Warlord with a minimum of 100!
@@ -97,10 +88,11 @@ export default defineCommand({
             }
 
             await db.query(
-                db.format(
-                    "INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)",
-                    [interaction.user.id, power, expire_timestamp],
-                ),
+                db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
+                    interaction.user.id,
+                    power,
+                    expire_timestamp,
+                ]),
             );
         } catch (err) {
             console.error(err);
