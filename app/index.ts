@@ -10,15 +10,15 @@ import { createPool } from "mysql2/promise";
 import { createConsola } from "consola";
 
 createConsola({
-    level: import.meta.env.DEVELOPMENT === "true" ? 999 : 4,
+    level: import.meta.env.NODE_ENV === "development" ? 999 : 4,
 }).wrapAll();
 
 const pool = createPool({
-    host: process.env.DATABASE_HOST,
-    port: Number(process.env.DATABASE_PORT),
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: process.env.DATABASE_DATA,
+    host: import.meta.env.DATABASE_HOST,
+    port: Number(import.meta.env.DATABASE_PORT),
+    user: import.meta.env.DATABASE_USER,
+    password: import.meta.env.DATABASE_PASS,
+    database: import.meta.env.DATABASE_DATA,
 });
 
 const client = new Client({
@@ -60,4 +60,4 @@ for (const file of eventFiles) {
     }
 }
 
-client.login(process.env.BOT_TOKEN).catch(console.error);
+client.login(import.meta.env.BOT_TOKEN).catch(console.error);

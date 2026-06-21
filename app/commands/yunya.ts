@@ -5,8 +5,8 @@ import { MessageFlags } from "discord.js";
 export default defineCommand({
     name: "yunya",
     async run(client, interaction) {
-        const isMaintenance = process.env.MAINTENANCE === "true";
-        const isDev = interaction.user.id === process.env.DEVELOPER_DISCORD_ID;
+        const isMaintenance = import.meta.env.MAINTENANCE === "true";
+        const isDev = interaction.user.id === import.meta.env.DEVELOPER_DISCORD_ID;
         const isSyri = interaction.user.id === "682284810030415903";
         const isDog = interaction.user.id === "212975234427518979";
 

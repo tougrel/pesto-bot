@@ -4,8 +4,8 @@ import { MessageFlags } from "discord.js";
 export default defineCommand({
     name: "stream",
     async run(_client, interaction) {
-        const isMaintenance = process.env.MAINTENANCE === "true";
-        const isDev = interaction.user.id === process.env.DEVELOPER_DISCORD_ID;
+        const isMaintenance = import.meta.env.MAINTENANCE === "true";
+        const isDev = interaction.user.id === import.meta.env.DEVELOPER_DISCORD_ID;
         const isSyri = interaction.user.id === "682284810030415903";
         const isDog = interaction.user.id === "212975234427518979";
 
@@ -44,7 +44,7 @@ export default defineCommand({
                 });
 
                 interaction.guild.members
-                    .fetch(process.env.DEVELOPER_DISCORD_ID)
+                    .fetch(import.meta.env.DEVELOPER_DISCORD_ID)
                     .then(async (syri) => {
                         await syri.send({
                             content: "YUNII SECRET STREAM!!! <a:pestoDinkDonk:1398743521271480381>",

@@ -1,4 +1,5 @@
 import "dotenv/config";
+
 import { Routes, PermissionFlagsBits } from "discord-api-types/v10";
 import {
     REST,
@@ -67,7 +68,7 @@ const commands = [
                         ])
                         .setRequired(true),
                 ),
-    ),
+        ),
 
     // stream command
     new SlashCommandBuilder()
@@ -83,7 +84,7 @@ const commands = [
             new SlashCommandSubcommandBuilder()
                 .setName("off")
                 .setDescription("Kick everyone from the channel and disable it"),
-    ),
+        ),
 
     // bite command
     new SlashCommandBuilder()
@@ -95,7 +96,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to bite")
                 .setRequired(true),
-    ),
+        ),
 
     // allchecks command
     new SlashCommandBuilder()
@@ -115,7 +116,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-    ),
+        ),
 
     // clueless command
     new SlashCommandBuilder()
@@ -127,7 +128,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-    ),
+        ),
 
     // copium command
     new SlashCommandBuilder()
@@ -139,7 +140,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-    ),
+        ),
 
     // mangocheck command
     new SlashCommandBuilder()
@@ -151,7 +152,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-    ),
+        ),
 
     // feetcheck command
     new SlashCommandBuilder()
@@ -175,7 +176,7 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-    ),
+        ),
 
     // eval command
     new SlashCommandBuilder()
@@ -187,7 +188,7 @@ const commands = [
                 .setName("code")
                 .setDescription("The code that will get executed")
                 .setRequired(true),
-    ),
+        ),
 
     // hug command
     new SlashCommandBuilder()
@@ -205,7 +206,7 @@ const commands = [
                 .setName("tag")
                 .setDescription("Do you want to tag the pestie you are hugging?")
                 .setRequired(false),
-    ),
+        ),
 
     // kiss command
     new SlashCommandBuilder()
@@ -223,7 +224,7 @@ const commands = [
                 .setName("tag")
                 .setDescription("Do you want to tag the pestie you are kissing?")
                 .setRequired(false),
-    ),
+        ),
 
     // cult command
     new SlashCommandBuilder()
@@ -250,7 +251,7 @@ const commands = [
             new SlashCommandSubcommandBuilder()
                 .setName("leave")
                 .setDescription("Leave your current cult"),
-    ),
+        ),
 
     // wallet command
     new SlashCommandBuilder()

@@ -15,7 +15,7 @@ export default defineEvent({
             });
         }
 
-        const isDaDeveloper = message.author.id === process.env.DEVELOPER_DISCORD_ID;
+        const isDaDeveloper = message.author.id === import.meta.env.DEVELOPER_DISCORD_ID;
         // if (checkBanker(message.author.id.toString()) || isDaDeveloper) {
         //     if (
         //         message.content.startsWith(
