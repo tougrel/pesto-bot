@@ -35,6 +35,6 @@
             "@utils": ["./app/utils/index.ts"]
         }
     },
-    "include": ["app/**/*.ts", "app/**/*.d.ts"],
+    "include": ["app/**/*.ts", "app/**/*.d.ts", "scripts/**/*.ts"],
     "exclude": ["node_modules", "package.json"]
 }
