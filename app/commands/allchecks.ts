@@ -18,313 +18,66 @@ export default defineCommand({
                 ),
             );
 
-            if (rows.length > 0) {
-                const data = rows[0];
+            const is_april_fools = Utils.isAprilFools();
+            const expire_timestamp = Utils.getUTCExpireTimestamp();
+            const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
-                let pp_power = data.pp_power || 0;
-                let clueless_power = data.clueless_power || 0;
-                let copium_power = data.copium_power || 0;
-                let horni_power = data.horni_power || 0;
+            const { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, mango_power } = await checkForData(interaction.user.id, rows.length > 0 ? rows[0] : undefined);
+            const pp_power_to_show = is_april_fools ? 0 : pp_power;
+            const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
+            const copium_power_to_show = is_april_fools ? 0 : copium_power;
+            const horni_power_to_show = is_april_fools ? 0 : horni_power;
+            const feet_power_to_show = is_april_fools ? -100 : feet_power;
+            const mango_power_to_show = is_april_fools ? 0 : mango_power;
 
-                // Maybe change this in the future to be included in the database. For now, it changes every time you run the command
-                let feet_power = Utils.generateFeetPower(interaction.user.id);
-                let mango_power = Utils.generateMangoPower(interaction.user.id);
+            await interaction.editReply({
+                flags: MessageFlags.IsComponentsV2,
+                components: getComponentBody(interaction.user.id, {
+                    pp_power: pp_power_to_show,
+                    pp_expired: pp_expired,
+                    clueless_power: clueless_power_to_show,
+                    clueless_expired: clueless_expired,
+                    copium_power: copium_power_to_show,
+                    copium_expired: copium_expired,
+                    horni_power: horni_power_to_show,
+                    horni_expired: horni_expired,
+                    feet_power: feet_power_to_show,
+                    mango_power: mango_power_to_show,
+                    expireTimestampInSeconds: expire_timestamp_in_seconds
+                })
+            });
 
-                const [pp_expired, clueless_expired, copium_expired, horni_expired] =
-                    await checkForExpired(
-                        data.pp_expires,
-                        data.clueless_expires,
-                        data.copium_expires,
-                        data.horni_expires,
-                    );
-                if (pp_expired) pp_power = Utils.generatePPCheckPower(interaction.user.id);
-                if (clueless_expired)
-                    clueless_power = Utils.generateCluelessPower(interaction.user.id);
-                if (copium_expired) copium_power = Utils.generateCopiumPower(interaction.user.id);
-                if (horni_expired) horni_power = Utils.generateHorniPower(interaction.user.id);
+            if (is_april_fools) {
+                setTimeout(async () => {
+                    await interaction.editReply({
+                        flags: MessageFlags.IsComponentsV2,
+                        components: getComponentBody(interaction.user.id, {
+                            pp_power: pp_power_to_show,
+                            pp_expired: pp_expired,
+                            clueless_power: clueless_power_to_show,
+                            clueless_expired: clueless_expired,
+                            copium_power: copium_power_to_show,
+                            copium_expired: copium_expired,
+                            horni_power: horni_power_to_show,
+                            horni_expired: horni_expired,
+                            feet_power: feet_power_to_show,
+                            mango_power: mango_power_to_show,
+                            expireTimestampInSeconds: expire_timestamp_in_seconds
+                        })
+                    });
+                }, 60 * 1000);
+            }
 
-                const is_april_fools = Utils.isAprilFools();
-                const expire_timestamp = Utils.getUTCExpireTimestamp();
-                const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-
-                const pp_power_to_show = is_april_fools ? 0 : pp_power;
-                const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
-                const copium_power_to_show = is_april_fools ? 0 : copium_power;
-                const horni_power_to_show = is_april_fools ? 0 : horni_power;
-                const feet_power_to_show = is_april_fools ? -100 : feet_power;
-                const mango_power_to_show = is_april_fools ? 0 : mango_power;
-                await interaction.editReply({
-                    flags: MessageFlags.IsComponentsV2,
-                    components: [
-                        {
-                            type: ComponentType.Container,
-                            accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
-                            components: [
-                                {
-                                    type: ComponentType.TextDisplay,
-                                    content:
-                                        `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power_to_show}%**, ${Utils.getPPCheckMessage(pp_power_to_show)}` +
-                                        `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power_to_show}%** today! ${Utils.getCluelessKingMessage(interaction.user.id)}` +
-                                        `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power_to_show}%** today! ${Utils.getCopiumKingMessage(interaction.user.id)}` +
-                                        `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power_to_show}%**, ${Utils.getHorniMessage(horni_power_to_show)}` +
-                                        `\n- Feet power is **${feet_power_to_show}%**` +
-                                        `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
-                                },
-                                {
-                                    type: ComponentType.Separator,
-                                    spacing: SeparatorSpacingSize.Small,
-                                    divider: true,
-                                },
-                                {
-                                    type: ComponentType.TextDisplay,
-                                    content: Utils.isChristmasSeason()
-                                        ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
-                                        : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
-                                },
-                            ],
-                        },
-                    ],
-                });
-
-                if (is_april_fools) {
-                    setTimeout(async () => {
-                        await interaction.editReply({
-                            flags: MessageFlags.IsComponentsV2,
-                            components: [
-                                {
-                                    type: ComponentType.Container,
-                                    accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
-                                    components: [
-                                        {
-                                            type: ComponentType.TextDisplay,
-                                            content:
-                                                `- Pesto Power ${pp_expired ? "is" : "was"} **${pp_power}%**, ${Utils.getPPCheckMessage(pp_power)}` +
-                                                `\n- Cluelessness ${clueless_expired ? "is" : "was"} **${clueless_power}%** today! ${Utils.getCluelessKingMessage(interaction.user.id)}` +
-                                                `\n- Copium level ${copium_expired ? "is" : "was"} **${copium_power}%** today! ${Utils.getCopiumKingMessage(interaction.user.id)}` +
-                                                `\n- Horni level ${horni_expired ? "is" : "was"} **${horni_power}%**, ${Utils.getHorniMessage(horni_power)}` +
-                                                `\n- Feet power is **${feet_power_to_show}%**` +
-                                                `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
-                                        },
-                                        {
-                                            type: ComponentType.Separator,
-                                            spacing: SeparatorSpacingSize.Small,
-                                            divider: true,
-                                        },
-                                        {
-                                            type: ComponentType.TextDisplay,
-                                            content: Utils.isChristmasSeason()
-                                                ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
-                                                : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
-                                        },
-                                    ],
-                                },
-                            ],
-                        });
-                    }, 60 * 1000);
-                }
-
-                if (pp_expired) {
-                    await db.query(
-                        db.format(
-                            "INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)",
-                            [interaction.user.id, pp_power, Date.now(), expire_timestamp],
-                        ),
-                    );
-                }
-
-                if (clueless_expired) {
-                    await db.query(
-                        db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
-                            interaction.user.id,
-                            clueless_power,
-                            expire_timestamp,
-                        ]),
-                    );
-                }
-
-                if (copium_expired) {
-                    await db.query(
-                        db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
-                            interaction.user.id,
-                            copium_power,
-                            expire_timestamp,
-                        ]),
-                    );
-                }
-
-                if (horni_expired) {
-                    await db.query(
-                        db.format(
-                            "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
-                            [interaction.user.id, horni_power, expire_timestamp],
-                        ),
-                    );
-                }
-
-                // This is temporary as I'm going to rewrite the whole bot in typescript soon
-                // Forgive the mess hehe :pestoShy:
-                try {
-                    const [rows] = await db.query<RowDataPacket[]>(
-                        db.format(
-                            "SELECT created_at FROM WalletHistory WHERE id = ? AND type = ? AND expires_at >= UNIX_TIMESTAMP() * 1000",
-                            [interaction.user.id, "allchecks"],
-                        ),
-                    );
-                    if (rows.length === 0) {
-                        const { coins, negative } = Utils.generatePestoCoins(pp_power);
-                        await db.query(
-                            db.format(
-                                "INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)",
-                                [interaction.user.id, coins, coins],
-                            ),
-                        );
-                        await db.query(
-                            db.format(
-                                "INSERT INTO WalletHistory(id, type, coins, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
-                                [
-                                    interaction.user.id,
-                                    "allchecks",
-                                    coins,
-                                    Date.now(),
-                                    expire_timestamp,
-                                ],
-                            ),
-                        );
-
-                        const coin_emote =
-                            await client.application.emojis.fetch("1398010839667179531");
-                        await interaction.followUp({
-                            flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
-                            components: [
-                                {
-                                    type: ComponentType.Container,
-                                    components: [
-                                        {
-                                            type: ComponentType.Section,
-                                            components: [
-                                                {
-                                                    type: ComponentType.TextDisplay,
-                                                    content: Utils.getPestoCoinsMessage(
-                                                        negative,
-                                                    ).replace(/\{coins}/, coins.toString()),
-                                                },
-                                            ],
-                                            accessory: {
-                                                type: ComponentType.Thumbnail,
-                                                media: {
-                                                    url: coin_emote.imageURL(),
-                                                },
-                                            },
-                                        },
-                                    ],
-                                },
-                            ],
-                        });
-                    }
-                } catch (err) {
-                    console.error(err);
-                }
-            } else {
-                let pp_power = Utils.generatePPCheckPower(interaction.user.id);
-                let clueless_power = Utils.generateCluelessPower(interaction.user.id);
-                let copium_power = Utils.generateCopiumPower(interaction.user.id);
-                let horni_power = Utils.generateHorniPower(interaction.user.id);
-                // Maybe change this in the future to be included in the database. For now, it's exclusive to one user
-                let feet_power = Utils.generateFeetPower(interaction.user.id);
-                const mango_power = Utils.generateMangoPower(interaction.user.id);
-
-                const is_april_fools = Utils.isAprilFools();
-                const expire_timestamp = Utils.getUTCExpireTimestamp();
-                const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
-
-                const pp_power_to_show = is_april_fools ? 0 : pp_power;
-                const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
-                const copium_power_to_show = is_april_fools ? 0 : copium_power;
-                const horni_power_to_show = is_april_fools ? 0 : horni_power;
-                const feet_power_to_show = is_april_fools ? -100 : feet_power;
-                const mango_power_to_show = is_april_fools ? 0 : mango_power;
-
-                await interaction.editReply({
-                    flags: MessageFlags.IsComponentsV2,
-                    components: [
-                        {
-                            type: ComponentType.Container,
-                            accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
-                            components: [
-                                {
-                                    type: ComponentType.TextDisplay,
-                                    content:
-                                        `- Pesto Power is **${pp_power_to_show}%**, ${Utils.getPPCheckMessage(pp_power_to_show)}` +
-                                        `\n- Cluelessness is **${clueless_power_to_show}%** today! ${Utils.getCluelessKingMessage(interaction.user.id)}` +
-                                        `\n- Copium level is **${copium_power_to_show}%** today! ${Utils.getCopiumKingMessage(interaction.user.id)}` +
-                                        `\n- Horni level is **${horni_power_to_show}%**, ${Utils.getHorniMessage(horni_power_to_show)}` +
-                                        `\n- Feet power is **${feet_power_to_show}%**` +
-                                        `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
-                                },
-                                {
-                                    type: ComponentType.Separator,
-                                    spacing: SeparatorSpacingSize.Small,
-                                    divider: true,
-                                },
-                                {
-                                    type: ComponentType.TextDisplay,
-                                    content: Utils.isChristmasSeason()
-                                        ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
-                                        : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
-                                },
-                            ],
-                        },
-                    ],
-                });
-
-                if (is_april_fools) {
-                    setTimeout(async () => {
-                        await interaction.editReply({
-                            flags: MessageFlags.IsComponentsV2,
-                            components: [
-                                {
-                                    type: ComponentType.Container,
-                                    accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
-                                    components: [
-                                        {
-                                            type: ComponentType.TextDisplay,
-                                            content:
-                                                `- Pesto Power is **${pp_power}%**, ${Utils.getPPCheckMessage(pp_power_to_show)}` +
-                                                `\n- Cluelessness is **${clueless_power}%** today! ${Utils.getCluelessKingMessage(interaction.user.id)}` +
-                                                `\n- Copium level is **${copium_power}%** today! ${Utils.getCopiumKingMessage(interaction.user.id)}` +
-                                                `\n- Horni level is **${horni_power}%**, ${Utils.getHorniMessage(horni_power_to_show)}` +
-                                                `\n- Feet power is **${feet_power}%**` +
-                                                `\n- Mango power is **${mango_power_to_show}%** <a:pestoMango:1452244340150632488>`,
-                                        },
-                                        {
-                                            type: ComponentType.Separator,
-                                            spacing: SeparatorSpacingSize.Small,
-                                            divider: true,
-                                        },
-                                        {
-                                            type: ComponentType.TextDisplay,
-                                            content: Utils.isChristmasSeason()
-                                                ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`
-                                                : `\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
-                                        },
-                                    ],
-                                },
-                            ],
-                        });
-                    }, 60 * 1000);
-                }
-
+            if (pp_expired) {
                 await db.query(
                     db.format(
                         "INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)",
-                        [
-                            interaction.user.id,
-                            pp_power === Infinity ? 1000 : pp_power,
-                            Date.now(),
-                            expire_timestamp,
-                        ],
+                        [interaction.user.id, pp_power, Date.now(), expire_timestamp],
                     ),
                 );
+            }
+
+            if (clueless_expired) {
                 await db.query(
                     db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
                         interaction.user.id,
@@ -332,6 +85,9 @@ export default defineCommand({
                         expire_timestamp,
                     ]),
                 );
+            }
+
+            if (copium_expired) {
                 await db.query(
                     db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
                         interaction.user.id,
@@ -339,75 +95,78 @@ export default defineCommand({
                         expire_timestamp,
                     ]),
                 );
+            }
+
+            if (horni_expired) {
                 await db.query(
-                    db.format("INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)", [
-                        interaction.user.id,
-                        horni_power,
-                        expire_timestamp,
-                    ]),
+                    db.format(
+                        "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
+                        [interaction.user.id, horni_power, expire_timestamp],
+                    ),
+                );
+            }
+
+            try {
+                const [rows] = await db.query<RowDataPacket[]>(
+                    db.format(
+                        "SELECT created_at FROM WalletHistory WHERE id = ? AND type = ? AND expires_at >= UNIX_TIMESTAMP() * 1000",
+                        [interaction.user.id, "allchecks"],
+                    ),
                 );
 
-                try {
-                    const [rows] = await db.query<RowDataPacket[]>(
+                if (rows.length === 0) {
+                    const { coins, negative } = Utils.generatePestoCoins(pp_power);
+                    await db.query(
                         db.format(
-                            "SELECT created_at FROM WalletHistory WHERE id = ? AND type = ? AND expires_at >= UNIX_TIMESTAMP() * 1000",
-                            [interaction.user.id, "allchecks"],
+                            "INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)",
+                            [interaction.user.id, coins, coins],
                         ),
                     );
-                    if (rows.length === 0) {
-                        const { coins, negative } = Utils.generatePestoCoins(pp_power);
-                        await db.query(
-                            db.format(
-                                "INSERT INTO Wallet(id, coins, total_coins) VALUES(?, ?, ?) ON DUPLICATE KEY UPDATE coins = coins + VALUES(coins), total_coins = total_coins + VALUES(total_coins)",
-                                [interaction.user.id, coins, coins],
-                            ),
-                        );
-                        await db.query(
-                            db.format(
-                                "INSERT INTO WalletHistory(id, type, coins, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
-                                [
-                                    interaction.user.id,
-                                    "allchecks",
-                                    coins,
-                                    Date.now(),
-                                    expire_timestamp,
-                                ],
-                            ),
-                        );
+                    await db.query(
+                        db.format(
+                            "INSERT INTO WalletHistory(id, type, coins, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
+                            [
+                                interaction.user.id,
+                                "allchecks",
+                                coins,
+                                Date.now(),
+                                expire_timestamp,
+                            ],
+                        ),
+                    );
 
-                        const coin_emote =
-                            await client.application.emojis.fetch("1398010839667179531");
-                        await interaction.followUp({
-                            flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
-                            components: [
-                                {
-                                    type: ComponentType.Container,
-                                    components: [
-                                        {
-                                            type: ComponentType.Section,
-                                            components: [
-                                                {
-                                                    type: ComponentType.TextDisplay,
-                                                    content: Utils.getPestoCoinsMessage(
-                                                        negative,
-                                                    ).replace(/\{coins}/, coins.toString()),
-                                                },
-                                            ],
-                                            accessory: {
-                                                type: ComponentType.Thumbnail,
-                                                media: {
-                                                    url: coin_emote.imageURL(),
-                                                },
+                    const coin_emote =
+                        await client.application.emojis.fetch("1398010839667179531");
+                    await interaction.followUp({
+                        flags: MessageFlags.Ephemeral | MessageFlags.IsComponentsV2,
+                        components: [
+                            {
+                                type: ComponentType.Container,
+                                components: [
+                                    {
+                                        type: ComponentType.Section,
+                                        components: [
+                                            {
+                                                type: ComponentType.TextDisplay,
+                                                content: Utils.getPestoCoinsMessage(
+                                                    negative,
+                                                ).replace(/\{coins}/, coins.toString()),
+                                            },
+                                        ],
+                                        accessory: {
+                                            type: ComponentType.Thumbnail,
+                                            media: {
+                                                url: coin_emote.imageURL(),
                                             },
                                         },
-                                    ],
-                                },
-                            ],
-                        });
-                    }
-                } catch (err) {
-                    console.error(err);
+                                    },
+                                ],
+                            },
+                        ],
+                    });
                 }
+            } catch (err) {
+                console.error(err);
             }
         } catch (err) {
             console.error(err);
@@ -418,6 +177,90 @@ export default defineCommand({
     },
 });
 
+async function checkForData(userId: string, data: RowDataPacket | undefined) {
+    let pp_power = data?.pp_power || Utils.generatePPCheckPower(userId);
+    let clueless_power = data?.clueless_power || Utils.generateCluelessPower(userId);
+    let copium_power = data?.copium_power || Utils.generateCopiumPower(userId);
+    let horni_power = data?.horni_power || Utils.generateHorniPower(userId);
+
+    // Maybe change this in the future to be included in the database. For now, it changes every time you run the command
+    let feet_power = Utils.generateFeetPower(userId);
+    let mango_power = Utils.generateMangoPower(userId);
+
+    let pp_expired = true;
+    let clueless_expired = true;
+    let copium_expired = true;
+    let horni_expired = true;
+
+    if (data) {
+        const [db_pp_expired, db_clueless_expired, db_copium_expired, db_horni_expired] =
+            await checkForExpired(
+                data.pp_expires,
+                data.clueless_expires,
+                data.copium_expires,
+                data.horni_expires,
+            );
+
+        if (db_pp_expired) {
+            pp_power = Utils.generatePPCheckPower(userId);
+        } else {
+            pp_expired = false;
+        }
+
+        if (db_clueless_expired) {
+            clueless_power = Utils.generateCluelessPower(userId);
+        } else {
+            clueless_expired = false;
+        }
+
+        if (db_copium_expired) {
+            copium_power = Utils.generateCopiumPower(userId);
+        } else {
+            copium_expired = false;
+        }
+
+        if (db_horni_expired) {
+            horni_power = Utils.generateHorniPower(userId);
+        } else {
+            horni_expired = false;
+        }
+    }
+
+    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, mango_power };
+}
+
+function getComponentBody(userId: string, data: ComponentBodyData) {
+    return [
+        {
+            type: ComponentType.Container,
+            accent_color: Utils.isChristmasSeason() ? 0xff0000 : undefined,
+            components: [
+                {
+                    type: ComponentType.TextDisplay,
+                    content:
+                        `- Pesto Power ${data.pp_expired ? "is" : "was"} **${data.pp_power}%**, ${Utils.getPPCheckMessage(data.pp_power)}` +
+                        `\n- Cluelessness ${data.clueless_expired ? "is" : "was"} **${data.clueless_power}%** today! ${Utils.getCluelessKingMessage(userId)}` +
+                        `\n- Copium level ${data.copium_expired ? "is" : "was"} **${data.copium_power}%** today! ${Utils.getCopiumKingMessage(userId)}` +
+                        `\n- Horni level ${data.horni_expired ? "is" : "was"} **${data.horni_power}%**, ${Utils.getHorniMessage(data.horni_power)}` +
+                        `\n- Feet power is **${data.feet_power}%**` +
+                        `\n- Mango power is **${data.mango_power}%** <a:pestoMango:1452244340150632488>`,
+                },
+                {
+                    type: ComponentType.Separator,
+                    spacing: SeparatorSpacingSize.Small,
+                    divider: true,
+                },
+                {
+                    type: ComponentType.TextDisplay,
+                    content: Utils.isChristmasSeason()
+                        ? `### <a:pestoPadoru:1452242346518384681> Christmas boosts are on! <a:pestoPadoru:1452242346518384681>\n-# Checks reset <t:${data.expireTimestampInSeconds}:R> (<t:${data.expireTimestampInSeconds}>)`
+                        : `\n-# Checks reset <t:${data.expireTimestampInSeconds}:R> (<t:${data.expireTimestampInSeconds}>)`,
+                },
+            ],
+        },
+    ]
+}
+
 async function checkForExpired(...values: number[]) {
     const array = [];
     const date = Date.now();
@@ -427,4 +270,18 @@ async function checkForExpired(...values: number[]) {
     }
 
     return array;
+}
+
+interface ComponentBodyData {
+    pp_power: number;
+    pp_expired: boolean;
+    clueless_power: number;
+    clueless_expired: boolean;
+    copium_power: number;
+    copium_expired: boolean;
+    horni_power: number;
+    horni_expired: boolean;
+    feet_power: number;
+    mango_power: number;
+    expireTimestampInSeconds: number;
 }
