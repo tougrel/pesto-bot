@@ -14,7 +14,7 @@
     "scripts": {
         "start": "NODE_ENV=production bun .",
         "dev": "NODE_ENV=development MAINTENANCE=true bun .",
-        "deploy:commands": "node scripts/deploy.ts",
+        "deploy:commands": "bun scripts/deploy.ts",
         "fmt": "oxfmt",
         "fmt:check": "oxfmt --check"
     },

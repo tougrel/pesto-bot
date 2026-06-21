@@ -10,6 +10,7 @@ import {
 } from "discord.js";
 
 const commands = [
+    // yunya command
     new SlashCommandBuilder()
         .setName("yunya")
         .setDescription("Toggles the automatic kick system")
@@ -66,7 +67,9 @@ const commands = [
                         ])
                         .setRequired(true),
                 ),
-        ),
+    ),
+
+    // stream command
     new SlashCommandBuilder()
         .setName("stream")
         .setDescription("Toggles the #aaaa voice channel")
@@ -80,7 +83,9 @@ const commands = [
             new SlashCommandSubcommandBuilder()
                 .setName("off")
                 .setDescription("Kick everyone from the channel and disable it"),
-        ),
+    ),
+
+    // bite command
     new SlashCommandBuilder()
         .setName("bite")
         .setDescription("Make yunya bite a pestie")
@@ -90,13 +95,17 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to bite")
                 .setRequired(true),
-        ),
+    ),
+
+    // allchecks command
     new SlashCommandBuilder()
         .setName("allchecks")
         .setDescription(
             "Check how big your pesto power is, how clueless and how high on copium you are today!",
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+
+    // ppcheck command
     new SlashCommandBuilder()
         .setName("ppcheck")
         .setDescription("How big is your pesto power today? Remember to waddle!")
@@ -106,7 +115,9 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-        ),
+    ),
+
+    // clueless command
     new SlashCommandBuilder()
         .setName("clueless")
         .setDescription("How clueless are you today?")
@@ -116,7 +127,9 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-        ),
+    ),
+
+    // copium command
     new SlashCommandBuilder()
         .setName("copium")
         .setDescription("How high on copium are you today?")
@@ -126,7 +139,9 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-        ),
+    ),
+
+    // mangocheck command
     new SlashCommandBuilder()
         .setName("mangocheck")
         .setDescription("Check your mango power levels!")
@@ -136,7 +151,9 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-        ),
+    ),
+
+    // feetcheck command
     new SlashCommandBuilder()
         .setName("feetcheck")
         .setDescription("Check your feet power levels!")
@@ -147,6 +164,8 @@ const commands = [
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
         ),
+
+    // hornicheck command
     new SlashCommandBuilder()
         .setName("hornicheck")
         .setDescription("Check how horni you or a pestie is")
@@ -156,7 +175,9 @@ const commands = [
                 .setName("pestie")
                 .setDescription("The pestie you want to check")
                 .setRequired(false),
-        ),
+    ),
+
+    // eval command
     new SlashCommandBuilder()
         .setName("eval")
         .setDescription("Shhh")
@@ -166,7 +187,9 @@ const commands = [
                 .setName("code")
                 .setDescription("The code that will get executed")
                 .setRequired(true),
-        ),
+    ),
+
+    // hug command
     new SlashCommandBuilder()
         .setName("hug")
         .setDescription("Give a big hug to a pestie!")
@@ -182,7 +205,9 @@ const commands = [
                 .setName("tag")
                 .setDescription("Do you want to tag the pestie you are hugging?")
                 .setRequired(false),
-        ),
+    ),
+
+    // kiss command
     new SlashCommandBuilder()
         .setName("kiss")
         .setDescription("Give a kiss to a pestie!")
@@ -198,7 +223,9 @@ const commands = [
                 .setName("tag")
                 .setDescription("Do you want to tag the pestie you are kissing?")
                 .setRequired(false),
-        ),
+    ),
+
+    // cult command
     new SlashCommandBuilder()
         .setName("cult")
         .setDescription("Join a Cult and work together to destroy other cults.")
@@ -223,23 +250,27 @@ const commands = [
             new SlashCommandSubcommandBuilder()
                 .setName("leave")
                 .setDescription("Leave your current cult"),
-        ),
+    ),
+
+    // wallet command
     new SlashCommandBuilder()
         .setName("wallet")
         .setDescription("How many coins do you have in your wallet?")
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+
+    // council command
     new SlashCommandBuilder()
         .setName("council")
         .setDescription("Shows the top 10 average power users across all checks from last month.")
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
-    //frank command
+    // frank command
     new SlashCommandBuilder()
         .setName("frank")
         .setDescription("Ouch, Rest In Pesto, Frank")
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
-    //save-streak command
+    // save-streak command
     new SlashCommandBuilder()
         .setName("save-streak")
         .setDescription(
@@ -248,18 +279,31 @@ const commands = [
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 ];
 
+if (!import.meta.env.BOT_TOKEN) {
+    console.error("BOT_TOKEN is not set");
+    process.exit(1);
+}
+
 // Code from: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
-const rest = new REST().setToken(process.env.BOT_TOKEN);
+const rest = new REST().setToken(import.meta.env.BOT_TOKEN);
 
 (async () => {
     try {
-        const app_id = process.env.APP_ID;
-        const guild_id = process.env.GUILD_ID;
+        const app_id = import.meta.env.APP_ID;
+        const guild_id = import.meta.env.GUILD_ID;
+
+        if (!app_id) {
+            console.error("APP_ID is not set");
+            process.exit(1);
+        }
+
+        if (!guild_id) {
+            console.error("GUILD_ID is not set");
+            process.exit(1);
+        }
 
         await rest.put(Routes.applicationGuildCommands(app_id, guild_id), { body: commands });
-        console.log(
-            `Successfully deployed ${commands.length} command(s) to ${process.env.GUILD_ID}.`,
-        );
+        console.log(`Successfully deployed ${commands.length} command(s) to ${guild_id}.`);
     } catch (err) {
         console.error(err);
     }
