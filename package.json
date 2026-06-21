@@ -1,27 +1,33 @@
 {
-	"name": "pesto-bot",
-	"version": "0.2.12",
-	"description": "A simple discord bot for the pesties",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"start": "NODE_ENV=production node .",
-		"dev": "NODE_ENV=development MAINTENANCE=true node .",
-		"deploy:commands": "node scripts/deploy.js"
-	},
-	"keywords": [
-		"discord bot",
-		"discord.js",
-		"yuniiho"
-	],
-	"author": "Tougrel",
-	"license": "ISC",
-	"dependencies": {
-		"discord.js": "^14.26.4",
-		"dotenv": "^16.6.1",
-		"mysql2": "^3.22.5"
-	},
-	"devDependencies": {
-		"discord-api-types": "^0.38.48"
-	}
+    "name": "pesto-bot",
+    "version": "0.2.12",
+    "description": "A simple discord bot for the pesties",
+    "main": "app/index.ts",
+    "type": "module",
+    "scripts": {
+        "start": "NODE_ENV=production bun .",
+        "dev": "NODE_ENV=development MAINTENANCE=true bun .",
+        "deploy:commands": "node scripts/deploy.ts",
+        "fmt": "oxfmt",
+        "fmt:check": "oxfmt --check"
+    },
+    "keywords": [
+        "discord bot",
+        "discord.js",
+        "yuniiho"
+    ],
+    "author": "Tougrel",
+    "license": "ISC",
+    "dependencies": {
+        "consola": "^3.4.2",
+        "discord.js": "^14.26.4",
+        "dotenv": "^16.6.1",
+        "mysql2": "^3.22.5"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.3.14",
+        "discord-api-types": "^0.38.48",
+        "oxfmt": "^0.55.0",
+        "typescript": "^6.0.3"
+    }
 }
