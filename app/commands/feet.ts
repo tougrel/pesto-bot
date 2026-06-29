@@ -34,13 +34,13 @@ export default defineCommand({
                 user ? user.id : interaction.user.id,
             );
             await interaction.editReply({
-                content: `${user ? (member.nickname ?? user.username) : interaction.user} is **${power_to_show}%** Horni, ${getFeetMessage(power_to_show)} ${data !== undefined && !has_expired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First feetcheck of the date was **${data.check_value}**%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+                content: `${user ? (member.nickname ?? user.username) : interaction.user}'s feet power is **${power_to_show}%**, ${getFeetMessage(power_to_show)} ${data !== undefined && !has_expired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First feetcheck of the date was **${data.check_value}**%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
             });
 
             if (is_april_fools) {
                 setTimeout(async () => {
                     await interaction.editReply({
-                        content: `${user ? (member.nickname ?? user.username) : interaction.user} is **${power}%** Horni, ${getFeetMessage(power)} ${data !== undefined && !has_expired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First feetcheck of the date was **${data.check_value}**%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+                        content: `${user ? (member.nickname ?? user.username) : interaction.user}'s feet power is **${power}%**, ${getFeetMessage(power)} ${data !== undefined && !has_expired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First feetcheck of the date was **${data.check_value}**%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
                     });
                 }, 60 * 1000);
             }
