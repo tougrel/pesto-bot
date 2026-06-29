@@ -128,9 +128,9 @@ export function getFeetMessage(power: number): string {
     } else if (power > 100) {
         return "**THE FEET KING HAS ARRIVED**";
     } else if (power > 50) {
-        return "The Council has deemed you... Mostly normal";
-    } else {
         return "Your interest in feet is becoming impossible to ignore";
+    } else {
+        return "The Council has deemed you... Mostly normal";
     }
 }
 
