@@ -1,4 +1,5 @@
 import { defineEvent } from "@lib";
+import { checkCopiumKing, checkHardhat } from "@utils";
 import { Events } from "discord.js";
 
 export default defineEvent({
@@ -57,42 +58,48 @@ export default defineEvent({
         //     }
         // }
 
-        // if (checkCopiumKing(message.author.id.toString())) {
-        //     if (/not(.+)?copium(.+)?(king)??/gi.test(message.content)) {
-        //         const random = Math.random();
-        //         console.debug("[copiumKing] not copium check", random);
-        //         if (random < 0.25) {
-        //             const moreRandomStuffCauseWhyNot = Math.random();
-        //             console.debug(
-        //                 "[copiumKing] not copium check 2",
-        //                 moreRandomStuffCauseWhyNot,
-        //             );
-        //             if (moreRandomStuffCauseWhyNot < 0.5) {
-        //                 await message.reply({
-        //                     content:
-        //                         "<:copiumKing:1332416650900799619> <:pestobow:1332418781133410446>",
-        //                 });
-        //             } else {
-        //                 await message.react("1332416650900799619");
-        //                 await message.react("1332418781133410446");
-        //             }
-        //         }
-        //     } else if (/(rigged|scam)/gi.test(message.content)) {
-        //         const random = Math.random();
-        //         console.debug("[copiumKing] rigged", random);
-        //         if (random < 0.25) {
-        //             await message.reply({
-        //                 content: "<:lookDownPestie:1512044054471245854>",
-        //                 files: [
-        //                     {
-        //                         attachment:
-        //                             "https://cdn.pestoverse.world/yunya/warlord.png",
-        //                         name: "warlord-rigged.png",
-        //                     },
-        //                 ],
-        //             });
-        //         }
-        //     }
-        // }
+        if (checkCopiumKing(message.author.id.toString())) {
+            if (/not(.+)?copium(.+)?(king)??/gi.test(message.content)) {
+                const random = Math.random();
+                console.debug("[copiumKing] not copium check", random);
+                if (random < 0.25) {
+                    const moreRandomStuffCauseWhyNot = Math.random();
+                    console.debug(
+                        "[copiumKing] not copium check 2",
+                        moreRandomStuffCauseWhyNot,
+                    );
+                    if (moreRandomStuffCauseWhyNot < 0.5) {
+                        await message.reply({
+                            content:
+                                "<:copiumKing:1332416650900799619> <:pestobow:1332418781133410446>",
+                        });
+                    } else {
+                        await message.react("1332416650900799619");
+                        await message.react("1332418781133410446");
+                    }
+                }
+            } else if (/(rigged|scam)/gi.test(message.content)) {
+                const random = Math.random();
+                console.debug("[copiumKing] rigged", random);
+                if (random < 0.25) {
+                    await message.reply({
+                        content: "<:lookDownPestie:1512044054471245854>",
+                        files: [
+                            {
+                                attachment:
+                                    "https://cdn.pestoverse.world/yunya/warlord.png",
+                                name: "warlord-rigged.png",
+                            },
+                        ],
+                    });
+                }
+            }
+        }
+        if (checkHardhat(message.author.id.toString())) {
+            if (/(feet)/gi.test(message.content)) {
+                await message.react("1521166858185736432") //gasp
+                await message.react("1323758768336404500") //scam
+            }
+        }
     },
 });
