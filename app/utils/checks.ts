@@ -32,3 +32,10 @@ export function checkPinkGoddess(id: string) {
 export function checkBanker(id: string) {
     return id === "599384106056286208";
 }
+
+/**
+ * @param id { String } the Discord ID of a user
+ */
+export function checkHardhat(id: string) {
+    return id === "682284810030415903"
+}
