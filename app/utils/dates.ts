@@ -45,18 +45,18 @@ export function isYuniisBirthday() {
     return month === 6 && day === 24;
 }
 
-export function isJuly7th() {
+export function isJuly6th() {
     const date = new Date();
     const month = date.getUTCMonth();
     const day = date.getUTCDate();
 
-    return month === 6 && day === 7;
+    return month === 6 && day === 6;
 }
 
-export function isJuly9th() {
+export function isSeptember6th() {
     const date = new Date();
     const month = date.getUTCMonth();
     const day = date.getUTCDate();
 
-    return month === 6 && day === 9;
+    return month === 8 && day === 6;
 }

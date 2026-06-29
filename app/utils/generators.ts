@@ -1,8 +1,8 @@
 import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "./checks.js";
 import {
     isChristmasSeason,
-    isJuly7th,
-    isJuly9th,
+    isJuly6th,
+    isSeptember6th,
     isNewYears,
     isWeekend,
     isYuniisBirthday,
@@ -29,11 +29,11 @@ export function generatePPCheckPower(userId: string) {
         }
     }
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -60,11 +60,11 @@ export function generatePPCheckPower(userId: string) {
 export function generateCluelessPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -84,11 +84,11 @@ export function generateCluelessPower(userId: string) {
     if (checkCluelessKing(userId) && !isNewYears()) {
         power = Math.floor(Math.random() * (10000 - 100)) + 100;
 
-        if (isJuly7th()) {
+        if (isJuly6th()) {
             power = 6767;
         }
 
-        if (isJuly9th()) {
+        if (isSeptember6th()) {
             power = 6969;
         }
 
@@ -103,11 +103,11 @@ export function generateCluelessPower(userId: string) {
 export function generateCopiumPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -127,11 +127,11 @@ export function generateCopiumPower(userId: string) {
     if (checkCopiumKing(userId) && !isNewYears()) {
         power = Math.floor(Math.random() * (10000 - 100)) + 100;
 
-        if (isJuly7th()) {
+        if (isJuly6th()) {
             power = 6767;
         }
 
-        if (isJuly9th()) {
+        if (isSeptember6th()) {
             power = 6969;
         }
 
@@ -146,11 +146,11 @@ export function generateCopiumPower(userId: string) {
 export function generateHorniPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -168,11 +168,11 @@ export function generateHorniPower(userId: string) {
 export function generateFeetPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -191,11 +191,11 @@ export function generateFeetPower(userId: string) {
     if (checkFeetKing(userId)) {
         power = Math.floor(Math.random() * (10000 - 100)) + 100;
 
-        if (isJuly7th()) {
+        if (isJuly6th()) {
             power = 6767;
         }
 
-        if (isJuly9th()) {
+        if (isSeptember6th()) {
             power = 6969;
         }
 
@@ -214,11 +214,11 @@ export function generateFeetPower(userId: string) {
 export function generateMangoPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
-    if (isJuly7th()) {
+    if (isJuly6th()) {
         power = 67;
     }
 
-    if (isJuly9th()) {
+    if (isSeptember6th()) {
         power = 69;
     }
 
@@ -230,11 +230,11 @@ export function generateMangoPower(userId: string) {
     if (userId === "198908340862976000") {
         power = Math.floor(Math.random() * (10000 - 100)) + 100;
 
-        if (isJuly7th()) {
+        if (isJuly6th()) {
             power = 6767;
         }
 
-        if (isJuly9th()) {
+        if (isSeptember6th()) {
             power = 6969;
         }
 
