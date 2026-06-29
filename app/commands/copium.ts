@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
-import { getUTCExpireTimestamp, isAprilFools, generateCopiumPower } from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generateCopiumPower, COPIUM_MESSAGES } from "@utils";
 import { MessageFlags } from "discord.js";
 
 export default defineCommand({
@@ -58,7 +58,7 @@ export default defineCommand({
                 if (is_april_fools) {
                     setTimeout(async () => {
                         await interaction.editReply({
-                            content: `${interaction.user}'s copium level is **${data.power}%** today! ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${timestamp}:R> (<t:${timestamp}>)`,
+                            content: `${interaction.user}'s copium level is **${data.power}%** today! ${data.power > 50 ? COPIUM_MESSAGES.EXTRA : ""} ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${timestamp}:R> (<t:${timestamp}>)`,
                         });
                     }, 60 * 1000);
                 }
@@ -82,7 +82,7 @@ export default defineCommand({
             if (is_april_fools) {
                 setTimeout(async () => {
                     await interaction.editReply({
-                        content: `${interaction.user}'s copium level is **${power}%** today! ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+                        content: `${interaction.user}'s copium level is **${power}%** today! ${power > 50 ? COPIUM_MESSAGES.EXTRA : ""} ${emoji ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
                     });
                 }, 60 * 1000);
             }

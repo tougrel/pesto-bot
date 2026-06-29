@@ -239,8 +239,12 @@ function getComponentBody(userId: string, data: ComponentBodyData) {
                     type: ComponentType.TextDisplay,
                     content:
                         `- Pesto Power ${data.pp_expired ? "is" : "was"} **${data.pp_power}%**, ${Utils.getPPCheckMessage(data.pp_power)}` +
-                        `\n- Cluelessness ${data.clueless_expired ? "is" : "was"} **${data.clueless_power}%** today! ${Utils.getCluelessKingMessage(userId)}` +
-                        `\n- Copium level ${data.copium_expired ? "is" : "was"} **${data.copium_power}%** today! ${Utils.getCopiumKingMessage(userId)}` +
+                        `\n- Cluelessness ${data.clueless_expired ? "is" : "was"} **${data.clueless_power}%** today! ${Utils.getCluelessKingMessage(userId)}\n- ` +
+                        Utils.COPIUM_MESSAGES.TEMPLATE
+                            .replace("$expired", data.copium_expired ? "is" : "was")
+                            .replace("$power", data.copium_power.toString())
+                            .replace("$extra", data.copium_power > 50 ? Utils.COPIUM_MESSAGES.EXTRA : "")
+                            .replace("$king", Utils.getCopiumKingMessage(userId)) +
                         `\n- Horni level ${data.horni_expired ? "is" : "was"} **${data.horni_power}%**, ${Utils.getHorniMessage(data.horni_power)}` +
                         `\n- Feet power is **${data.feet_power}%**` +
                         `\n- Mango power is **${data.mango_power}%** <a:pestoMango:1452244340150632488>`,

@@ -96,6 +96,12 @@ export function getPPCheckMessage(power: number): string {
     else return PPCHECK_MESSAGES["20"][Math.floor(Math.random() * PPCHECK_MESSAGES["20"].length)];
 }
 
+export const COPIUM_MESSAGES = {
+    TEMPLATE: "Copium level $expired **$power%** today! $extra $king",
+    EXTRA: "That's some prime grade copium right there man",
+    KING: "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>",
+}
+
 export function getHorniMessage(power: number): string {
     return power === 50
         ? "Choose your Allegiance! <:LETDOGCOOK:1323241567561187368>"
@@ -120,6 +126,6 @@ export function getCluelessKingMessage(userId: string) {
 
 export function getCopiumKingMessage(userId: string) {
     return checkCopiumKing(userId)
-        ? "<:copiumKing:1332416650900799619> <:pestoBow:1332418781133410446>"
+        ? COPIUM_MESSAGES.KING
         : "";
 }
