@@ -16,6 +16,12 @@ export default defineEvent({
             });
         }
 
+        if (message.content.toLocaleLowerCase().startsWith("!pingvihi")) {
+            await message.channel.send({
+                content: "<@599384106056286208> <a:pestoDinkDonk:1398743521271480381> <a:pestoDinkDonk:1398743521271480381> <a:pestoDinkDonk:1398743521271480381>",
+            });
+        }
+
         // const isDaDeveloper = message.author.id === import.meta.env.DEVELOPER_DISCORD_ID;
         // if (checkBanker(message.author.id.toString()) || isDaDeveloper) {
         //     if (
