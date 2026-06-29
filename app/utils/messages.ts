@@ -122,8 +122,10 @@ export function getMangoMessage(power: number): string {
     }
 }
 
-export function getFeetMessage(power: number): string {
-    if (power === 50) {
+export function getFeetMessage(userId: string, power: number): string {
+    if (userId === '285529265502683138') {
+        return "The Council simply nods in admiration and NASA briefly mistook your footprints for lunar craters.";
+    } else if (power === 50) {
         return "You're right in the middle... Could go either way.";
     } else if (power > 100) {
         return "**THE FEET KING HAS ARRIVED**";
