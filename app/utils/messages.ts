@@ -110,6 +110,30 @@ export function getHorniMessage(power: number): string {
           : "Welcome to the Seiso Cops! <:pestoPolice:1323241434966654976>";
 }
 
+export function getMangoMessage(power: number): string {
+    if (power === 50) {
+        return "You feel... neutral. Neither mango lover nor mango hater";
+    } else if (power > 100) {
+        return "THE MANGO KING HAS ARRIVED";
+    } else if (power > 50) {
+        return "Your love for mangoes cannot be contained";
+    } else {
+        return "You're keeping your distance from the mangoes";
+    }
+}
+
+export function getFeetMessage(power: number): string {
+    if (power === 50) {
+        return "You're right in the middle... Could go either way.";
+    } else if (power > 100) {
+        return "**THE FEET KING HAS ARRIVED**";
+    } else if (power > 50) {
+        return "The Council has deemed you... Mostly normal";
+    } else {
+        return "Your interest in feet is becoming impossible to ignore";
+    }
+}
+
 export function getPestoCoinsMessage(negative: boolean): string {
     if (negative) {
         return "# Council Penalty\nThe __Pesto Council__ withdraws **{coins}** pesto coins as part of a Yuniverse realignment!";
