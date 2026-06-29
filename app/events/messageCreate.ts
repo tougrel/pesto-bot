@@ -1,5 +1,5 @@
 import { defineEvent } from "@lib";
-import { checkCopiumKing, checkHardhat } from "@utils";
+import { checkCluelessKing, checkCopiumKing, checkHardhat } from "@utils";
 import { Events } from "discord.js";
 
 export default defineEvent({
@@ -16,7 +16,7 @@ export default defineEvent({
             });
         }
 
-        const isDaDeveloper = message.author.id === import.meta.env.DEVELOPER_DISCORD_ID;
+        // const isDaDeveloper = message.author.id === import.meta.env.DEVELOPER_DISCORD_ID;
         // if (checkBanker(message.author.id.toString()) || isDaDeveloper) {
         //     if (
         //         message.content.startsWith(
@@ -35,28 +35,28 @@ export default defineEvent({
         //     }
         // }
 
-        // if (checkCluelessKing(message.author.id.toString())) {
-        //     if (/not(.+)?clueless(.+)?(king)??/gi.test(message.content)) {
-        //         const random = Math.random();
-        //         console.debug("[cluelessKing] not clueless check", random);
-        //         if (random < 0.25) {
-        //             const moreRandomStuffCauseWhyNot = Math.random();
-        //             console.debug(
-        //                 "[cluelessKing] not clueless check 2",
-        //                 moreRandomStuffCauseWhyNot,
-        //             );
-        //             if (moreRandomStuffCauseWhyNot < 0.5) {
-        //                 await message.reply({
-        //                     content:
-        //                         "<:cluelessKing:1332416626251010153> <:pestobow:1332418781133410446>",
-        //                 });
-        //             } else {
-        //                 await message.react("1332416626251010153");
-        //                 await message.react("1332418781133410446");
-        //             }
-        //         }
-        //     }
-        // }
+        if (checkCluelessKing(message.author.id.toString())) {
+            if (/not(.+)?clueless(.+)?(king)??/gi.test(message.content)) {
+                const random = Math.random();
+                console.debug("[cluelessKing] not clueless check", random);
+                if (random < 0.25) {
+                    const moreRandomStuffCauseWhyNot = Math.random();
+                    console.debug(
+                        "[cluelessKing] not clueless check 2",
+                        moreRandomStuffCauseWhyNot,
+                    );
+                    if (moreRandomStuffCauseWhyNot < 0.5) {
+                        await message.reply({
+                            content:
+                                "<:cluelessKing:1332416626251010153> <:pestobow:1332418781133410446>",
+                        });
+                    } else {
+                        await message.react("1332416626251010153");
+                        await message.react("1332418781133410446");
+                    }
+                }
+            }
+        }
 
         if (checkCopiumKing(message.author.id.toString())) {
             if (/not(.+)?copium(.+)?(king)??/gi.test(message.content)) {
@@ -95,6 +95,7 @@ export default defineEvent({
                 }
             }
         }
+
         if (checkHardhat(message.author.id.toString())) {
             if (/(feet)/gi.test(message.content)) {
                 await message.react("1521166858185736432") //gasp
