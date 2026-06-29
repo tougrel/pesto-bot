@@ -13,7 +13,7 @@ export default defineCommand({
         try {
             const [rows] = await db.query<RowDataPacket[]>(
                 db.format(
-                    "SELECT pp_power, pp_expires, clueless_power, clueless_expires, copium_power, copium_expires, horni_power, horni_expires FROM AllChecks WHERE user_id = ?",
+                    "SELECT pp_power, pp_expires, clueless_power, clueless_expires, copium_power, copium_expires, horni_power, horni_expires, feet_power, feet_expires, mango_power, mango_expires FROM AllChecks WHERE user_id = ?",
                     [interaction.user.id],
                 ),
             );
@@ -23,7 +23,7 @@ export default defineCommand({
             const expire_timestamp = Utils.getUTCExpireTimestamp();
             const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
-            const { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, mango_power } = await checkForData(interaction.user.id, rows.length > 0 ? rows[0] : undefined);
+            const { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired } = await checkForData(interaction.user.id, rows.length > 0 ? rows[0] : undefined);
             const pp_power_to_show = is_april_fools ? 0 : pp_power;
             const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
             const copium_power_to_show = is_april_fools ? 0 : copium_power;
@@ -114,6 +114,30 @@ export default defineCommand({
                 );
             }
 
+            if (feet_expired) {
+                await db.query(
+                    db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                        Utils.CHECK_TYPES.FEET,
+                        interaction.user.id,
+                        feet_power,
+                        createdAt,
+                        expire_timestamp,
+                    ]),
+                );
+            }
+
+            if (mango_expired) {
+                await db.query(
+                    db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                        Utils.CHECK_TYPES.MANGO,
+                        interaction.user.id,
+                        mango_power,
+                        createdAt,
+                        expire_timestamp,
+                    ]),
+                );
+            }
+
             try {
                 const [rows] = await db.query<RowDataPacket[]>(
                     db.format(
@@ -190,23 +214,25 @@ async function checkForData(userId: string, data: RowDataPacket | undefined) {
     let clueless_power = data?.clueless_power || Utils.generateCluelessPower(userId);
     let copium_power = data?.copium_power || Utils.generateCopiumPower(userId);
     let horni_power = data?.horni_power || Utils.generateHorniPower(userId);
-
-    // Maybe change this in the future to be included in the database. For now, it changes every time you run the command
-    let feet_power = Utils.generateFeetPower(userId);
-    let mango_power = Utils.generateMangoPower(userId);
+    let feet_power = data?.feet_power || Utils.generateFeetPower(userId);
+    let mango_power = data?.mango_power || Utils.generateMangoPower(userId);
 
     let pp_expired = true;
     let clueless_expired = true;
     let copium_expired = true;
     let horni_expired = true;
+    let feet_expired = true;
+    let mango_expired = true;
 
     if (data) {
-        const [db_pp_expired, db_clueless_expired, db_copium_expired, db_horni_expired] =
+        const [db_pp_expired, db_clueless_expired, db_copium_expired, db_horni_expired, db_feet_expired, db_mango_expired] =
             await checkForExpired(
                 data.pp_expires,
                 data.clueless_expires,
                 data.copium_expires,
                 data.horni_expires,
+                data.feet_expires,
+                data.mango_expires,
             );
 
         if (db_pp_expired) {
@@ -232,9 +258,21 @@ async function checkForData(userId: string, data: RowDataPacket | undefined) {
         } else {
             horni_expired = false;
         }
+
+        if (db_feet_expired) {
+            feet_power = Utils.generateFeetPower(userId);
+        } else {
+            feet_expired = false;
+        }
+
+        if (db_mango_expired) {
+            mango_power = Utils.generateMangoPower(userId);
+        } else {
+            mango_expired = false;
+        }
     }
 
-    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, mango_power };
+    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired };
 }
 
 function getComponentBody(userId: string, data: ComponentBodyData) {
