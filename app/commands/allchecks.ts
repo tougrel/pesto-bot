@@ -254,8 +254,8 @@ function getComponentBody(userId: string, data: ComponentBodyData) {
                             .replace("$extra", data.copium_power > 50 ? Utils.COPIUM_MESSAGES.EXTRA : "")
                             .replace("$king", Utils.getCopiumKingMessage(userId)) +
                         `\n- Horni level ${data.horni_expired ? "is" : "was"} **${data.horni_power}%**, ${Utils.getHorniMessage(data.horni_power)}` +
-                        `\n- Feet power is **${data.feet_power}%**` +
-                        `\n- Mango power is **${data.mango_power}%** <a:pestoMango:1452244340150632488>`,
+                        `\n- Feet power is **${data.feet_power}%**, ${Utils.getFeetMessage(data.feet_power)}` +
+                        `\n- Mango power is **${data.mango_power}%**, ${Utils.getMangoMessage(data.mango_power)} <a:pestoMango:1452244340150632488>`,
                 },
                 {
                     type: ComponentType.Separator,
