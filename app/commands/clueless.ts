@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
-import { getUTCExpireTimestamp, isAprilFools, generateCluelessPower } from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generateCluelessPower, CHECK_TYPES } from "@utils";
 import { MessageFlags } from "discord.js";
 
 export default defineCommand({
@@ -16,14 +16,15 @@ export default defineCommand({
             const db = client.database;
             if (user && user.id !== interaction.user.id) {
                 const [rows] = await db.query<RowDataPacket[]>(
-                    db.format("SELECT power FROM Clueless WHERE user_id = ? AND expires >= ?", [
+                    db.format("SELECT check_value FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?", [
+                        CHECK_TYPES.CLUELESS,
                         user.id,
                         Date.now(),
                     ]),
                 );
 
                 if (rows.length > 0) {
-                    const power = rows[0].power;
+                    const power = rows[0].check_value;
                     await interaction.editReply({
                         content: `**${user}'s** cluelessness was **${power}%** today! ${user.id === "236642620506374145" ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}`,
                     });
@@ -43,14 +44,14 @@ export default defineCommand({
             const is_april_fools = isAprilFools();
             const [rows] = await db.query<RowDataPacket[]>(
                 db.format(
-                    "SELECT power, expires FROM Clueless WHERE user_id = ? AND expires >= ?",
-                    [interaction.user.id, Date.now()],
+                    "SELECT check_value, expires_at FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?",
+                    [CHECK_TYPES.CLUELESS, interaction.user.id, Date.now()],
                 ),
             );
             if (rows.length > 0) {
                 const data = rows[0];
-                const timestamp = Math.round(data.expires / 1000);
-                const power_to_show = is_april_fools ? 0 : data.power;
+                const timestamp = Math.round(data.expires_at / 1000);
+                const power_to_show = is_april_fools ? 0 : data.check_value;
                 await interaction.editReply({
                     content: `${interaction.user}'s cluelessness was **${power_to_show}%** today! ${emoji ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${timestamp}:R> (<t:${timestamp}>)`,
                 });
@@ -58,7 +59,7 @@ export default defineCommand({
                 if (is_april_fools) {
                     setTimeout(async () => {
                         await interaction.editReply({
-                            content: `${interaction.user}'s cluelessness was **${data.power}%** today! ${emoji ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${timestamp}:R> (<t:${timestamp}>)`,
+                            content: `${interaction.user}'s cluelessness was **${data.check_value}%** today! ${emoji ? "<:cluelessKing:1332416626251010153> <:pestoBow:1332418781133410446>" : ""}\n-# Checks reset <t:${timestamp}:R> (<t:${timestamp}>)`,
                         });
                     }, 60 * 1000);
                 }
@@ -88,9 +89,11 @@ export default defineCommand({
             }
 
             await db.query(
-                db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
+                db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                    CHECK_TYPES.CLUELESS,
                     interaction.user.id,
                     power,
+                    Date.now(),
                     expire_timestamp,
                 ]),
             );

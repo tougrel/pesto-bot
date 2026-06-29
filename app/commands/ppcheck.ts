@@ -2,7 +2,7 @@ import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
 import { Collection, MessageFlags } from "discord.js";
 import { getPPCheckMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower } from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower, CHECK_TYPES } from "@utils";
 
 export const scamCollection = new Collection<string, number>();
 
@@ -19,14 +19,15 @@ export default defineCommand({
             const db = client.database;
             if (user && user.id !== interaction.user.id) {
                 const [rows] = await db.query<RowDataPacket[]>(
-                    db.format("SELECT power FROM PPCheck WHERE user_id = ? AND expires >= ?", [
+                    db.format("SELECT check_value FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?", [
+                        CHECK_TYPES.PPCHECK,
                         user.id,
                         Date.now(),
                     ]),
                 );
 
                 if (rows.length > 0) {
-                    const power = rows[0].power;
+                    const power = rows[0].check_value;
                     await interaction.editReply({
                         content: `**${user}'s** Pesto Power was **${power}%** today, ${getPPCheckMessage(power)}`,
                     });
@@ -51,13 +52,14 @@ export default defineCommand({
             }
 
             const [rows] = await db.query<RowDataPacket[]>(
-                db.format("SELECT power, expires FROM PPCheck WHERE user_id = ? AND expires >= ?", [
+                db.format("SELECT check_value, expires_at FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?", [
+                    CHECK_TYPES.PPCHECK,
                     interaction.user.id,
                     Date.now(),
                 ]),
             );
             const data = rows.length > 0 ? rows[0] : undefined;
-            const hasExpired = data?.expires ? Date.now() >= data.expires : false;
+            const hasExpired = data?.expires_at ? Date.now() >= data.expires_at : false;
 
             const expire_timestamp = getUTCExpireTimestamp();
             const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
@@ -65,13 +67,13 @@ export default defineCommand({
             const is_april_fools = isAprilFools();
             const power_to_show = is_april_fools ? 0 : power;
             await interaction.editReply({
-                content: `${interaction.user}'s Pesto Power is **${power_to_show}%**, ${getPPCheckMessage(power_to_show)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${is_april_fools ? 0 : data.power}%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+                content: `${interaction.user}'s Pesto Power is **${power_to_show}%**, ${getPPCheckMessage(power_to_show)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${is_april_fools ? 0 : data.check_value}%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
             });
 
             if (is_april_fools) {
                 setTimeout(async () => {
                     await interaction.editReply({
-                        content: `${interaction.user}'s Pesto Power is **${power}%**, ${getPPCheckMessage(power)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.power}%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
+                        content: `${interaction.user}'s Pesto Power is **${power}%**, ${getPPCheckMessage(power)} ${data !== undefined && !hasExpired ? `(**Reroll** <a:pestoScam:1323758768336404500>! First ppcheck of the day was ${data.check_value}%)` : ""}\n-# Checks reset <t:${expire_timestamp_in_seconds}:R> (<t:${expire_timestamp_in_seconds}>)`,
                     });
                 }, 60 * 1000);
             }
@@ -79,10 +81,11 @@ export default defineCommand({
             if (rows.length === 0)
                 await db.query(
                     db.format(
-                        "INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)",
+                        "INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
                         [
+                            CHECK_TYPES.PPCHECK,
                             interaction.user.id,
-                            power === Infinity ? 1000 : power,
+                            power === Infinity ? 10000 : power,
                             Date.now(),
                             expire_timestamp,
                         ],

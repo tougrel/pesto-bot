@@ -19,6 +19,7 @@ export default defineCommand({
             );
 
             const is_april_fools = Utils.isAprilFools();
+            const createdAt = Date.now();
             const expire_timestamp = Utils.getUTCExpireTimestamp();
             const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
@@ -71,17 +72,19 @@ export default defineCommand({
             if (pp_expired) {
                 await db.query(
                     db.format(
-                        "INSERT INTO PPCheck(user_id, power, time, expires) VALUES(?, ?, ?, ?)",
-                        [interaction.user.id, pp_power, Date.now(), expire_timestamp],
+                        "INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
+                        [Utils.CHECK_TYPES.PPCHECK, interaction.user.id, pp_power, createdAt, expire_timestamp],
                     ),
                 );
             }
 
             if (clueless_expired) {
                 await db.query(
-                    db.format("INSERT INTO Clueless(user_id, power, expires) VALUES(?, ?, ?)", [
+                    db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                        Utils.CHECK_TYPES.CLUELESS,
                         interaction.user.id,
                         clueless_power,
+                        createdAt,
                         expire_timestamp,
                     ]),
                 );
@@ -89,9 +92,11 @@ export default defineCommand({
 
             if (copium_expired) {
                 await db.query(
-                    db.format("INSERT INTO Copium(user_id, power, expires) VALUES(?, ?, ?)", [
+                    db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                        Utils.CHECK_TYPES.COPIUM,
                         interaction.user.id,
                         copium_power,
+                        createdAt,
                         expire_timestamp,
                     ]),
                 );
@@ -99,10 +104,13 @@ export default defineCommand({
 
             if (horni_expired) {
                 await db.query(
-                    db.format(
-                        "INSERT INTO HorniCheck(user_id, power, expires) VALUES(?, ?, ?)",
-                        [interaction.user.id, horni_power, expire_timestamp],
-                    ),
+                    db.format("INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)", [
+                        Utils.CHECK_TYPES.HORNI,
+                        interaction.user.id,
+                        horni_power,
+                        createdAt,
+                        expire_timestamp,
+                    ]),
                 );
             }
 

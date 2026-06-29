@@ -8,6 +8,15 @@ import {
     isYuniisBirthday,
 } from "./dates.js";
 
+export const CHECK_TYPES = {
+    PPCHECK: 0,
+    CLUELESS: 1,
+    COPIUM: 2,
+    HORNI: 3,
+    MANGO: 4,
+    FEET: 5,
+};
+
 export function generatePPCheckPower(userId: string) {
     let power = Math.floor(Math.random() * 101);
 
