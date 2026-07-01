@@ -279,6 +279,116 @@ const commands = [
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
+    new SlashCommandBuilder()
+        .setName("gamba")
+        .setDescription("For the poor")
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("listgames")
+                .setDescription("List all gamba games registered")
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("listpesties")
+                .setDescription("List all pesties in a game")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("addgame")
+                .setDescription("Add a game to the list")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("addpestie")
+                .setDescription("Add pestie to a gamba game")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+                .addUserOption(
+                    new SlashCommandUserOption()
+                        .setName("pestie")
+                        .setDescription("pestie to add")
+                        .setRequired(false)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("removegamba")
+                .setDescription("Remove a gamba game from the list")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("removepestie")
+                .setDescription("Remove pestie from a gamba game")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+                .addUserOption(
+                    new SlashCommandUserOption()
+                        .setName("pestie")
+                        .setDescription("pestie to remove")
+                        .setRequired(false)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("gambatime")
+                .setDescription("Ping everyone in the game list for gamba!")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+                .addBooleanOption(
+                    new SlashCommandBooleanOption()
+                        .setName("suppress")
+                        .setDescription("Suppress notifs but let pesties know they're missing out")
+                        .setRequired(true)
+                )
+        )
+        .addSubcommand(
+            new SlashCommandSubcommandBuilder()
+                .setName("addgambawin")
+                .setDescription("Add a gamba win to a pestie for a game. They have now used up all their luck!")
+                .addStringOption(
+                    new SlashCommandStringOption()
+                        .setName("gamename")
+                        .setDescription("name of the game")
+                        .setRequired(true)
+                )
+                .addUserOption(
+                    new SlashCommandUserOption()
+                        .setName("pestie")
+                        .setDescription("pestie to make unlucky")
+                        .setRequired(false)
+                )
+        )
+
     // eno command
     new SlashCommandBuilder()
         .setName("eno")
