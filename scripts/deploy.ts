@@ -278,6 +278,12 @@ const commands = [
             "Lost your bb streak? You can save it here! (Command sponsored by our Copium King)",
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+
+    // eno command
+    new SlashCommandBuilder()
+        .setName("eno")
+        .setDescription("English only in the chat!")
+        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 ];
 
 if (!import.meta.env.BOT_TOKEN) {
