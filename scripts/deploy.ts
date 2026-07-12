@@ -388,7 +388,7 @@ const commands = [
         )
         .addSubcommand(
             new SlashCommandSubcommandBuilder()
-                .setName("addgambawin")
+                .setName("registerpulls")
                 .setDescription("Add a gamba win to a pestie for a game. They have now used up all their luck!")
                 .addStringOption(
                     new SlashCommandStringOption()
