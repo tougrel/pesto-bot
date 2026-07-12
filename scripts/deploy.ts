@@ -402,8 +402,7 @@ const commands = [
                         .setDescription("pestie to make unlucky")
                         .setRequired(false)
                 )
-        )
-
+        ),
     // eno command
     new SlashCommandBuilder()
         .setName("eno")
