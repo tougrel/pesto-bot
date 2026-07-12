@@ -8,6 +8,7 @@ import {
     SlashCommandSubcommandBuilder,
     SlashCommandStringOption,
     SlashCommandUserOption,
+    SlashCommandSubcommandGroupBuilder,
 } from "discord.js";
 
 const commands = [
@@ -279,81 +280,95 @@ const commands = [
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
+        //Commands for gamba functionality
     new SlashCommandBuilder()
         .setName("gamba")
         .setDescription("For the poor")
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("listgames")
-                .setDescription("List all gamba games registered")
-        )
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("listpesties")
-                .setDescription("List all pesties in a game")
-                .addStringOption(
-                    new SlashCommandStringOption()
-                        .setName("gamename")
-                        .setDescription("name of the game")
-                        .setRequired(true)
+        //games manangement command group
+        .addSubcommandGroup(
+            new SlashCommandSubcommandGroupBuilder()
+                .setName("game")
+                .setDescription("Commands to manage games")
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("list")
+                        .setDescription("List all gamba games registered")
+                )
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("add")
+                        .setDescription("Add a game to the list")
+                        .addStringOption(
+                            new SlashCommandStringOption()
+                                .setName("gamename")
+                                .setDescription("name of the game")
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("remove")
+                        .setDescription("Remove a gamba game from the list")
+                        .addStringOption(
+                            new SlashCommandStringOption()
+                                .setName("gamename")
+                                .setDescription("name of the game")
+                                .setRequired(true)
+                        )
                 )
         )
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("addgame")
-                .setDescription("Add a game to the list")
-                .addStringOption(
-                    new SlashCommandStringOption()
-                        .setName("gamename")
-                        .setDescription("name of the game")
-                        .setRequired(true)
+        //pestie management command group
+        .addSubcommandGroup(
+            new SlashCommandSubcommandGroupBuilder()
+                .setName("pestie")
+                .setDescription("Manage pesties linked to games")
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("list")
+                        .setDescription("List all pesties in a game")
+                        .addStringOption(
+                            new SlashCommandStringOption()
+                                .setName("gamename")
+                                .setDescription("name of the game")
+                                .setRequired(true)
+                        )
+                )
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("add")
+                        .setDescription("Add pestie to a gamba game")
+                        .addStringOption(
+                            new SlashCommandStringOption()
+                                .setName("gamename")
+                                .setDescription("name of the game")
+                                .setRequired(true)
+                        )
+                        .addUserOption(
+                            new SlashCommandUserOption()
+                                .setName("pestie")
+                                .setDescription("pestie to add")
+                                .setRequired(false)
+                        )
+                )
+                .addSubcommand(
+                    new SlashCommandSubcommandBuilder()
+                        .setName("remove")
+                        .setDescription("Remove pestie from a gamba game")
+                        .addStringOption(
+                            new SlashCommandStringOption()
+                                .setName("gamename")
+                                .setDescription("name of the game")
+                                .setRequired(true)
+                        )
+                        .addUserOption(
+                            new SlashCommandUserOption()
+                                .setName("pestie")
+                                .setDescription("pestie to remove")
+                                .setRequired(false)
+                        )
                 )
         )
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("addpestie")
-                .setDescription("Add pestie to a gamba game")
-                .addStringOption(
-                    new SlashCommandStringOption()
-                        .setName("gamename")
-                        .setDescription("name of the game")
-                        .setRequired(true)
-                )
-                .addUserOption(
-                    new SlashCommandUserOption()
-                        .setName("pestie")
-                        .setDescription("pestie to add")
-                        .setRequired(false)
-                )
-        )
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("removegamba")
-                .setDescription("Remove a gamba game from the list")
-                .addStringOption(
-                    new SlashCommandStringOption()
-                        .setName("gamename")
-                        .setDescription("name of the game")
-                        .setRequired(true)
-                )
-        )
-        .addSubcommand(
-            new SlashCommandSubcommandBuilder()
-                .setName("removepestie")
-                .setDescription("Remove pestie from a gamba game")
-                .addStringOption(
-                    new SlashCommandStringOption()
-                        .setName("gamename")
-                        .setDescription("name of the game")
-                        .setRequired(true)
-                )
-                .addUserOption(
-                    new SlashCommandUserOption()
-                        .setName("pestie")
-                        .setDescription("pestie to remove")
-                        .setRequired(false)
-                )
-        )
+        //seperate commands
         .addSubcommand(
             new SlashCommandSubcommandBuilder()
                 .setName("gambatime")
