@@ -129,7 +129,7 @@ export default defineCommand({
             }
         }
 
-        if(subcommand === "addgambawin") {
+        if(subcommand === "registerpulls") {
             const gameName: string = interaction.options.getString("gamename", true)
             const otherpestie: User = interaction.options.getUser("pestie", false)
 
