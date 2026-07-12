@@ -403,6 +403,17 @@ const commands = [
                         .setRequired(false)
                 )
         )
+    // eno command
+    new SlashCommandBuilder()
+        .setName("eno")
+        .setDescription("English only in the chat!")
+        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+        .addUserOption(
+            new SlashCommandUserOption()
+                .setName("pestie")
+                .setDescription("The pestie you want to tag")
+                .setRequired(false),
+        ),
 ];
 
 if (!import.meta.env.BOT_TOKEN) {
