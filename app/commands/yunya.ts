@@ -1,48 +1,45 @@
 import { defineCommand } from "@lib";
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { MessageFlags } from "discord.js";
 
 export default defineCommand({
     name: "yunya",
     async run(client, interaction) {
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
         const isMaintenance = import.meta.env.MAINTENANCE === "true";
         const isDev = interaction.user.id === import.meta.env.DEVELOPER_DISCORD_ID;
         const isSyri = interaction.user.id === "682284810030415903";
         const isDog = interaction.user.id === "212975234427518979";
 
         if (isMaintenance && !isDev && !isSyri && !isDog) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: "Permission Denied hehe :D",
-                flags: MessageFlags.Ephemeral,
             });
 
             return;
         }
 
+        const config = client.config.config;
         const subcommand = interaction.options.getSubcommand(true);
         if (subcommand === "toggle") {
             const toggle = interaction.options.getBoolean("value", true);
-            const config = JSON.parse((await readFile("configs/config.json")).toString());
-
             config.enabled = toggle;
-            await writeFile("configs/config.json", JSON.stringify(config, null, 4), "utf-8");
-            await interaction.reply({
-                content: `✅ Successfully ${config.enabled ? "enabled" : "disabled"} the system!`,
-                flags: MessageFlags.Ephemeral,
+
+            await writeFile("configs/config.json", JSON.stringify(config, null, 2), "utf8");
+            await interaction.editReply({
+                content: `✅ Successfully ${toggle ? "enabled" : "disabled"} the system!`,
             });
         } else if (subcommand === "mode") {
             const mode = interaction.options.getString("value", true);
-            const config = JSON.parse((await readFile("configs/config.json")).toString());
-
             config.mode = mode;
-            await writeFile("configs/config.json", JSON.stringify(config, null, 4), "utf-8");
-            await interaction.reply({
+
+            await writeFile("configs/config.json", JSON.stringify(config, null, 2), "utf8");
+            await interaction.editReply({
                 content: `Successfully changed the lockdown mode to ${mode}!`,
-                flags: MessageFlags.Ephemeral,
             });
         } else if (subcommand === "roles") {
             const option = interaction.options.getString("option");
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
             await interaction.editReply({
                 content: `${option === "add" ? "Adding" : "Removing"} role from all guild members... This may take a while!`,
             });

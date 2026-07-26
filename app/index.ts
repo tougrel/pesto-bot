@@ -8,6 +8,7 @@ import { GatewayIntentBits, ActivityType } from "discord-api-types/v10";
 import { Client, Partials, Collection } from "discord.js";
 import { createPool } from "mysql2/promise";
 import { createConsola } from "consola";
+import { watchConfig } from "c12";
 
 createConsola({
     level: import.meta.env.NODE_ENV === "development" ? 999 : 4,
@@ -44,6 +45,7 @@ const client = new Client({
 // We add the database and commands to the client so we can use it inside events or commands if needed
 client.database = pool;
 client.commands = new Collection();
+client.config = await watchConfig({ name: 'config' });
 
 const eventsPath = join(import.meta.dirname, "events");
 const eventFiles = readdirSync(eventsPath).filter((file) => file.endsWith(".ts"));

@@ -1,9 +1,11 @@
 import type { Client, ChatInputCommandInteraction, Events, ClientEvents } from "discord.js";
 import type { Pool } from "mysql2/promise";
+import type { ConfigWatcher } from "c12";
 
 export interface PestoClient extends Client {
     database: Pool;
     commands: Collection<string, PestoCommand>;
+    config: ConfigWatcher;
 }
 
 export interface CheckValue {
