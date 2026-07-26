@@ -62,6 +62,7 @@ export async function checkForExpired(...values: number[]) {
 
 export async function checkGambaDebuffActive(option: checkGambaOptions) {
     let debuffActive = false
+    
 
     const [rows] = await option.db.query<RowDataPacket[]>(
         option.db.format(
