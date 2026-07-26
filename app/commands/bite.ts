@@ -4,6 +4,8 @@ import { MessageFlags } from "discord.js";
 export default defineCommand({
     name: "bite",
     async run(client, interaction) {
+        await interaction.deferReply();
+
         const user = interaction.options.getUser("pestie") || interaction.user;
         const member = await interaction.guild.members.fetch({
             user,
@@ -13,7 +15,7 @@ export default defineCommand({
         const pinkDog = member.id === "212975234427518979";
         const myself = member.id === client.user.id;
         if (pinkDog || myself) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: `<:yuniiX:1283529446946504818> You dare bite me, ${member.nickname || member.user.globalName}? <:PestoFood:1075882159115612252>`,
             });
 
@@ -21,7 +23,7 @@ export default defineCommand({
         }
 
         if (interaction.user.id === "236642620506374145") {
-            await interaction.reply({
+            await interaction.editReply({
                 content: `${member.nickname || member.user.globalName} tried to attack a pestie! Bite him!`,
             });
 
@@ -34,7 +36,7 @@ export default defineCommand({
             return;
         }
 
-        await interaction.reply({
+        await interaction.editReply({
             content: `${client.user} attacks ${member.nickname || member.user.globalName}! <:PestoFood:1075882159115612252>`,
         });
 

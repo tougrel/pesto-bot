@@ -4,16 +4,18 @@ import { MessageFlags } from "discord.js";
 export default defineCommand({
     name: "stream",
     async run(_client, interaction) {
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
         const isMaintenance = import.meta.env.MAINTENANCE === "true";
         const isDev = interaction.user.id === import.meta.env.DEVELOPER_DISCORD_ID;
         const isSyri = interaction.user.id === "682284810030415903";
         const isDog = interaction.user.id === "212975234427518979";
 
         if (isMaintenance && !isDev && !isSyri && !isDog) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: "Permission Denied hehe :D",
-                flags: MessageFlags.Ephemeral,
             });
+
             return;
         }
 
@@ -55,9 +57,8 @@ export default defineCommand({
             }
 
             await interaction
-                .reply({
+                .editReply({
                     content: "Channel has been enabled! Have fun streaming Yuyu!",
-                    flags: MessageFlags.Ephemeral,
                 })
                 .catch(console.error);
         } else {
@@ -88,9 +89,8 @@ export default defineCommand({
             }
 
             await interaction
-                .reply({
+                .editReply({
                     content: "Successfully kicked all users and disabled the channel!",
-                    flags: MessageFlags.Ephemeral,
                 })
                 .catch(console.error);
         }

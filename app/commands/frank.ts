@@ -3,7 +3,8 @@ import { defineCommand } from "@lib";
 export default defineCommand({
     name: "frank",
     async run(_client, interaction) {
-        await interaction.reply({
+        await interaction.deferReply();
+        await interaction.editReply({
             // content: "https://cdn.pestoverse.world/yunya/frank_rejected.png",
             files: [
                 {

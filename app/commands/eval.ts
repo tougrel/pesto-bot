@@ -1,16 +1,16 @@
 import { defineCommand } from "@lib";
 import { MessageFlags } from "discord.js";
-import { scamCollection } from "./ppcheck.js";
 
 export default defineCommand({
     name: "eval",
     async run(client, interaction) {
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
         const command = interaction.options.getString("code");
 
         if (interaction.user.id !== import.meta.env.DEVELOPER_DISCORD_ID) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: "Only the bot developer can run this command",
-                flags: MessageFlags.Ephemeral,
             });
 
             return;
@@ -19,15 +19,13 @@ export default defineCommand({
         try {
             eval(command);
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: "✅ Success",
-                flags: MessageFlags.Ephemeral,
             });
         } catch (err) {
             console.error(err);
-            await interaction.reply({
+            await interaction.editReply({
                 content: "❌ An error occurred",
-                flags: MessageFlags.Ephemeral,
             });
         }
     },
