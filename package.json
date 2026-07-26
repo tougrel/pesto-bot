@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "c12": "^4.0.0-beta.5",
+        "chokidar": "^5.0.0",
         "consola": "^3.4.2",
         "discord.js": "^14.26.4",
         "dotenv": "^16.6.1",
