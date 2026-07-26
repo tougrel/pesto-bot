@@ -1,4 +1,5 @@
-import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess } from "./checks.js";
+import { Pool } from "../../node_modules/mysql2/promise.js";
+import { checkCluelessKing, checkCopiumKing, checkFeetKing, checkPinkGoddess, checkGambaDebuffActive } from "./checks.js";
 import {
     isChristmasSeason,
     isJuly6th,
@@ -17,8 +18,9 @@ export const CHECK_TYPES = {
     FEET: 5,
 };
 
-export function generatePPCheckPower(userId: string) {
+export function generatePPCheckPower(userId: string, db: Pool) {
     let power = Math.floor(Math.random() * 101);
+    let debuffActive = false
 
     if (isWeekend() && !isChristmasSeason()) {
         power = Math.floor(Math.random() * (101 - 35)) + 35;
@@ -50,11 +52,18 @@ export function generatePPCheckPower(userId: string) {
         power = Math.floor(Math.random() * (201 - 100)) + 100;
     }
 
+    //this part is fucked @tougrel: (async issu)
+    if (checkGambaDebuffActive({db, userId})) {
+        power = 0;
+        debuffActive = true
+    }
+
     if (checkPinkGoddess(userId)) {
         power = Infinity;
     }
 
-    return power;
+
+    return {power, debuffActive};
 }
 
 export function generateCluelessPower(userId: string) {

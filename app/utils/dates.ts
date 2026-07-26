@@ -1,7 +1,7 @@
-export function getUTCExpireTimestamp() {
+export function getUTCExpireTimestamp(days = 1) {
     const date = new Date();
     date.setUTCHours(0, 0, 0, 0);
-    date.setUTCDate(date.getDate() + 1);
+    date.setUTCDate(date.getDate() + days);
 
     return date.getTime();
 }

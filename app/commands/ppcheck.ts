@@ -41,7 +41,7 @@ export default defineCommand({
                 return;
             }
 
-            let power = generatePPCheckPower(interaction.user.id);
+            let power = generatePPCheckPower(interaction.user.id, db).power;
             if (
                 scamCollection.has(interaction.user.id) ||
                 (user !== null && scamCollection.has(user.id))

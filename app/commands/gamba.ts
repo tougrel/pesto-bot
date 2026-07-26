@@ -153,11 +153,12 @@ export default defineCommand({
 
                 await db.query<RowDataPacket[]>(
                     db.format(
-                        "INSERT INTO DidGamba(user_id, game_id, did_pulls_on, poor_until) VALUES (?,?,?,?);", [
+                        "INSERT INTO GambaHistory(user_id, game_id, did_pulls_on, poor_until, debuff_used) VALUES (?,?,?,?,?);", [
                         pestiD,
                         queried_gameID,
                         Date.now(),
-                        Utils.getUTCExpireTimestamp()
+                        Utils.getUTCExpireTimestamp(2), //add an extra day so that gamba luck will be down for N+1 days
+                        false
                     ])
                 )
 

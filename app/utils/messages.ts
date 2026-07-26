@@ -1,4 +1,4 @@
-import { checkCluelessKing, checkCopiumKing } from "./checks.js";
+import { checkCluelessKing, checkCopiumKing, checkGambaDebuffActive } from "./checks.js";
 
 export const PPCHECK_MESSAGES = {
     "-100": [
@@ -79,7 +79,7 @@ export function getPPCheckMessage(power: number): string {
         return PPCHECK_MESSAGES["-50"][Math.floor(Math.random() * PPCHECK_MESSAGES["-50"].length)];
     else if (power < 0)
         return PPCHECK_MESSAGES["-20"][Math.floor(Math.random() * PPCHECK_MESSAGES["-20"].length)];
-    else if (power === 0)
+    else if (power === 0) 
         return PPCHECK_MESSAGES["0"][Math.floor(Math.random() * PPCHECK_MESSAGES["0"].length)];
     else if (power === 67)
         return PPCHECK_MESSAGES["67"][Math.floor(Math.random() * PPCHECK_MESSAGES["67"].length)];
