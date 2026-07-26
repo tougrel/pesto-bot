@@ -76,7 +76,7 @@ export default defineCommand({
                 await db.query(
                     db.format(
                         "INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
-                        [Utils.CHECK_TYPES.PPCHECK, interaction.user.id, pp_power, createdAt, expire_timestamp],
+                        [Utils.CHECK_TYPES.PPCHECK, interaction.user.id, pp_power === Infinity ? -1 : pp_power, createdAt, expire_timestamp],
                     ),
                 );
             }

@@ -85,7 +85,7 @@ export default defineCommand({
                         [
                             CHECK_TYPES.PPCHECK,
                             interaction.user.id,
-                            power === Infinity ? 10000 : power,
+                            power === Infinity ? -1 : power,
                             Date.now(),
                             expire_timestamp,
                         ],
