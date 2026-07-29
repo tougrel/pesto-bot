@@ -4,7 +4,7 @@ import * as Utils from "@utils";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
 import { checkForExpired, checkGambaDebuffActive } from "@utils";
-import { Pool } from "../../node_modules/mysql2/promise";
+import type { Pool } from "../../node_modules/mysql2/promise";
 
 
 export default defineCommand({
@@ -26,7 +26,7 @@ export default defineCommand({
             const expire_timestamp = Utils.getUTCExpireTimestamp();
             const expire_timestamp_in_seconds = Math.round(expire_timestamp / 1000);
 
-            const { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffActive } = await checkForData(interaction.user.id, rows.length > 0 ? rows[0] : undefined, db);
+            const { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffStatus } = await checkForData(interaction.user.id, rows.length > 0 ? rows[0] : undefined, db);
             const pp_power_to_show = is_april_fools ? 0 : pp_power;
             const clueless_power_to_show = is_april_fools ? 0 : clueless_power;
             const copium_power_to_show = is_april_fools ? 0 : copium_power;
@@ -36,7 +36,7 @@ export default defineCommand({
 
             await interaction.editReply({
                 flags: MessageFlags.IsComponentsV2,
-                components: getComponentBody(interaction.user.id, gambaDebuffActive, {
+                components: getComponentBody(interaction.user.id, gambaDebuffStatus, {
                     pp_power: pp_power_to_show,
                     pp_expired: pp_expired,
                     clueless_power: clueless_power_to_show,
@@ -55,7 +55,7 @@ export default defineCommand({
                 setTimeout(async () => {
                     await interaction.editReply({
                         flags: MessageFlags.IsComponentsV2,
-                        components: getComponentBody(interaction.user.id, gambaDebuffActive, {
+                        components: getComponentBody(interaction.user.id, gambaDebuffStatus, {
                             pp_power: pp_power_to_show,
                             pp_expired: pp_expired,
                             clueless_power: clueless_power_to_show,
@@ -213,8 +213,9 @@ export default defineCommand({
 });
 
 async function checkForData(userId: string, data: RowDataPacket | undefined, db: Pool) {
-    let pp_power_gen_result = Utils.generatePPCheckPower(userId, db) //the only reason this exists is because of my dumb idea - Yolo
-    let pp_power = data?.pp_power || pp_power_gen_result.power;
+    let gambaDebuffStatus = await checkGambaDebuffActive({db, userId})
+
+    let pp_power = data?.pp_power || Utils.generatePPCheckPower(userId, gambaDebuffStatus);
     let clueless_power = data?.clueless_power || Utils.generateCluelessPower(userId);
     let copium_power = data?.copium_power || Utils.generateCopiumPower(userId);
     let horni_power = data?.horni_power || Utils.generateHorniPower(userId);
@@ -228,8 +229,6 @@ async function checkForData(userId: string, data: RowDataPacket | undefined, db:
     let feet_expired = true;
     let mango_expired = true;
 
-    let gambaDebuffActive = pp_power_gen_result.debuffActive
-
     if (data) {
         const [db_pp_expired, db_clueless_expired, db_copium_expired, db_horni_expired, db_feet_expired, db_mango_expired] =
             await checkForExpired(
@@ -242,7 +241,7 @@ async function checkForData(userId: string, data: RowDataPacket | undefined, db:
             );
 
         if (db_pp_expired) {
-            pp_power = pp_power_gen_result.power;
+            pp_power = Utils.generatePPCheckPower(userId, gambaDebuffStatus);
         } else {
             pp_expired = false;
         }
@@ -278,10 +277,10 @@ async function checkForData(userId: string, data: RowDataPacket | undefined, db:
         }
     }
 
-    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffActive };
+    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffStatus };
 }
 
-function getComponentBody(userId: string, gambaDebuffActive: boolean, data: ComponentBodyData) {
+function getComponentBody(userId: string, gambaDebuffStatus: boolean, data: ComponentBodyData) {
     return [
         {
             type: ComponentType.Container,
@@ -290,7 +289,7 @@ function getComponentBody(userId: string, gambaDebuffActive: boolean, data: Comp
                 {
                     type: ComponentType.TextDisplay,
                     content:
-                        `- Pesto Power ${data.pp_expired ? "is" : "was"} **${data.pp_power}%**, ${gambaDebuffActive ? `You spent all your luck on gamba ${Utils.emotes.RIPBOZO}` : Utils.getPPCheckMessage(data.pp_power)}` +
+                        `- Pesto Power ${data.pp_expired ? "is" : "was"} **${data.pp_power}%**, ${gambaDebuffStatus ? `You spent all your luck on gamba ${Utils.emotes.RIPBOZO}` : Utils.getPPCheckMessage(data.pp_power)}` +
                         `\n- Cluelessness ${data.clueless_expired ? "is" : "was"} **${data.clueless_power}%** today! ${Utils.getCluelessKingMessage(userId)}\n- ` +
                         Utils.COPIUM_MESSAGES.TEMPLATE
                             .replace("$expired", data.copium_expired ? "is" : "was")
