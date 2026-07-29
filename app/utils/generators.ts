@@ -58,7 +58,6 @@ export function generatePPCheckPower(userId: string, debuffStatus: boolean) {
         power = Infinity;
     }
 
-
     return power;
 }
 
