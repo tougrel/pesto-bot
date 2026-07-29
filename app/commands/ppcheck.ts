@@ -45,8 +45,6 @@ export default defineCommand({
                 return;
             }
 
-            
-
             let power = generatePPCheckPower(userId, await checkGambaDebuffActive({db, userId}));
             if (
                 scamCollection.has(userId) ||
