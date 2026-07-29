@@ -1,6 +1,6 @@
 import { defineCommand } from "@lib";
 import { ChatInputCommandInteraction, Component, ComponentType, ContextMenuCommandAssertions, Message, MessageFlags, SeparatorSpacingSize, User, type Interaction } from "discord.js";
-import type { RowDataPacket, QueryError } from "mysql2";
+import type { RowDataPacket } from "mysql2";
 import * as Utils from "@utils";
 import type { PestoClient } from "@types";
 import { GambaErrors, emotes } from "@utils";
