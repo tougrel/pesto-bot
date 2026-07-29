@@ -3,6 +3,7 @@ import type { ChatInputCommandInteraction } from "discord.js";
 
 export interface PestoCommand {
     name: string;
+    aliases?: string[];
     run: (client: PestoClient, interaction: ChatInputCommandInteraction) => void | Promise<void>;
 }
 
