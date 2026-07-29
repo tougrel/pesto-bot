@@ -2,7 +2,7 @@ import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
 import { Collection, MessageFlags } from "discord.js";
 import { getPPCheckMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower, CHECK_TYPES } from "@utils";
+import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower, checkGambaDebuffActive, CHECK_TYPES } from "@utils";
 
 export const scamCollection = new Collection<string, number>();
 
@@ -12,12 +12,15 @@ export default defineCommand({
         const user = interaction.options.getUser("pestie", false);
 
         try {
+
+            let userId: string = interaction.user.id;
+
             await interaction.deferReply({
-                flags: user && user.id !== interaction.user.id ? MessageFlags.Ephemeral : undefined,
+                flags: user && user.id !== userId ? MessageFlags.Ephemeral : undefined,
             });
 
             const db = client.database;
-            if (user && user.id !== interaction.user.id) {
+            if (user && user.id !== userId) {
                 const [rows] = await db.query<RowDataPacket[]>(
                     db.format("SELECT check_value FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?", [
                         CHECK_TYPES.PPCHECK,
@@ -41,12 +44,14 @@ export default defineCommand({
                 return;
             }
 
-            let power = generatePPCheckPower(interaction.user.id, db).power;
+            
+
+            let power = generatePPCheckPower(userId, await checkGambaDebuffActive({db, userId}));
             if (
-                scamCollection.has(interaction.user.id) ||
+                scamCollection.has(userId) ||
                 (user !== null && scamCollection.has(user.id))
             ) {
-                const id = user !== null ? user.id : interaction.user.id;
+                const id = user !== null ? user.id : userId;
                 power = scamCollection.get(id);
                 scamCollection.delete(id);
             }
@@ -54,7 +59,7 @@ export default defineCommand({
             const [rows] = await db.query<RowDataPacket[]>(
                 db.format("SELECT check_value, expires_at FROM CheckValue WHERE type_id = ? AND user_id = ? AND expires_at >= ?", [
                     CHECK_TYPES.PPCHECK,
-                    interaction.user.id,
+                    userId,
                     Date.now(),
                 ]),
             );
@@ -84,7 +89,7 @@ export default defineCommand({
                         "INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
                         [
                             CHECK_TYPES.PPCHECK,
-                            interaction.user.id,
+                            userId,
                             power === Infinity ? -1 : power,
                             Date.now(),
                             expire_timestamp,
