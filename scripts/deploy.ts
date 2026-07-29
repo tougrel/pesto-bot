@@ -414,6 +414,10 @@ const commands = [
                 .setDescription("The pestie you want to tag")
                 .setRequired(false),
         ),
+    new SlashCommandBuilder()
+        .setName("unriggedppcheck")
+        .setDescription("The unrigged version of /ppcheck")
+        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
 ];
 
 if (!import.meta.env.BOT_TOKEN) {
