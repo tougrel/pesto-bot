@@ -12,8 +12,9 @@ export default defineCommand({
         const isToug = "256048990750113793"
         const isYolo = "457062141078536194"
 
-        //break away if user is not yolo or toug
-        if (!isToug || !isYolo) {
+        //break away if user is not toug or yolo
+        if (interaction.user.id !== isToug && interaction.user.id !== isYolo) {
+            console.log(`${interaction.user.username} tried to run a /gamba command >:(`)
             await interaction.reply({
                 content: "Your permission game is lacking :)",
                 flags: MessageFlags.Ephemeral
