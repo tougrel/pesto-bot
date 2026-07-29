@@ -8,6 +8,7 @@ export const scamCollection = new Collection<string, number>();
 
 export default defineCommand({
     name: "ppcheck",
+    aliases: ["unriggedppcheck"],
     async run(client, interaction) {
         const user = interaction.options.getUser("pestie", false);
 
