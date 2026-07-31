@@ -1,8 +1,10 @@
 import type { RowDataPacket } from "mysql2";
 import { defineCommand } from "@lib";
 import { Collection, MessageFlags } from "discord.js";
-import { getPPCheckMessage } from "../utils/messages.js";
-import { getUTCExpireTimestamp, isAprilFools, generatePPCheckPower, checkGambaDebuffActive, CHECK_TYPES } from "@utils";
+import {
+    getPPCheckMessage, getUTCExpireTimestamp, isAprilFools, generatePPCheckPower, checkGambaDebuffActive, CHECK_TYPES,
+    consumeGambaDebuff
+} from "@utils";
 
 export const scamCollection = new Collection<string, number>();
 
@@ -45,7 +47,8 @@ export default defineCommand({
                 return;
             }
 
-            let power = generatePPCheckPower(userId, await checkGambaDebuffActive({db, userId}));
+            const { active, pullId } = await checkGambaDebuffActive(db, userId);
+            let power = generatePPCheckPower(userId, active);
             if (
                 scamCollection.has(userId) ||
                 (user !== null && scamCollection.has(user.id))
@@ -82,7 +85,7 @@ export default defineCommand({
                 }, 60 * 1000);
             }
 
-            if (rows.length === 0)
+            if (rows.length === 0) {
                 await db.query(
                     db.format(
                         "INSERT INTO CheckValue(type_id, user_id, check_value, created_at, expires_at) VALUES(?, ?, ?, ?, ?)",
@@ -95,6 +98,9 @@ export default defineCommand({
                         ],
                     ),
                 );
+
+                await consumeGambaDebuff(db, pullId);
+            }
         } catch (err) {
             console.error(err);
             await interaction.editReply({
