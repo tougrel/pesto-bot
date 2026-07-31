@@ -5,11 +5,10 @@ export default defineEvent({
     name: Events.InteractionCreate,
     run: async (client, interaction) => {
         if (interaction.isChatInputCommand()) {
-
             const commandAlias: PestoCommand | undefined = client.commands.find((cmd: PestoCommand) => cmd.aliases?.includes(interaction.commandName));
 
             if (client.commands.has(interaction.commandName) || commandAlias !== undefined) {
-                const command = client.commands.get(commandAlias.name || interaction.commandName);
+                const command = client.commands.get(commandAlias?.name || interaction.commandName);
 
                 const isInMaintenance = import.meta.env.MAINTENANCE === "true";
                 const isDeveloper = interaction.user.id === import.meta.env.DEVELOPER_DISCORD_ID;
