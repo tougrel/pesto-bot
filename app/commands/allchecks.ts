@@ -1,11 +1,10 @@
 import type { RowDataPacket } from "mysql2";
+import type { Pool } from "mysql2/promise";
 import { defineCommand } from "@lib";
 import * as Utils from "@utils";
 import { MessageFlags } from "discord.js";
 import { ComponentType, SeparatorSpacingSize } from "discord-api-types/v10";
-import { checkForExpired, checkGambaDebuffActive } from "@utils";
-import type { Pool } from "../../node_modules/mysql2/promise";
-
+import { checkForExpired, checkGambaDebuffActive, consumeGambaDebuff } from "@utils";
 
 export default defineCommand({
     name: "allchecks",
@@ -213,16 +212,27 @@ export default defineCommand({
 });
 
 async function checkForData(userId: string, data: RowDataPacket | undefined, db: Pool) {
-    let gambaDebuffStatus = await checkGambaDebuffActive({db, userId})
+    let { active, pullId } = await checkGambaDebuffActive(db, userId);
 
-    let pp_power = data?.pp_power || Utils.generatePPCheckPower(userId, gambaDebuffStatus);
+    let pp_expired = true;
+    let pp_power: number;
+
+    if (data && !(await checkForExpired(data.pp_expires))[0]) {
+        pp_power = data.pp_power;
+        pp_expired = false;
+    } else {
+        pp_power = Utils.generatePPCheckPower(userId, active);
+        if (pullId !== null) {
+            await consumeGambaDebuff(db, pullId);
+        }
+    }
+
     let clueless_power = data?.clueless_power || Utils.generateCluelessPower(userId);
     let copium_power = data?.copium_power || Utils.generateCopiumPower(userId);
     let horni_power = data?.horni_power || Utils.generateHorniPower(userId);
     let feet_power = data?.feet_power || Utils.generateFeetPower(userId);
     let mango_power = data?.mango_power || Utils.generateMangoPower(userId);
 
-    let pp_expired = true;
     let clueless_expired = true;
     let copium_expired = true;
     let horni_expired = true;
@@ -230,21 +240,14 @@ async function checkForData(userId: string, data: RowDataPacket | undefined, db:
     let mango_expired = true;
 
     if (data) {
-        const [db_pp_expired, db_clueless_expired, db_copium_expired, db_horni_expired, db_feet_expired, db_mango_expired] =
+        const [db_clueless_expired, db_copium_expired, db_horni_expired, db_feet_expired, db_mango_expired] =
             await checkForExpired(
-                data.pp_expires,
                 data.clueless_expires,
                 data.copium_expires,
                 data.horni_expires,
                 data.feet_expires,
                 data.mango_expires,
             );
-
-        if (db_pp_expired) {
-            pp_power = Utils.generatePPCheckPower(userId, gambaDebuffStatus);
-        } else {
-            pp_expired = false;
-        }
 
         if (db_clueless_expired) {
             clueless_power = Utils.generateCluelessPower(userId);
@@ -277,7 +280,7 @@ async function checkForData(userId: string, data: RowDataPacket | undefined, db:
         }
     }
 
-    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffStatus };
+    return { pp_power, pp_expired, clueless_power, clueless_expired, copium_power, copium_expired, horni_power, horni_expired, feet_power, feet_expired, mango_power, mango_expired, gambaDebuffStatus: active };
 }
 
 function getComponentBody(userId: string, gambaDebuffStatus: boolean, data: ComponentBodyData) {

@@ -1,5 +1,4 @@
-import { RowDataPacket } from "../../node_modules/mysql2/index";
-import { Pool, PoolCluster } from "../../node_modules/mysql2/promise";
+import type { RowDataPacket, Pool } from "mysql2/promise";
 
 /**
  * @param id { String } the Discord ID of a user
@@ -60,34 +59,31 @@ export async function checkForExpired(...values: number[]) {
 }
 
 
-export async function checkGambaDebuffActive(option: checkGambaOptions) {
-    let debuffActive = false
-
-    const [rows] = await option.db.query<RowDataPacket[]>(
-        option.db.format(
+export async function checkGambaDebuffActive(db: Pool, userId: string) {
+    const [rows] = await db.query<RowDataPacket[]>(
+        db.format(
             "SELECT gamba_pull_id, poor_until FROM GambaHistory WHERE user_id = ? AND debuff_used = 0 ORDER BY poor_until DESC LIMIT 1",
-            option.userId
+            userId
         )
     )
 
-    if (rows.length > 0) {
-        const date = Date.now();
-        debuffActive = !(date >= rows[0].poor_until)
-        await option.db.query<RowDataPacket[]>(
-            option.db.format(
-                "UPDATE GambaHistory SET debuff_used = 1 WHERE gamba_pull_id = ?",
-                rows[0].gamba_pull_id
-            )
-        )
+    if (rows.length === 0) {
+        return { active: false, pullId: null }
     }
 
-    console.debug("debuff active?:")
-    console.debug(debuffActive)
-
-    return debuffActive
+    const active = Date.now() < rows[0].poor_until;
+    return { active, pullId: rows[0].gamba_pull_id }
 }
 
-interface checkGambaOptions {
-    db: Pool,
-    userId: string
+export async function consumeGambaDebuff(db: Pool, pullId: number) {
+    try {
+        await db.query<RowDataPacket[]>(
+            db.format(
+                "UPDATE GambaHistory SET debuff_used = 1 WHERE gamba_pull_id = ?",
+                pullId
+            )
+        )
+    } catch (err) {
+        console.error(err);
+    }
 }
