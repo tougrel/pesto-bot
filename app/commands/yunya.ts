@@ -26,7 +26,7 @@ export default defineCommand({
             const toggle = interaction.options.getBoolean("value", true);
             config.enabled = toggle;
 
-            await writeFile("configs/config.json", JSON.stringify(config, null, 2), "utf8");
+            await writeFile(client.config.configFile || "config.json5", JSON.stringify(config, null, 2), "utf8");
             await interaction.editReply({
                 content: `✅ Successfully ${toggle ? "enabled" : "disabled"} the system!`,
             });
@@ -34,7 +34,7 @@ export default defineCommand({
             const mode = interaction.options.getString("value", true);
             config.mode = mode;
 
-            await writeFile("configs/config.json", JSON.stringify(config, null, 2), "utf8");
+            await writeFile(client.config.configFile || "config.json5", JSON.stringify(config, null, 2), "utf8");
             await interaction.editReply({
                 content: `Successfully changed the lockdown mode to ${mode}!`,
             });
