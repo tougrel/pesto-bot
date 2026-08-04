@@ -1,5 +1,5 @@
 import { defineEvent } from "@lib";
-import { ComponentType, Events, type GuildBasedChannel, type GuildMember, GuildMemberFlags } from "discord.js";
+import { ComponentType, Events, type GuildBasedChannel, type GuildMember, GuildMemberFlags, MessageFlags } from "discord.js";
 
 export default defineEvent({
     name: Events.GuildMemberAdd,
@@ -47,6 +47,7 @@ async function sendLog(logChannel: GuildBasedChannel, member: GuildMember, succe
 
     try {
         await logChannel.send({
+            flags: MessageFlags.IsComponentsV2,
             components: [
                 {
                     type: ComponentType.Container,
