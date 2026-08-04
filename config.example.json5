@@ -1,0 +1,14 @@
+{
+  // The ID of the guild where the lockdown system is active.
+  "guildId": "",
+
+  // The ID of the channel where lockdown actions are logged.
+  "logsChannel": "",
+
+  // Whether the lockdown system is enabled.
+  "enabled": false,
+
+  // The action to take when a user joins.
+  // Valid values: "kick" or "ban".
+  "mode": "kick"
+}
