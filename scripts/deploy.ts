@@ -433,6 +433,12 @@ const commands = [
                 .setDescription("Do you want zeroes in your output?")
                 .setRequired(false)
         )
+        .addBooleanOption(
+            new SlashCommandBooleanOption()
+                .setName("number-sorting")
+                .setDescription("sort the numbers from lowest to highest")
+                .setRequired(false)
+        )
 ];
 
 if (!import.meta.env.BOT_TOKEN) {
