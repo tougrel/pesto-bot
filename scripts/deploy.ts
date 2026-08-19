@@ -417,7 +417,22 @@ const commands = [
     new SlashCommandBuilder()
         .setName("unriggedppcheck")
         .setDescription("The unrigged version of /ppcheck")
-        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+    new SlashCommandBuilder()
+        .setName("date-converter")
+        .setDescription("Transform a ISO 8601 compliant YYYY-MM-DD to the horrible YMYDYDYM format (Dont ask plz)")
+        .addStringOption(
+            new SlashCommandStringOption()
+                .setName("date")
+                .setDescription("the input date")
+                .setRequired(true)
+        )
+        .addBooleanOption(
+            new SlashCommandBooleanOption()
+                .setName("use-zeroes")
+                .setDescription("Do you want zeroes in your output?")
+                .setRequired(false)
+        )
 ];
 
 if (!import.meta.env.BOT_TOKEN) {
