@@ -272,6 +272,12 @@ const commands = [
         .setDescription("Ouch, Rest In Pesto, Frank")
         .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
 
+    // throne command
+    new SlashCommandBuilder()
+        .setName("throne")
+        .setDescription("Open your wallets pestini! Time to gift stuff to the dog!")
+        .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+
     // save-streak command
     new SlashCommandBuilder()
         .setName("save-streak")
